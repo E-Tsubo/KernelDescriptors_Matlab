@@ -6,61 +6,118 @@ classname = {'koaramarch_1','koaramarch_2','koaramarch_3','pakuncho_1','pakuncho
 
 rgbd_depth_gradkdes    = 0;% C++ Supported
 rgbd_depthlbpkdes      = 0;% Not yet, C++ Supported
-rgbd_pcloud_normalkdes = 0;% Not yet,
+rgbd_pcloud_normalkdes = 1;% C++ Supported
 rgbd_pcloud_sizekdes   = 0;% Not yet
 rgbd_rgb_gradkdes      = 0;% C++ Supported
 rgbd_rgb_lbpkdes       = 0;% Not yet
-rgbd_rgb_nrgbkdes      = 1;% Not yet, C++ Supported
+rgbd_rgb_nrgbkdes      = 0;% C++ Supported
+
+
+%
+% From here, exec part.
+%
 
 disp('Convert from liblinear matlab model to C++ model');
 
+% RGB-D grad on Depth
 if rgbd_depth_gradkdes
 
 disp('Convert rgbd_depth_gradkdes model');
 
 % About kdes
-modelgkdes_dep.kdes.max_imsize = 300;
-modelgkdes_dep.kdes.min_imsize = 45;
-modelgkdes_dep.kdes.grid_space = kdes_params.grid;
-modelgkdes_dep.kdes.patch_size = kdes_params.patchsize;
-modelgkdes_dep.kdes.low_contrast = 0.8;% Really?
+modelgkdes.kdes.max_imsize = 300;
+modelgkdes.kdes.min_imsize = 45;
+modelgkdes.kdes.grid_space = kdes_params.grid;
+modelgkdes.kdes.patch_size = kdes_params.patchsize;
+modelgkdes.kdes.low_contrast = 0.8;% Really?
 
 % About emk
-modelgkdes_dep.emk.words = rgbdwords;
-modelgkdes_dep.emk.pyramid = emk_params.pyramid;
-modelgkdes_dep.emk.ktype = emk_params.ktype;
-modelgkdes_dep.emk.kparam = emk_params.kparam;
-modelgkdes_dep.emk.G = G;
+modelgkdes.emk.words = rgbdwords;
+modelgkdes.emk.pyramid = emk_params.pyramid;
+modelgkdes.emk.ktype = emk_params.ktype;
+modelgkdes.emk.kparam = emk_params.kparam;
+modelgkdes.emk.G = G;
 
 % About svm
-modelgkdes_dep.svm.Parameters = model.Parameters;
-modelgkdes_dep.svm.nr_class = model.nr_class;
-modelgkdes_dep.svm.nr_feature = model.nr_feature;
-modelgkdes_dep.svm.bias = model.bias;
-modelgkdes_dep.svm.Label = model.Label;
-modelgkdes_dep.svm.w = model.w;
-modelgkdes_dep.svm.minvalue = minvalue;
-modelgkdes_dep.svm.maxvalue = maxvalue;
-modelgkdes_dep.svm.classname = classname;% Please ready this array before running this program
+modelgkdes.svm.Parameters = model.Parameters;
+modelgkdes.svm.nr_class = model.nr_class;
+modelgkdes.svm.nr_feature = model.nr_feature;
+modelgkdes.svm.bias = model.bias;
+modelgkdes.svm.Label = model.Label;
+modelgkdes.svm.w = model.w;
+modelgkdes.svm.minvalue = minvalue;
+modelgkdes.svm.maxvalue = maxvalue;
+modelgkdes.svm.classname = classname;% Please ready this array before running this program
 
 % Result
 disp('------------------------------------');
-disp('Result -----modelgkdes_dep----------');
-disp('       -----modelgkdes_dep.kdes-----');
-disp(modelgkdes_dep.kdes);
-disp('       -----modelgkdes_dep.emk------');
-disp(modelgkdes_dep.emk);
-disp('       -----modelgkdes_dep.svm------');
-disp(modelgkdes_dep.svm);
+disp('Result -----modelgkdes----------');
+disp('       -----modelgkdes.kdes-----');
+disp(modelgkdes.kdes);
+disp('       -----modelgkdes.emk------');
+disp(modelgkdes.emk);
+disp('       -----modelgkdes.svm------');
+disp(modelgkdes.svm);
 disp('------------------------------------');
 
 % Save
 savefile = 'modelgkdes_dep.mat';
-save( savefile, 'modelgkdes_dep' );
+save( savefile, 'modelgkdes' );
 disp('Save Done!!');
 
 end
 
+% RGB-D Spin on Point Cloud
+if rgbd_pcloud_normalkdes
+
+disp('Convert rgbd_pcloud_normalkdes model');
+
+% About kdes
+modelspinkdes.kdes.max_imsize = 300;
+modelspinkdes.kdes.min_imsize = 45;
+modelspinkdes.kdes.grid_space = kdes_params.grid;
+modelspinkdes.kdes.patch_size = kdes_params.patchsize;
+%modelspinkdes.kdes.nromal_window = 5;  % Really?
+%modelspinkdes.kdes.normal_threshold = 0.01; % Really?
+
+% About emk
+modelspinkdes.emk.words = rgbdwords;
+modelspinkdes.emk.pyramid = emk_params.pyramid;
+modelspinkdes.emk.ktype = emk_params.ktype;
+modelspinkdes.emk.kparam = emk_params.kparam;
+modelspinkdes.emk.G = G;
+
+% About svm
+modelspinkdes.svm.Parameters = model.Parameters;
+modelspinkdes.svm.nr_class = model.nr_class;
+modelspinkdes.svm.nr_feature = model.nr_feature;
+modelspinkdes.svm.bias = model.bias;
+modelspinkdes.svm.Label = model.Label;
+modelspinkdes.svm.w = model.w;
+modelspinkdes.svm.minvalue = minvalue;
+modelspinkdes.svm.maxvalue = maxvalue;
+modelspinkdes.svm.classname = classname;% Please ready this array before running this program
+
+% Result
+disp('------------------------------------');
+disp('Result -----modelspinkdes----------');
+disp('       -----modelspinkdes.kdes-----');
+disp(modelspinkdes.kdes);
+disp('       -----modelspinkdes.emk------');
+disp(modelspinkdes.emk);
+disp('       -----modelspinkdes.svm------');
+disp(modelspinkdes.svm);
+disp('------------------------------------');
+
+% Save
+savefile = 'modelspinkdes.mat';
+save( savefile, 'modelspinkdes' );
+disp('Save Done!!');
+
+end
+
+
+% RGB-D grad on RGB-Image
 if rgbd_rgb_gradkdes
 
 disp('Convert rgbd_rgb_gradkdes model');
@@ -109,6 +166,7 @@ disp('Save Done!!');
 end
 
 
+% RGB-D rgb on RGB-Image
 if rgbd_rgb_nrgbkdes
 
 disp('Convert rgbd_rgb_nrgbkdes model');
@@ -155,3 +213,4 @@ save( savefile, 'modelrgbkdes' );
 disp('Save Done!!');
 
 end
+
