@@ -125,7 +125,7 @@ if category
    end
 end
 
-instance = 1;
+instance = 0;
 if instance
 
    % generate training and test indexes

@@ -2,6 +2,7 @@
 % written by Liefeng Bo on 03/27/2012 in University of Washington
 
 clear;
+digits(10);
 
 % add paths
 addpath('../liblinear-1.5-dense-float/matlab');
@@ -97,14 +98,15 @@ if category
            perm = randperm(length(rgbdilabel_unique));
            subindex = find(rgbdilabel(trainindex) == rgbdilabel_unique(perm(1)));
            testindex = trainindex(subindex);
-           trainindex(subindex) = [];
+           %trainindex(subindex) = [];
            ttrainindex = [ttrainindex trainindex];
-           ttestindex = [ttestindex testindex];
+           %ttestindex = [ttestindex testindex];
+            ttestindex = [ttestindex ttrainindex];
        end
        load rgbdfea_rgb_gradkdes;
        trainhmp = rgbdfea(:,ttrainindex);
        clear rgbdfea;
-       [trainhmp, minvalue, maxvalue] = scaletrain(trainhmp, 'power');
+       [trainhmp, minvalue, maxvalue] = scaletrain(trainhmp, 'linear');
        trainlabel = rgbdclabel(ttrainindex); % take category label
 
        % classify with liblinear
@@ -114,7 +116,7 @@ if category
        load rgbdfea_rgb_gradkdes;
        testhmp = rgbdfea(:,ttestindex);
        clear rgbdfea;
-       testhmp = scaletest(testhmp, 'power', minvalue, maxvalue);
+       testhmp = scaletest(testhmp, 'linear', minvalue, maxvalue);
        testlabel = rgbdclabel(ttestindex); % take category label
        [predictlabel, accuracy, decvalues] = predict(testlabel', testhmp', model);
        acc_c(i,1) = mean(predictlabel == testlabel');
@@ -125,7 +127,7 @@ if category
    end
 end
 
-instance = 1;
+instance = 0;
 if instance
 
    % generate training and test indexes

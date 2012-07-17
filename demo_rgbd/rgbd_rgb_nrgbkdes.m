@@ -97,7 +97,7 @@ if category
            perm = randperm(length(rgbdilabel_unique));
            subindex = find(rgbdilabel(trainindex) == rgbdilabel_unique(perm(1)));
            testindex = trainindex(subindex);
-           trainindex(subindex) = [];
+           %trainindex(subindex) = [];
            ttrainindex = [ttrainindex trainindex];
            ttestindex = [ttestindex testindex];
        end
@@ -125,7 +125,7 @@ if category
    end
 end
 
-instance = 1;
+instance = 0;
 if instance
 
    % generate training and test indexes

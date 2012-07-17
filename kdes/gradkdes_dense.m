@@ -43,8 +43,9 @@ num_patches = numel(grid_x);
 
 sigma_edge = 0.8;
 [G_X,G_Y] = gen_dgauss(sigma_edge); % SIFT gradient filters
-im_X = filter2(G_X, im, 'same'); % vertical edges
-im_Y = filter2(G_Y, im, 'same'); % horizontal edges
+[ im_X, im_Y ] = opencvFunc( im, G_X, G_Y );
+%im_X = filter2(G_X, im, 'same'); % vertical edges
+%im_Y = filter2(G_Y, im, 'same'); % horizontal edges
 im_mag = sqrt(im_X.^2 + im_Y.^2); % gradient magnitude
 gvalue = 1e-5; % suppres threshold value
 im_mag = max(im_mag, gvalue);

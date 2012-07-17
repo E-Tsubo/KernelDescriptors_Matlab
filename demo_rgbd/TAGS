@@ -1,0 +1,1372 @@
+
+convert.m,3670
+%function test 1,0
+classname 6,367
+rgbd_depth_gradkdes 8,409
+rgbd_depthlbpkdes 9,452
+rgbd_depthlbpkdes      = 0;% Not yet,9,452
+rgbd_pcloud_normalkdes 10,504
+rgbd_pcloud_sizekdes 11,547
+rgbd_rgb_gradkdes 12,584
+rgbd_rgb_lbpkdes 13,627
+rgbd_rgb_nrgbkdes 14,664
+% From here,18,711
+modelgkdes.kdes.max_imsize max_imsize29,900
+modelgkdes.kdes.min_imsize min_imsize30,934
+modelgkdes.kdes.grid_space grid_space31,967
+modelgkdes.kdes.patch_size patch_size32,1014
+modelgkdes.kdes.low_contrast low_contrast33,1066
+modelgkdes.emk.words words36,1124
+modelgkdes.emk.pyramid pyramid37,1158
+modelgkdes.emk.ktype ktype38,1203
+modelgkdes.emk.kparam kparam39,1244
+modelgkdes.emk.G G40,1287
+modelgkdes.svm.Parameters Parameters43,1322
+modelgkdes.svm.nr_class nr_class44,1368
+modelgkdes.svm.nr_feature nr_feature45,1410
+modelgkdes.svm.bias bias46,1456
+modelgkdes.svm.Label Label47,1490
+modelgkdes.svm.w w48,1526
+modelgkdes.svm.minvalue minvalue49,1554
+modelgkdes.svm.maxvalue maxvalue50,1590
+modelgkdes.svm.classname classname51,1626
+savefile 65,2062
+modelspinkdes.kdes.max_imsize max_imsize77,2269
+modelspinkdes.kdes.min_imsize min_imsize78,2306
+modelspinkdes.kdes.grid_space grid_space79,2342
+modelspinkdes.kdes.patch_size patch_size80,2392
+%modelspinkdes.kdes.nromal_window nromal_window81,2447
+%modelspinkdes.kdes.normal_threshold normal_threshold82,2497
+modelspinkdes.emk.words words85,2565
+modelspinkdes.emk.pyramid pyramid86,2602
+modelspinkdes.emk.ktype ktype87,2650
+modelspinkdes.emk.kparam kparam88,2694
+modelspinkdes.emk.G G89,2740
+modelspinkdes.svm.Parameters Parameters92,2778
+modelspinkdes.svm.nr_class nr_class93,2827
+modelspinkdes.svm.nr_feature nr_feature94,2872
+modelspinkdes.svm.bias bias95,2921
+modelspinkdes.svm.Label Label96,2958
+modelspinkdes.svm.w w97,2997
+modelspinkdes.svm.minvalue minvalue98,3028
+modelspinkdes.svm.maxvalue maxvalue99,3067
+modelspinkdes.svm.classname classname100,3106
+savefile 114,3566
+modelgkdes.kdes.max_imsize max_imsize127,3764
+modelgkdes.kdes.min_imsize min_imsize128,3798
+modelgkdes.kdes.grid_space grid_space129,3831
+modelgkdes.kdes.patch_size patch_size130,3878
+modelgkdes.kdes.low_contrast low_contrast131,3930
+modelgkdes.emk.words words134,3988
+modelgkdes.emk.pyramid pyramid135,4022
+modelgkdes.emk.ktype ktype136,4067
+modelgkdes.emk.kparam kparam137,4108
+modelgkdes.emk.G G138,4151
+modelgkdes.svm.Parameters Parameters141,4186
+modelgkdes.svm.nr_class nr_class142,4232
+modelgkdes.svm.nr_feature nr_feature143,4274
+modelgkdes.svm.bias bias144,4320
+modelgkdes.svm.Label Label145,4354
+modelgkdes.svm.w w146,4390
+modelgkdes.svm.minvalue minvalue147,4418
+modelgkdes.svm.maxvalue maxvalue148,4454
+modelgkdes.svm.classname classname149,4490
+savefile 163,4918
+modelrgbkdes.kdes.max_imsize max_imsize176,5109
+modelrgbkdes.kdes.min_imsize min_imsize177,5145
+modelrgbkdes.kdes.grid_space grid_space178,5180
+modelrgbkdes.kdes.patch_size patch_size179,5229
+modelrgbkdes.kdes.low_contrast low_contrast180,5283
+modelrgbkdes.emk.words words183,5341
+modelrgbkdes.emk.pyramid pyramid184,5377
+modelrgbkdes.emk.ktype ktype185,5424
+modelrgbkdes.emk.kparam kparam186,5467
+modelrgbkdes.emk.G G187,5512
+modelrgbkdes.svm.Parameters Parameters190,5549
+modelrgbkdes.svm.nr_class nr_class191,5597
+modelrgbkdes.svm.nr_feature nr_feature192,5641
+modelrgbkdes.svm.bias bias193,5689
+modelrgbkdes.svm.Label Label194,5725
+modelrgbkdes.svm.w w195,5763
+modelrgbkdes.svm.minvalue minvalue196,5793
+modelrgbkdes.svm.maxvalue maxvalue197,5831
+modelrgbkdes.svm.classname classname198,5869
+savefile 212,6313
+
+matlab2c.m,261
+matlabModel=3,119
+%Parameters,Parameters6,166
+%Parameters, nr_class,6,166
+%Parameters, nr_class, nr_feature,6,166
+%Parameters, nr_class, nr_feature, bias,6,166
+%Parameters, nr_class, nr_feature, bias, Label,6,166
+model;10,285
+fp 12,293
+fprintf(17,529
+
+rgbd_depth_gradkdes.m,2197
+clear;4,69
+imdir 13,230
+imsubdir 14,263
+impath 15,289
+rgbdclabel 16,302
+rgbdilabel 17,319
+rgbdvlabel 18,336
+subsample 19,353
+label_num 20,368
+    it 28,659
+        impath_tmp_sub{impath_tmp_sub31,735
+    impath 33,787
+    rgbdclabel 34,825
+    rgbdilabel 35,889
+    rgbdvlabel 36,962
+    label_num 37,1025
+    clear impath_tmp_sub rgbdvlabel_tmp;38,1085
+kdes_params.grid grid42,1167
+kdes_params.patchsize patchsize43,1226
+kdes_params.kdes kdes45,1297
+data_params.datapath datapath48,1374
+data_params.tag tag49,1405
+data_params.minsize minsize50,1426
+data_params.maxsize maxsize51,1477
+data_params.savedir savedir52,1528
+rgbdkdespath 56,1652
+   rgbdkdespath 59,1773
+featag 62,1832
+   basis_params.wordnum wordnum67,2012
+   fea_params.feapath feapath68,2069
+   rgbdwords 69,2107
+   basis_params.basis basis70,2161
+   emk_params.pyramid pyramid75,2309
+   emk_params.ktype ktype76,2342
+   emk_params.kparam kparam77,2371
+   fea_params.feapath feapath78,2401
+   rgbdfea 80,2512
+   save -v7.3 rgbdfea_depth_gradkdes rgbdfea rgbdclabel rgbdilabel rgbdvlabel;81,2542
+   load rgbdfea_depth_gradkdes;83,2626
+category 86,2663
+       ttestindex 92,2791
+       labelnum 93,2815
+           rgbdilabel_unique 96,2944
+           perm 97,3007
+           subindex 98,3062
+           testindex 99,3144
+           ttrainindex 101,3227
+           ttestindex 102,3278
+       load rgbdfea_depth_gradkdes;104,3337
+       trainhmp 105,3373
+       clear rgbdfea;106,3415
+       trainlabel 108,3508
+       lc 111,3609
+       option 112,3625
+       model 113,3667
+       load rgbdfea_depth_gradkdes;114,3719
+       testhmp 115,3755
+       clear rgbdfea;116,3795
+       testhmp 117,3817
+       testlabel 118,3883
+       testlabel = rgbdclabel(ttestindex); % take category label118,3883
+instance 128,4284
+   indextest 133,4389
+   load rgbdfea_depth_gradkdes;137,4499
+   trainhmp 138,4531
+   trainlabel 139,4569
+   clear rgbdfea;140,4612
+   lc 144,4739
+   option 146,4780
+   model 147,4818
+   load rgbdfea_depth_gradkdes;148,4866
+   testhmp 149,4898
+   testlabel 150,4934
+   clear rgbdfea;151,4975
+   testhmp 152,4993
+   acc_i 154,5134
+
+rgbd_depth_lbpkdes.m,2191
+clear;4,68
+imdir 13,229
+imsubdir 14,262
+impath 15,288
+rgbdclabel 16,301
+rgbdilabel 17,318
+rgbdvlabel 18,335
+subsample 19,352
+label_num 20,367
+    it 28,658
+        impath_tmp_sub{impath_tmp_sub31,734
+    impath 33,786
+    rgbdclabel 34,824
+    rgbdilabel 35,888
+    rgbdvlabel 36,961
+    label_num 37,1024
+    clear impath_tmp_sub rgbdvlabel_tmp;38,1084
+kdes_params.grid grid42,1166
+kdes_params.patchsize patchsize43,1225
+kdes_params.kdes kdes45,1295
+data_params.datapath datapath48,1371
+data_params.tag tag49,1402
+data_params.minsize minsize50,1423
+data_params.maxsize maxsize51,1474
+data_params.savedir savedir52,1525
+rgbdkdespath 56,1648
+   rgbdkdespath 59,1769
+featag 62,1828
+   basis_params.wordnum wordnum67,2008
+   fea_params.feapath feapath68,2065
+   rgbdwords 69,2103
+   basis_params.basis basis70,2157
+   emk_params.pyramid pyramid75,2305
+   emk_params.ktype ktype76,2338
+   emk_params.kparam kparam77,2367
+   fea_params.feapath feapath78,2395
+   rgbdfea 80,2506
+   save -v7.3 rgbdfea_depth_lbpkdes rgbdfea rgbdclabel rgbdilabel rgbdvlabel;81,2536
+   load rgbdfea_depth_lbpkdes;83,2619
+category 86,2655
+       ttestindex 92,2783
+       labelnum 93,2807
+           rgbdilabel_unique 96,2936
+           perm 97,2999
+           subindex 98,3054
+           testindex 99,3136
+           ttrainindex 101,3219
+           ttestindex 102,3270
+       load rgbdfea_depth_lbpkdes;104,3329
+       trainhmp 105,3364
+       clear rgbdfea;106,3406
+       trainlabel 108,3499
+       lc 111,3600
+       option 112,3616
+       model 113,3658
+       load rgbdfea_depth_lbpkdes;114,3710
+       testhmp 115,3745
+       clear rgbdfea;116,3785
+       testhmp 117,3807
+       testlabel 118,3873
+       testlabel = rgbdclabel(ttestindex); % take category label118,3873
+instance 128,4273
+   indextest 133,4378
+   load rgbdfea_depth_lbpkdes;137,4488
+   trainhmp 138,4519
+   trainlabel 139,4557
+   clear rgbdfea;140,4600
+   lc 144,4727
+   option 146,4768
+   model 147,4806
+   load rgbdfea_depth_lbpkdes;148,4854
+   testhmp 149,4885
+   testlabel 150,4921
+   clear rgbdfea;151,4962
+   testhmp 152,4980
+   acc_i 154,5121
+
+rgbd_joint_category.m,1225
+clear;1,0
+rgbdfea_joint 10,164
+load rgbdfea_rgb_gradkdes.mat;mat11,184
+rgbdfea_joint 12,215
+load rgbdfea_rgb_lbpkdes.mat;mat13,257
+rgbdfea_joint 14,287
+%load rgbdfea_depth_gradkdes.mat;mat15,329
+%rgbdfea_joint rgbdfea_joint16,363
+%load rgbdfea_depth_lbpkdes.mat;mat17,406
+%rgbdfea_joint rgbdfea_joint18,439
+%load rgbdfea_pcloud_spinkdes.mat;mat19,482
+%rgbdfea_joint rgbdfea_joint20,517
+%load rgbdfea_pcloud_sizekdes.mat;mat21,560
+%rgbdfea_joint rgbdfea_joint22,595
+save -v7.3 rgbdfea_joint rgbdfea_joint rgbdclabel rgbdilabel rgbdvlabel;23,638
+category 25,712
+       ttestindex 31,840
+       labelnum 32,864
+           rgbdilabel_unique 35,993
+           perm 36,1056
+           subindex 37,1111
+           testindex 38,1193
+           ttrainindex 40,1276
+           ttestindex 41,1327
+       load rgbdfea_joint;43,1386
+       trainfea 44,1413
+       clear rgbdfea_joint;45,1461
+       trainlabel 47,1561
+       lc 50,1662
+       option 51,1678
+       model 52,1720
+       load rgbdfea_joint;53,1772
+       testfea 54,1799
+       clear rgbdfea_joint;55,1845
+       testfea 56,1873
+       testlabel 57,1939
+       testlabel = rgbdclabel(ttestindex); % take category label57,1939
+
+rgbd_joint_instance.m,908
+clear;1,0
+rgbdfea_joint 10,164
+load rgbdfea_rgb_gradkdes.mat;mat11,184
+rgbdfea_joint 12,215
+load rgbdfea_rgb_lbpkdes.mat;mat13,257
+rgbdfea_joint 14,287
+load rgbdfea_rgb_nrgbkdes.mat;mat15,329
+rgbdfea_joint 16,360
+load rgbdfea_depth_gradkdes.mat;mat17,402
+rgbdfea_joint 18,435
+load rgbdfea_depth_lbpkdes.mat;mat19,477
+rgbdfea_joint 20,509
+load rgbdfea_pcloud_spinkdes.mat;mat21,551
+rgbdfea_joint 22,585
+load rgbdfea_pcloud_sizekdes.mat;mat23,627
+rgbdfea_joint 24,661
+save -v7.3 rgbdfea_joint rgbdfea_joint rgbdclabel rgbdilabel rgbdvlabel;25,703
+instance 27,777
+   indextest 32,882
+   load rgbdfea_joint;36,992
+   trainfea 37,1015
+   trainlabel 38,1059
+   clear rgbdfea_joint;39,1102
+   lc 43,1235
+   option 45,1276
+   model 46,1314
+   load rgbdfea_joint;47,1362
+   testfea 48,1385
+   testlabel 49,1427
+   clear rgbdfea_joint;50,1468
+   testfea 51,1492
+   acc_i 53,1633
+
+rgbd_pcloud_normalkdes.m,2215
+clear;4,68
+imdir 13,229
+imsubdir 14,262
+impath 15,288
+rgbdclabel 16,301
+rgbdilabel 17,318
+rgbdvlabel 18,335
+subsample 19,352
+label_num 20,367
+    it 28,658
+        impath_tmp_sub{impath_tmp_sub31,734
+    impath 33,786
+    rgbdclabel 34,824
+    rgbdilabel 35,888
+    rgbdvlabel 36,961
+    label_num 37,1024
+    clear impath_tmp_sub rgbdvlabel_tmp;38,1084
+kdes_params.grid grid42,1166
+kdes_params.patchsize patchsize43,1225
+kdes_params.kdes kdes45,1294
+data_params.datapath datapath48,1369
+data_params.tag tag49,1400
+data_params.minsize minsize50,1421
+data_params.maxsize maxsize51,1472
+data_params.savedir savedir52,1523
+rgbdkdespath 56,1645
+   rgbdkdespath 59,1766
+featag 62,1825
+   basis_params.wordnum wordnum67,2005
+   fea_params.feapath feapath68,2062
+   rgbdwords 69,2100
+   basis_params.basis basis70,2154
+   emk_params.pyramid pyramid75,2302
+   emk_params.ktype ktype76,2335
+   emk_params.kparam kparam77,2364
+   fea_params.feapath feapath78,2392
+   rgbdfea 80,2503
+   save -v7.3 rgbdfea_pcloud_normalkdes rgbdfea rgbdclabel rgbdilabel rgbdvlabel;81,2533
+   load rgbdfea_pcloud_normalkdes;83,2620
+category 86,2660
+       ttestindex 92,2788
+       labelnum 93,2812
+           rgbdilabel_unique 96,2941
+           perm 97,3004
+           subindex 98,3059
+           testindex 99,3141
+           ttrainindex 101,3224
+           ttestindex 102,3275
+       load rgbdfea_pcloud_normalkdes;104,3334
+       trainhmp 105,3373
+       clear rgbdfea;106,3415
+       trainlabel 108,3508
+       lc 111,3609
+       option 112,3625
+       model 113,3667
+       load rgbdfea_pcloud_normalkdes;114,3719
+       testhmp 115,3758
+       clear rgbdfea;116,3798
+       testhmp 117,3820
+       testlabel 118,3886
+       testlabel = rgbdclabel(ttestindex); % take category label118,3886
+instance 128,4290
+   indextest 133,4395
+   load rgbdfea_pcloud_normalkdes;137,4505
+   trainhmp 138,4540
+   trainlabel 139,4578
+   clear rgbdfea;140,4621
+   lc 144,4748
+   option 146,4789
+   model 147,4827
+   load rgbdfea_pcloud_normalkdes;148,4875
+   testhmp 149,4910
+   testlabel 150,4946
+   clear rgbdfea;151,4987
+   testhmp 152,5005
+   acc_i 154,5146
+
+rgbd_pcloud_sizekdes.m,2203
+clear;4,68
+imdir 13,229
+imsubdir 14,262
+impath 15,288
+rgbdclabel 16,301
+rgbdilabel 17,318
+rgbdvlabel 18,335
+subsample 19,352
+label_num 20,367
+    it 28,658
+        impath_tmp_sub{impath_tmp_sub31,734
+    impath 33,786
+    rgbdclabel 34,824
+    rgbdilabel 35,888
+    rgbdvlabel 36,961
+    label_num 37,1024
+    clear impath_tmp_sub rgbdvlabel_tmp;38,1084
+kdes_params.grid grid42,1166
+kdes_params.patchsize patchsize43,1225
+kdes_params.kdes kdes45,1292
+data_params.datapath datapath48,1365
+data_params.tag tag49,1396
+data_params.minsize minsize50,1417
+data_params.maxsize maxsize51,1468
+data_params.savedir savedir52,1519
+rgbdkdespath 56,1639
+   rgbdkdespath 59,1760
+featag 62,1819
+   basis_params.wordnum wordnum67,1999
+   fea_params.feapath feapath68,2056
+   rgbdwords 69,2094
+   basis_params.basis basis70,2148
+   emk_params.pyramid pyramid75,2296
+   emk_params.ktype ktype76,2329
+   emk_params.kparam kparam77,2358
+   fea_params.feapath feapath78,2384
+   rgbdfea 80,2495
+   save -v7.3 rgbdfea_pcloud_sizekdes rgbdfea rgbdclabel rgbdilabel rgbdvlabel;81,2525
+   load rgbdfea_pcloud_sizekdes;83,2610
+category 86,2648
+       ttestindex 92,2776
+       labelnum 93,2800
+           rgbdilabel_unique 96,2929
+           perm 97,2992
+           subindex 98,3047
+           testindex 99,3129
+           ttrainindex 101,3212
+           ttestindex 102,3263
+       load rgbdfea_pcloud_sizekdes;104,3322
+       trainhmp 105,3359
+       clear rgbdfea;106,3401
+       trainlabel 108,3494
+       lc 111,3595
+       option 112,3611
+       model 113,3653
+       load rgbdfea_pcloud_sizekdes;114,3705
+       testhmp 115,3742
+       clear rgbdfea;116,3782
+       testhmp 117,3804
+       testlabel 118,3870
+       testlabel = rgbdclabel(ttestindex); % take category label118,3870
+instance 128,4272
+   indextest 133,4377
+   load rgbdfea_pcloud_sizekdes;137,4487
+   trainhmp 138,4520
+   trainlabel 139,4558
+   clear rgbdfea;140,4601
+   lc 144,4728
+   option 146,4769
+   model 147,4807
+   load rgbdfea_pcloud_sizekdes;148,4855
+   testhmp 149,4888
+   testlabel 150,4924
+   clear rgbdfea;151,4965
+   testhmp 152,4983
+   acc_i 154,5124
+
+rgbd_rgb_gradkdes.m,2230
+clear;4,68
+imdir 13,229
+imsubdir 14,262
+impath 15,288
+rgbdclabel 16,301
+rgbdilabel 17,318
+rgbdvlabel 18,335
+subsample 19,352
+label_num 20,367
+    it 28,653
+        impath_tmp_sub{impath_tmp_sub31,729
+    impath 33,781
+    rgbdclabel 34,819
+    rgbdilabel 35,883
+    rgbdvlabel 36,956
+    label_num 37,1019
+    clear impath_tmp_sub rgbdvlabel_tmp;38,1079
+kdes_params.grid grid42,1161
+kdes_params.patchsize patchsize43,1220
+kdes_params.kdes kdes45,1287
+data_params.datapath datapath48,1360
+data_params.tag tag49,1391
+data_params.minsize minsize50,1412
+data_params.maxsize maxsize51,1463
+data_params.savedir savedir52,1514
+rgbdkdespath 56,1634
+   rgbdkdespath 59,1755
+featag 62,1814
+   basis_params.wordnum wordnum67,1994
+   fea_params.feapath feapath68,2051
+   rgbdwords 69,2089
+   basis_params.basis basis70,2143
+   emk_params.pyramid pyramid75,2291
+   emk_params.ktype ktype76,2324
+   emk_params.kparam kparam77,2353
+   fea_params.feapath feapath78,2383
+   rgbdfea 80,2494
+   save -v7.3 rgbdfea_rgb_gradkdes rgbdfea rgbdclabel rgbdilabel rgbdvlabel;81,2524
+   load rgbdfea_rgb_gradkdes;83,2606
+category 86,2641
+       ttestindex 92,2769
+       labelnum 93,2793
+           rgbdilabel_unique 96,2922
+           perm 97,2985
+           subindex 98,3040
+           testindex 99,3122
+           ttrainindex 101,3206
+           %ttestindex ttestindex102,3257
+            ttestindex 103,3306
+       load rgbdfea_rgb_gradkdes;105,3368
+       trainhmp 106,3402
+       clear rgbdfea;107,3444
+       trainlabel 109,3537
+       lc 112,3638
+       option 113,3654
+       model 114,3696
+       load rgbdfea_rgb_gradkdes;115,3748
+       testhmp 116,3782
+       clear rgbdfea;117,3822
+       testhmp 118,3844
+       testlabel 119,3910
+       testlabel = rgbdclabel(ttestindex); % take category label119,3910
+instance 129,4309
+   indextest 134,4414
+   load rgbdfea_rgb_gradkdes;138,4524
+   trainhmp 139,4554
+   trainlabel 140,4592
+   clear rgbdfea;141,4635
+   lc 145,4762
+   option 147,4803
+   model 148,4841
+   load rgbdfea_rgb_gradkdes;149,4889
+   testhmp 150,4919
+   testlabel 151,4955
+   clear rgbdfea;152,4996
+   testhmp 153,5014
+   acc_i 155,5155
+
+rgbd_rgb_lbpkdes.m,2179
+clear;4,68
+imdir 13,229
+imsubdir 14,262
+impath 15,288
+rgbdclabel 16,301
+rgbdilabel 17,318
+rgbdvlabel 18,335
+subsample 19,352
+label_num 20,367
+    it 28,653
+        impath_tmp_sub{impath_tmp_sub31,729
+    impath 33,781
+    rgbdclabel 34,819
+    rgbdilabel 35,883
+    rgbdvlabel 36,956
+    label_num 37,1019
+    clear impath_tmp_sub rgbdvlabel_tmp;38,1079
+kdes_params.grid grid42,1161
+kdes_params.patchsize patchsize43,1220
+kdes_params.kdes kdes45,1286
+data_params.datapath datapath48,1358
+data_params.tag tag49,1389
+data_params.minsize minsize50,1410
+data_params.maxsize maxsize51,1461
+data_params.savedir savedir52,1512
+rgbdkdespath 56,1631
+   rgbdkdespath 59,1752
+featag 62,1811
+   basis_params.wordnum wordnum67,1991
+   fea_params.feapath feapath68,2048
+   rgbdwords 69,2086
+   basis_params.basis basis70,2140
+   emk_params.pyramid pyramid75,2288
+   emk_params.ktype ktype76,2321
+   emk_params.kparam kparam77,2350
+   fea_params.feapath feapath78,2379
+   rgbdfea 80,2490
+   save -v7.3 rgbdfea_rgb_lbpkdes rgbdfea rgbdclabel rgbdilabel rgbdvlabel;81,2520
+   load rgbdfea_rgb_lbpkdes;83,2601
+category 86,2635
+       ttestindex 92,2763
+       labelnum 93,2787
+           rgbdilabel_unique 96,2916
+           perm 97,2979
+           subindex 98,3034
+           testindex 99,3116
+           ttrainindex 101,3199
+           ttestindex 102,3250
+       load rgbdfea_rgb_lbpkdes;104,3309
+       trainhmp 105,3342
+       clear rgbdfea;106,3384
+       trainlabel 108,3477
+       lc 111,3578
+       option 112,3594
+       model 113,3636
+       load rgbdfea_rgb_lbpkdes;114,3688
+       testhmp 115,3721
+       clear rgbdfea;116,3761
+       testhmp 117,3783
+       testlabel 118,3849
+       testlabel = rgbdclabel(ttestindex); % take category label118,3849
+instance 128,4247
+   indextest 133,4352
+   load rgbdfea_rgb_lbpkdes;137,4462
+   trainhmp 138,4491
+   trainlabel 139,4529
+   clear rgbdfea;140,4572
+   lc 144,4699
+   option 146,4740
+   model 147,4778
+   load rgbdfea_rgb_lbpkdes;148,4826
+   testhmp 149,4855
+   testlabel 150,4891
+   clear rgbdfea;151,4932
+   testhmp 152,4950
+   acc_i 154,5091
+
+rgbd_rgb_nrgbkdes.m,2185
+clear;4,68
+imdir 13,229
+imsubdir 14,262
+impath 15,288
+rgbdclabel 16,301
+rgbdilabel 17,318
+rgbdvlabel 18,335
+subsample 19,352
+label_num 20,367
+    it 28,653
+        impath_tmp_sub{impath_tmp_sub31,729
+    impath 33,781
+    rgbdclabel 34,819
+    rgbdilabel 35,883
+    rgbdvlabel 36,956
+    label_num 37,1019
+    clear impath_tmp_sub rgbdvlabel_tmp;38,1079
+kdes_params.grid grid42,1161
+kdes_params.patchsize patchsize43,1220
+kdes_params.kdes kdes45,1287
+data_params.datapath datapath48,1360
+data_params.tag tag49,1391
+data_params.minsize minsize50,1412
+data_params.maxsize maxsize51,1463
+data_params.savedir savedir52,1514
+rgbdkdespath 56,1634
+   rgbdkdespath 59,1755
+featag 62,1814
+   basis_params.wordnum wordnum67,1994
+   fea_params.feapath feapath68,2051
+   rgbdwords 69,2089
+   basis_params.basis basis70,2143
+   emk_params.pyramid pyramid75,2291
+   emk_params.ktype ktype76,2324
+   emk_params.kparam kparam77,2353
+   fea_params.feapath feapath78,2382
+   rgbdfea 80,2493
+   save -v7.3 rgbdfea_rgb_nrgbkdes rgbdfea rgbdclabel rgbdilabel rgbdvlabel;81,2523
+   load rgbdfea_rgb_nrgbkdes;83,2605
+category 86,2640
+       ttestindex 92,2768
+       labelnum 93,2792
+           rgbdilabel_unique 96,2921
+           perm 97,2984
+           subindex 98,3039
+           testindex 99,3121
+           ttrainindex 101,3205
+           ttestindex 102,3256
+       load rgbdfea_rgb_nrgbkdes;104,3315
+       trainhmp 105,3349
+       clear rgbdfea;106,3391
+       trainlabel 108,3484
+       lc 111,3585
+       option 112,3601
+       model 113,3643
+       load rgbdfea_rgb_nrgbkdes;114,3695
+       testhmp 115,3729
+       clear rgbdfea;116,3769
+       testhmp 117,3791
+       testlabel 118,3857
+       testlabel = rgbdclabel(ttestindex); % take category label118,3857
+instance 128,4256
+   indextest 133,4361
+   load rgbdfea_rgb_nrgbkdes;137,4471
+   trainhmp 138,4501
+   trainlabel 139,4539
+   clear rgbdfea;140,4582
+   lc 144,4709
+   option 146,4750
+   model 147,4788
+   load rgbdfea_rgb_nrgbkdes;148,4836
+   testhmp 149,4866
+   testlabel 150,4902
+   clear rgbdfea;151,4943
+   testhmp 152,4961
+   acc_i 154,5102
+
+../helpfun/dir_bo.m,21
+function imname 1,0
+
+../helpfun/get_im_label.m,166
+function 1,0
+   it 8,240
+       dataname 11,330
+	   impath{impath15,457
+   subdir 21,568
+   it 22,595
+       dataname 25,681
+           impath{impath29,826
+
+../helpfun/get_kdes_path.m,43
+function kdespath 1,0
+   kdespath 13,326
+
+../helpfun/kmeans_bo.m,167
+function 1,0
+perm 9,161
+centers 10,192
+iter 11,221
+    t 15,323
+    iter=17,395
+function 20,423
+b 24,536
+dmatrix 25,565
+% find group index27,618
+sse 31,723
+
+../helpfun/scaletest.m,38
+function fea 1,0
+        ppp 11,325
+
+../helpfun/scaletrain.m,50
+function 1,0
+maxvalue 7,222
+        ppp 14,381
+
+../emk/cksvd_emk.m,347
+function imfea 1,0
+pgrid 7,314
+sgrid 8,346
+weights 9,367
+weights 10,449
+imfea 11,483
+patchsize 13,519
+    kz{kz16,638
+    hleng 22,900
+    xgrid 23,961
+    ygrid 24,1007
+    allgrid 25,1053
+    pimimfea 26,1111
+           % suppress similar kernel descriptors using max37,1440
+           indgrid 41,1674
+           mkzind 42,1712
+
+../emk/cksvd_emk_batch.m,228
+function 1,0
+basisnum 7,325
+pgrid 8,365
+sgrid 9,397
+weights 10,418
+weights 11,500
+imfea 12,534
+imlabel 13,575
+K 14,605
+K 15,702
+G 16,730
+basis_params.G G17,749
+patchsize 21,847
+    fea_params.feaSet feaSet26,976
+
+../emk/cksvd_emk_batch_nips.m,186
+function 1,0
+datasize 13,369
+wordsnum 14,398
+pgrid 15,425
+sgrid 16,446
+weights 17,467
+weights 18,549
+imfea 19,583
+imlabel 20,624
+K 21,654
+K 22,700
+G 23,728
+patchsize 27,813
+
+../emk/cksvd_emk_nips.m,344
+function imfea 1,0
+pgrid 7,310
+sgrid 8,331
+weights 9,352
+weights 10,434
+imfea 11,468
+patchsize 13,504
+    kz{kz16,601
+    hleng 22,792
+    xgrid 23,831
+    ygrid 24,866
+    allgrid 25,901
+    pimimfea 26,948
+           % suppress similar kernel descriptors using max37,1277
+           indgrid 41,1511
+           mkzind 42,1549
+
+../emk/sample_kdes.m,229
+function kdesset 1,0
+dim 6,233
+scalesize 7,266
+samsize 10,333
+kdesset 11,382
+index 12,413
+it 13,426
+count 14,435
+        kdes 19,547
+        kdesnum 20,590
+        num 21,623
+        perm 22,662
+        count 24,754
+
+../emk/visualwords.m,52
+function words 1,0
+kdessample 6,266
+words 10,379
+
+../emk/visualwords_nips.m,258
+function words 1,0
+feasample 5,227
+words 9,321
+dim 17,601
+scalesize 18,633
+samsize 21,697
+feaset 22,744
+index 23,773
+it 24,785
+count 25,793
+        fea 30,898
+        feanum 31,939
+        num 32,969
+        perm 33,1006
+        count 35,1093
+
+../kdes/depthtocloud.m,121
+function 1,0
+depth 17,352
+center 19,400
+constant 21,448
+pclouds 24,511
+xgrid 25,540
+ygrid 26,599
+distance 30,766
+
+../kdes/eval_kernel.m,243
+function K 1,0
+end15,469
+            b 35,878
+            dist2 36,922
+            K 37,989
+            kparam 39,1040
+            a 40,1073
+        K 48,1380
+        a 56,1593
+        b 57,1633
+        K 58,1673
+        K 62,1784
+
+../kdes/gen_basis.m,1716
+gradkdes_params.method method7,173
+gradkdes_params.dim dim8,206
+gradkdes_params.ktype ktype9,233
+gradkdes_params.kparam kparam10,264
+gradkdes_params.gsize gsize14,639
+gradkdes_params.eigvectors eigvectors15,696
+gradkdes_dep_params 17,792
+gradkdes_dep_params.type type18,831
+save gradkdes_dep_params gradkdes_dep_params;19,874
+lbpkdes_params.type type22,963
+lbpkdes_params.method method23,996
+lbpkdes_params.dim dim24,1028
+lbpkdes_params.ktype ktype25,1054
+lbpkdes_params.kparam kparam26,1084
+lbpkdes_params.ssize ssize28,1220
+lbpkdes_params.lbpsize lbpsize29,1275
+lbpkdes_dep_params 33,1606
+lbpkdes_dep_params.type type34,1643
+save lbpkdes_dep_params lbpkdes_dep_params;35,1684
+rgbkdes_params.type type38,1753
+rgbkdes_params.method method39,1786
+rgbkdes_params.dim dim40,1818
+rgbkdes_params.ktype ktype41,1844
+rgbkdes_params.kparam kparam42,1874
+rgbkdes_params.ssize ssize44,2004
+rgbkdes_params.rgbsize rgbsize45,2059
+nrgbkdes_params.type type51,2426
+nrgbkdes_params.method method52,2461
+nrgbkdes_params.dim dim53,2494
+nrgbkdes_params.ktype ktype54,2521
+nrgbkdes_params.kparam kparam55,2552
+nrgbkdes_params.ssize ssize57,2686
+nrgbkdes_params.rgbsize rgbsize58,2743
+sizekdes_params.type type64,3114
+sizekdes_params.method method65,3149
+sizekdes_params.dim dim66,3182
+sizekdes_params.ktype ktype67,3208
+sizekdes_params.kparam kparam68,3239
+sizekdes_params.points points69,3268
+spinkdes_params.type type75,3621
+spinkdes_params.method method76,3656
+spinkdes_params.dim dim77,3689
+spinkdes_params.ktype ktype78,3716
+spinkdes_params.kparam kparam79,3747
+spinkdes_params.nsize nsize83,4126
+spinkdes_params.eigvectors eigvectors84,4183
+
+../kdes/gen_kdes_batch.m,770
+              if strcmp(data_params.datapath{i}(end-2:end), 'txt'); I 25,721
+              if strcmp(data_params.datapath{i}(end-2:end), 'txt'); I = load(data_params.datapath{i}); else;25,721
+              if strcmp(data_params.datapath{i}(end-2:end), 'txt'); I = load(data_params.datapath{i}); else; I 25,721
+                 im_w 30,977
+                        feaSet 44,1628
+                        feaSet 46,1732
+                        feaSet 48,1845
+              I 55,2104
+              I 57,2205
+                        feaSet 63,2496
+            I 70,2747
+            I 71,2797
+            topleft 72,2825
+            pcloud 73,2909
+            pcloud 75,3004
+                      feaSet 81,3289
+    time 90,3583
+    ind 96,3750
+end;98,3971
+
+../kdes/gen_kdes_batch_all.m,174
+function savedir 1,0
+    kdes_save{kdes_save9,306
+      kdes_name 17,550
+      kdes 18,593
+      kdes_params.kdes kdes19,666
+      data_params.savedir savedir20,697
+
+../kdes/gradkdes_basis.m,299
+function 1,0
+sy 7,227
+gx 10,309
+gy 11,335
+% theta 12,361
+% generate the joint basis vectors by Kcronecker tensor product14,395
+bv 16,503
+% bv 18,585
+% generate the orientation basis vectors20,646
+gpoints 22,716
+% gpoints 23,746
+% generate the spatial basis vectors25,793
+spoints 27,859
+
+../kdes/gradkdes_dense.m,1206
+function feaSet 1,0
+if ~isfield(gradkdes_params,'grid'); gradkdes_params.grid grid14,471
+if ~isfield(gradkdes_params,'patchsize'); gradkdes_params.patchsize patchsize15,539
+if ~isfield(gradkdes_params,'kdesdim'); gradkdes_params.kdesdim kdesdim16,618
+if ~isfield(gradkdes_params,'contrast'); gradkdes_params.contrast contrast17,694
+   im 27,1019
+mpatchsize 31,1185
+mpatchsize = max(gradkdes_params.patchsize); % maximum patch size31,1185
+rem_x 33,1278
+offset_x 34,1331
+rem_y 35,1361
+offset_y 36,1414
+num_patches 38,1572
+% G_X 41,1633
+% G_Y 42,1652
+sigma_edge 44,1675
+im_X 46,1755
+im_Y 47,1806
+im_mag 48,1859
+gvalue 49,1915
+im_mag 50,1957
+    yy 59,2390
+        x_hi 70,2919
+        y_lo 71,2981
+        y_hi 72,3008
+        weight 75,3121
+        weight 76,3168
+            weight 80,3306
+        mwkv 84,3421
+    feaSet.feaArr{feaArr87,3616
+feaSet.x x91,3716
+feaSet.y y92,3760
+feaSet.width width93,3804
+feaSet.height height94,3826
+function I_k 96,3851
+I_oo 100,3963
+I_k 101,4003
+function 104,4188
+GX 109,4278
+GY 110,4313
+function G 112,4350
+    G 117,4475
+    f_im_w_x 120,4555
+    f_im_w_y 121,4595
+    G_x 122,4635
+    G_y 123,4686
+    G 124,4737
+
+../kdes/kpca.m,198
+function 1,0
+K 9,241
+K 10,285
+K_old 14,368
+sumK 15,379
+H 16,397
+K 17,428
+    eigvalue 25,633
+else26,664
+    eigvalue 28,705
+    eigvalue 30,773
+    eigvector 31,805
+    eigvalue 36,909
+
+../kdes/lbp_trans.m,114
+function lbp 1,0
+   im 9,150
+im 11,166
+windows 14,198
+cdim 15,215
+it 21,314
+        else27,485
+lbp 34,568
+
+../kdes/lbpkdes_basis.m,347
+function 1,0
+sy 7,235
+lbp1 10,295
+lbp2 11,309
+lbp3 12,323
+lbp4 13,337
+lbp5 14,351
+lbp6 15,365
+lbp7 16,379
+lbp8 17,393
+% generate the joint basis vectors using Kronecker tensor product19,408
+bv 21,592
+% generate the local binary pattern basis vectors23,691
+lbppoints 25,840
+% generate the spatial basis vectors27,927
+spoints 29,993
+
+../kdes/lbpkdes_dense.m,904
+function feaSet 1,0
+if ~isfield(lbpkdes_params,'grid'); lbpkdes_params.grid grid13,490
+if ~isfield(lbpkdes_params,'patchsize'); lbpkdes_params.patchsize patchsize14,556
+if ~isfield(lbpkdes_params,'kdesdim'); lbpkdes_params.kdesdim kdesdim15,633
+if ~isfield(lbpkdes_params,'contrast'); lbpkdes_params.contrast contrast16,707
+    im 26,1027
+mpatchsize 30,1194
+mpatchsize = max(lbpkdes_params.patchsize); % maximum patch size30,1194
+rem_x 32,1286
+offset_x 33,1338
+rem_y 34,1368
+offset_y 35,1420
+num_patches 37,1576
+im_c 40,1632
+    yy 47,1961
+        x_hi 57,2462
+        y_lo 58,2523
+        y_hi 59,2550
+        weight 62,2662
+        weight 63,2711
+            weight 67,2848
+        mwkv 71,2962
+    feaSet.feaArr{feaArr74,3160
+feaSet.x x78,3259
+feaSet.y y79,3303
+feaSet.width width80,3347
+feaSet.height height81,3369
+function I_k 83,3394
+I_cc 86,3480
+I_k 87,3520
+
+../kdes/normalkdes_basis.m,182
+function 1,0
+sy 9,273
+% gx 12,358
+% gy 13,386
+theta 14,414
+% bv 18,556
+bv 20,642
+% npoints 24,768
+npoints 25,800
+% generate the spatial basis vectors27,845
+spoints 29,911
+
+../kdes/normalkdes_dense.m,1369
+function feaSet 1,0
+if ~isfield(normalkdes_params,'grid'); normalkdes_params.grid grid13,474
+if ~isfield(normalkdes_params,'patchsize'); normalkdes_params.patchsize patchsize14,546
+if ~isfield(normalkdes_params,'kdesdim'); normalkdes_params.kdesdim kdesdim15,629
+if ~isfield(normalkdes_params,'radius'); normalkdes_params.radius radius16,709
+maxsample 22,957
+minsample 23,975
+mpatchsize 26,1042
+mpatchsize_half 27,1111
+mpatchsize_half = round(mpatchsize/2); % half maximal patch size27,1111
+rem_x 29,1219
+rem_y 31,1359
+offset_y 32,1424
+num_patches 34,1602
+pcloudvector 38,1700
+normalkdes_arr 39,1780
+keep 42,1889
+mwkvs=44,1903
+       maxh 59,2658
+       minw 60,2735
+       maxw 61,2761
+       subpcloud 64,2890
+       subnormal 65,2942
+       subpcloud 66,2994
+       subnormal 67,3074
+       diff 68,3154
+       dist 69,3219
+       index 70,3257
+          keep 73,3394
+          perm 74,3422
+          subpcloud 75,3498
+          subnormal 76,3547
+          subnormal 77,3596
+          cnormalvector 80,3771
+          normal_x 81,3835
+          normal_y_square 82,3901
+          normal_y 84,4019
+          nndot 85,4064
+          angle 88,4196
+          nkv 91,4276
+normalkdes_arr 98,4696
+feaSet.feaArr{feaArr101,4801
+feaSet.x x102,4837
+feaSet.y y103,4887
+feaSet.width width104,4937
+feaSet.height height105,4962
+
+../kdes/nrgb_trans.m,81
+function 1,0
+mfilter 7,149
+im_m 10,197
+im_m 11,226
+im_v 17,353
+im_v 18,375
+
+../kdes/nrgbkdes_dense.m,1136
+function feaSet 1,0
+if ~isfield(nrgbkdes_params,'grid'); nrgbkdes_params.grid grid15,476
+if ~isfield(nrgbkdes_params,'patchsize'); nrgbkdes_params.patchsize patchsize16,544
+if ~isfield(nrgbkdes_params,'kdesdim'); nrgbkdes_params.kdesdim kdesdim17,623
+if ~isfield(nrgbkdes_params,'contrast'); nrgbkdes_params.contrast contrast18,698
+if ~isfield(nrgbkdes_params,'mask'); nrgbkdes_params.mask mask19,776
+im 26,1032
+end29,1128
+mpatchsize 34,1215
+mpatchsize = max(nrgbkdes_params.patchsize); % maximum patch size34,1215
+rem_x 36,1313
+offset_x 37,1366
+rem_y 38,1396
+offset_y 39,1449
+num_patches 41,1607
+im_k 43,1639
+    yy 47,1911
+    keep 53,2306
+    it 54,2322
+        x_hi 60,2474
+        y_lo 61,2536
+        y_hi 62,2563
+        submask 64,2637
+           it 67,2822
+           weight 70,2882
+           weight 71,2930
+              weight 75,3079
+           mwkv 78,3192
+    nrgbkdes_arr 82,3410
+    feaSet.feaArr{feaArr84,3505
+feaSet.x x88,3580
+feaSet.y y89,3627
+feaSet.width width90,3674
+feaSet.height height91,3696
+function cim 93,3721
+function I_k 99,3805
+I_rgb 102,3890
+I_k 103,3931
+
+../kdes/pcnormal.m,230
+function normal 1,0
+win 7,196
+win = 5; % window size7,196
+normal 10,253
+        maxh 14,346
+        minw 15,390
+        maxw 16,421
+        index 17,465
+            subwpc 20,737
+            subwpc 21,775
+normal 29,999
+
+../kdes/rgbkdes_basis.m,257
+function 1,0
+sy 7,223
+r 10,294
+g 11,315
+b 12,336
+% generate the joint basis vectors using Kronecker basis vectors14,358
+bv 16,476
+% generate the color basis vectors18,529
+rgbpoints 20,597
+% generate the spatial basis vectors22,639
+spoints 24,704
+
+../kdes/rgbkdes_dense.m,944
+function feaSet 1,0
+if ~isfield(rgbkdes_params,'grid'); rgbkdes_params.grid grid15,461
+if ~isfield(rgbkdes_params,'patchsize'); rgbkdes_params.patchsize patchsize16,527
+if ~isfield(rgbkdes_params,'kdesdim'); rgbkdes_params.kdesdim kdesdim17,604
+if ~isfield(rgbkdes_params,'mask'); rgbkdes_params.mask mask18,677
+im 25,927
+mpatchsize 31,1078
+mpatchsize = max(rgbkdes_params.patchsize); % maximum patch size31,1078
+rem_x 33,1175
+offset_x 34,1227
+rem_y 35,1257
+offset_y 36,1309
+num_patches 38,1465
+im_k 40,1497
+    yy 44,1764
+    keep 50,2151
+    it 51,2167
+        x_hi 57,2319
+        y_lo 58,2380
+        y_hi 59,2407
+        submask 61,2480
+           it 64,2662
+           mwkv 66,2727
+    rgbkdes_arr 70,2919
+    feaSet.feaArr{feaArr72,3011
+feaSet.x x76,3085
+feaSet.y y77,3132
+feaSet.width width78,3179
+feaSet.height height79,3201
+function cim 81,3226
+function I_k 87,3310
+I_rgb 90,3394
+I_k 91,3435
+
+../kdes/sizekdes_basis.m,17
+function bv 1,0
+
+../kdes/sizekdes_dense.m,748
+function feaSet 1,0
+if ~isfield(sizekdes_params,'grid'); sizekdes_params.grid grid13,484
+if ~isfield(sizekdes_params,'patchsize'); sizekdes_params.patchsize patchsize14,552
+if ~isfield(sizekdes_params,'kdesdim'); sizekdes_params.kdesdim kdesdim15,631
+mpatchsize 23,916
+mpatchsize_half 24,983
+mpatchsize_half = round(mpatchsize/2); % half maximal patch size24,983
+rem_x 27,1093
+offset_x 28,1154
+rem_y 29,1184
+offset_y 30,1245
+num_patches 32,1419
+ind 36,1566
+sizekdes_arr 37,1602
+keep 40,1707
+       keep 49,2092
+       perm 51,2153
+       subpcloud 52,2241
+       dist 55,2339
+       kdist 56,2420
+feaSet.feaArr{feaArr64,2730
+feaSet.x x65,2764
+feaSet.y y66,2813
+feaSet.width width67,2862
+feaSet.height height68,2887
+
+../liblinear-1.5-dense-float/matlab/libsvmread.c,274
+typedef int mwIndex;10,144
+#define max(12,173
+#define min(13,210
+void exit_with_help(15,248
+static void fake_answer(22,361
+static char *line;line28,501
+static int max_line_len;29,520
+static char* readline(31,546
+void read_problem(50,912
+void mexFunction(176,3456
+
+../liblinear-1.5-dense-float/matlab/libsvmwrite.c,106
+typedef int mwIndex;7,105
+void exit_with_help(10,134
+void libsvmwrite(17,245
+void mexFunction(76,1547
+
+../liblinear-1.5-dense-float/matlab/linear_model_matlab.c,277
+typedef int mwIndex;8,107
+#define Malloc(11,136
+#define NUM_OF_RETURN_FIELD 13,193
+static const char *field_names[field_names15,224
+const char *model_to_matlab_structure(model_to_matlab_structure24,333
+const char *matlab_matrix_to_model(matlab_matrix_to_model103,2167
+
+../liblinear-1.5-dense-float/matlab/predict.c,252
+typedef int mwIndex;10,159
+#define CMD_LEN 13,188
+#define Malloc(15,210
+int col_format_flag;17,267
+void read_sparse_instance(21,410
+static void fake_answer(68,1463
+void do_predict(75,1650
+void exit_with_help(244,5791
+void mexFunction(255,6237
+
+../liblinear-1.5-dense-float/matlab/train.c,611
+void wait 14,200
+typedef int mwIndex;23,366
+#define CMD_LEN 26,395
+#define Malloc(27,416
+#define INF 28,472
+void print_null(30,494
+void exit_with_help(34,584
+struct parameter param;73,2363
+struct problem prob;74,2417
+struct model *model_;model_75,2462
+float *x_space;x_space78,2503
+struct feature_node *x_space;x_space80,2525
+int cross_validation_flag;83,2563
+int col_format_flag;84,2590
+int nr_fold;85,2611
+double bias;86,2624
+double do_cross_validation(88,2638
+int parse_command_line(108,3050
+static void fake_answer(209,5477
+int read_problem_sparse(214,5570
+void mexFunction(382,9574
+
+../liblinear-1.5-dense-float/matlab/linear_model_matlab.h,0
+
+../helpfun/mkdir_bo.m,0
