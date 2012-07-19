@@ -335,6 +335,9 @@ void mexFunction( int nlhs, mxArray *plhs[],
 			return;
 		}
 
+        save_model("model.linear", model_);
+        mexPrintf("Save linear.linearmodel for C++ Code!!\n");
+        
 		if(prob_estimate_flag)
 		{
 			if(model_->param.solver_type!=L2R_LR)

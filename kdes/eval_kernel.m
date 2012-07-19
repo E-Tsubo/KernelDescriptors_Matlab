@@ -31,9 +31,12 @@ switch kernel
 
         % If sigle parammeter, expand it.
         if length(kparam) < dim
+            tmp0 = feaset_1.*feaset_1;
             a = sum(feaset_1.*feaset_1,2);
             b = sum(feaset_2.*feaset_2,2);
-            dist2 = bsxfun(@plus, a, b' ) - 2*feaset_1*feaset_2';
+            tmp = bsxfun(@plus, a, b' );
+            dist2 = tmp - 2*feaset_1*feaset_2';
+            %dist2 = bsxfun(@plus, a, b' ) - 2*feaset_1*feaset_2';
             K = exp(-kparam*dist2);
         else
             kparam = kparam(:);

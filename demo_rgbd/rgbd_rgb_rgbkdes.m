@@ -44,15 +44,15 @@ end
 % initialize the parameters of kdes
 kdes_params.grid = 8;   % kdes is extracted every 8 pixels
 kdes_params.patchsize = 16;  % patch size
-load('gradkdes_params');
-kdes_params.kdes = gradkdes_params;
+load('rgbkdes_params');
+kdes_params.kdes = rgbkdes_params;
 
 % initialize the parameters of data
 data_params.datapath = impath;
 data_params.tag = 1;
 data_params.minsize = 45;  % minimum size of image
 data_params.maxsize = 300; % maximum size of image
-data_params.savedir = ['../kdesfeatures/rgbd' 'gradkdes'];
+data_params.savedir = ['../kdesfeatures/rgbd' 'rgbkdes'];
 
 % extract kernel descriptors
 mkdir_bo(data_params.savedir);
@@ -77,13 +77,13 @@ if featag
    % initialize the params of emk
    emk_params.pyramid = [1 2 3];
    emk_params.ktype = 'rbf';
-   emk_params.kparam = 0.001;
+   emk_params.kparam = 0.01;
    fea_params.feapath = rgbdkdespath;
    [rgbdfea, G] = cksvd_emk_batch(fea_params, basis_params, emk_params);
    rgbdfea = single(rgbdfea);
-   save -v7.3 rgbdfea_rgb_gradkdes rgbdfea rgbdclabel rgbdilabel rgbdvlabel;
+   save -v7.3 rgbdfea_rgb_rgbkdes rgbdfea rgbdclabel rgbdilabel rgbdvlabel;
 else
-   load rgbdfea_rgb_gradkdes;
+   load rgbdfea_rgb_rgbkdes;
 end
 
 category = 1;
@@ -100,12 +100,11 @@ if category
            perm = randperm(length(rgbdilabel_unique));
            subindex = find(rgbdilabel(trainindex) == rgbdilabel_unique(perm(1)));
            testindex = trainindex(subindex);
-           trainindex(subindex) = [];
+           %trainindex(subindex) = [];
            ttrainindex = [ttrainindex trainindex];
            ttestindex = [ttestindex testindex];
-           %ttestindex = [ttestindex ttrainindex];
        end
-       load rgbdfea_rgb_gradkdes;
+       load rgbdfea_rgb_rgbkdes;
        trainhmp = rgbdfea(:,ttrainindex);
        clear rgbdfea;
        [trainhmp, minvalue, maxvalue] = scaletrain(trainhmp, 'linear');
@@ -115,14 +114,14 @@ if category
        lc = 10;
        option = ['-s 1 -c ' num2str(lc)];
        model = train(trainlabel',trainhmp',option);
-       load rgbdfea_rgb_gradkdes;
+       load rgbdfea_rgb_rgbkdes;
        testhmp = rgbdfea(:,ttestindex);
        clear rgbdfea;
        testhmp = scaletest(testhmp, 'linear', minvalue, maxvalue);
        testlabel = rgbdclabel(ttestindex); % take category label
        [predictlabel, accuracy, decvalues] = predict(testlabel', testhmp', model);
        acc_c(i,1) = mean(predictlabel == testlabel');
-       save('./results/rgb_gradkdes_acc_c.mat', 'acc_c', 'predictlabel', 'testlabel');
+       save('./results/rgb_rgbkdes_acc_c.mat', 'acc_c', 'predictlabel', 'testlabel');
 
        % print and save results
        disp(['Accuracy of Liblinear is ' num2str(mean(acc_c))]);
@@ -138,7 +137,7 @@ if instance
    indextrain(indextest) = [];
 
    % generate training and test samples
-   load rgbdfea_rgb_gradkdes;
+   load rgbdfea_rgb_rgbkdes;
    trainhmp = rgbdfea(:, indextrain);
    trainlabel = rgbdilabel(:, indextrain);
    clear rgbdfea;
@@ -149,16 +148,17 @@ if instance
    % classify with liblinear
    option = ['-s 1 -c ' num2str(lc)];
    model = train(trainlabel',trainhmp',option);
-   load rgbdfea_rgb_gradkdes;
+   load rgbdfea_rgb_rgbkdes;
    testhmp = rgbdfea(:, indextest);
    testlabel = rgbdilabel(:, indextest);
    clear rgbdfea;
    testhmp = scaletest(testhmp, 'power', minvalue, maxvalue);
    [predictlabel, accuracy, decvalues] = predict(testlabel', testhmp', model);
    acc_i = mean(predictlabel == testlabel');
-   save('./results/rgb_gradkdes_acc_i.mat', 'acc_i', 'predictlabel', 'testlabel');
+   save('./results/rgb_rgbkdes_acc_i.mat', 'acc_i', 'predictlabel', 'testlabel');
 
    % print and save classification accuracy
    disp(['Accuracy of Liblinear is ' num2str(mean(acc_i))]);
 end
+
 

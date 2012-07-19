@@ -9,9 +9,10 @@ rgbd_depth_gradkdes    = 0;% C++ Supported
 rgbd_depthlbpkdes      = 0;% Not yet, C++ Supported
 rgbd_pcloud_normalkdes = 0;% C++ Supported
 rgbd_pcloud_sizekdes   = 0;% Not yet
-rgbd_rgb_gradkdes      = 1;% C++ Supported
+rgbd_rgb_gradkdes      = 0;% C++ Supported
 rgbd_rgb_lbpkdes       = 0;% Not yet
-rgbd_rgb_nrgbkdes      = 0;% C++ Supported
+rgbd_rgb_nrgbkdes      = 0;% C++ Not Supported
+rgbd_rgb_rgbkdes       = 1;% C++ Supported
 
 
 %
@@ -167,7 +168,7 @@ disp('Save Done!!');
 end
 
 
-% RGB-D rgb on RGB-Image
+% RGB-D normalyed rgb on RGB-Image
 if rgbd_rgb_nrgbkdes
 
 disp('Convert rgbd_rgb_nrgbkdes model');
@@ -207,6 +208,55 @@ disp(modelrgbkdes.emk);
 disp('       -----modelrgbkdes.svm------');
 disp(modelrgbkdes.svm);
 disp('--------------------------------');
+
+% Save
+savefile = 'modelrgbkdes.mat';
+save( savefile, 'modelrgbkdes' );
+disp('Save Done!!');
+
+end
+
+
+% RGB-D rgb on RGB-Image
+if rgbd_rgb_rgbkdes
+
+disp('Convert rgbd_rgb_rgbkdes model');
+
+% About kdes
+modelrgbkdes.kdes.max_imsize = 300;
+modelrgbkdes.kdes.min_imsize = 45;
+modelrgbkdes.kdes.grid_space = kdes_params.grid;
+modelrgbkdes.kdes.patch_size = kdes_params.patchsize;
+modelrgbkdes.kdes.low_contrast = 0;% Really?
+
+% About emk
+modelrgbkdes.emk.words = rgbdwords;
+modelrgbkdes.emk.pyramid = emk_params.pyramid;
+modelrgbkdes.emk.ktype = emk_params.ktype;
+modelrgbkdes.emk.kparam = emk_params.kparam;
+modelrgbkdes.emk.G = G;
+
+% About svm
+modelrgbkdes.svm.Parameters = model.Parameters;
+modelrgbkdes.svm.nr_class = model.nr_class;
+modelrgbkdes.svm.nr_feature = model.nr_feature;
+modelrgbkdes.svm.bias = model.bias;
+modelrgbkdes.svm.Label = model.Label;
+modelrgbkdes.svm.w = model.w;
+modelrgbkdes.svm.minvalue = minvalue;
+modelrgbkdes.svm.maxvalue = maxvalue;
+modelrgbkdes.svm.classname = classname;% Please ready this array before running this program
+
+% Result
+disp('----------------------------------');
+disp('Result -----modelrgbkdes----------');
+disp('       -----modelrgbkdes.kdes-----');
+disp(modelrgbkdes.kdes);
+disp('       -----modelrgbkdes.emk------');
+disp(modelrgbkdes.emk);
+disp('       -----modelrgbkdes.svm------');
+disp(modelrgbkdes.svm);
+disp('----------------------------------');
 
 % Save
 savefile = 'modelrgbkdes.mat';
