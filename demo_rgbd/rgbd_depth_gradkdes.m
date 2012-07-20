@@ -1,7 +1,10 @@
-x
+% remaked by Hideshi Tsubota on 2012/07/19 @DHRC
+% at scaletest and scaletrain, use linear option
+%
 % written by Liefeng Bo on 03/27/2012 in University of Washington
 
 clear;
+digits(10);
 
 % add paths
 addpath('../liblinear-1.5-dense-float/matlab');
@@ -104,7 +107,7 @@ if category
        load rgbdfea_depth_gradkdes;
        trainhmp = rgbdfea(:,ttrainindex);
        clear rgbdfea;
-       [trainhmp, minvalue, maxvalue] = scaletrain(trainhmp, 'power');
+       [trainhmp, minvalue, maxvalue] = scaletrain(trainhmp, 'linear');
        trainlabel = rgbdclabel(ttrainindex); % take category label
 
        % classify with liblinear
@@ -114,7 +117,7 @@ if category
        load rgbdfea_depth_gradkdes;
        testhmp = rgbdfea(:,ttestindex);
        clear rgbdfea;
-       testhmp = scaletest(testhmp, 'power', minvalue, maxvalue);
+       testhmp = scaletest(testhmp, 'linear', minvalue, maxvalue);
        testlabel = rgbdclabel(ttestindex); % take category label
        [predictlabel, accuracy, decvalues] = predict(testlabel', testhmp', model);
        acc_c(i,1) = mean(predictlabel == testlabel');
@@ -125,7 +128,7 @@ if category
    end
 end
 
-instance = 1;
+instance = 0;
 if instance
 
    % generate training and test indexes

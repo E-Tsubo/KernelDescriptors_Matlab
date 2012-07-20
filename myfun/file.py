@@ -1,9 +1,25 @@
+"""
+Written by Hideshi Tsubota on 2012/07/19 @DHRC
+Please use this program.
+crop.py is experimental code.
+
+How to
+Please move the above folder stores train images.
+e.x. ./image/koaramarch/***.png
+     Please move ./image folder.
+    
+Type following...
+$ python file.py koaramarch/
+"""
 import re
 import sys
 import os
 import Image
 import string
 from shutil import *
+
+sub_x = 0
+sub_y = 0
 
 ###Function###
 def crop( name, path ):
@@ -59,6 +75,13 @@ def crop( name, path ):
                     down = y
 
     box = ( int(left), int(top), int(right), int(down) )
+
+    print left, top, right, down
+    global sub_x
+    global sub_y
+    sub_x = -1 * int(left)
+    sub_y = -1 * int(top)
+    
     #roi = im.crop( box )
     roi = rgbim.crop( box )
     roi.save( rgbcrop )
@@ -69,7 +92,7 @@ def crop( name, path ):
 savepath = "crop"
 
 if( True != os.path.isdir( savepath ) ):
-    os.mkdir( "./depth" );
+    os.mkdir( savepath );
 
 
 files = os.listdir( sys.argv[1] )
@@ -79,6 +102,16 @@ for f in files:
         p = sys.argv[1] + f
         crop( p, savepath );
     if( re.search( "loc.txt", f ) ):
-        copy( sys.argv[1]+f, savepath+"/"+f )
+        loc = open( sys.argv[1]+f, "r" )
+        for line in loc:
+            linelist = line[:].split(", ")
+            #print linelist
+            print sub_x, sub_y
+            string = str( int(linelist[0])-int(sub_x) ) + ", " + str( int(linelist[1])-int(sub_y) )
+            #print str
+        wloc = open( savepath+"/"+f, "w" )
+        wloc.writelines( string )
+        wloc.close()
+        #copy( sys.argv[1]+f, savepath+"/"+f )
 
 
