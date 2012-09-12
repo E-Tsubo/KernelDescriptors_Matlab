@@ -255,7 +255,7 @@ void exit_with_help()
 void mexFunction( int nlhs, mxArray *plhs[],
 		int nrhs, const mxArray *prhs[] )
 {
-	int prob_estimate_flag = 0;
+	int prob_estimate_flag = 1;
 	struct model *model_;
 	char cmd[CMD_LEN];
 	col_format_flag = 0;

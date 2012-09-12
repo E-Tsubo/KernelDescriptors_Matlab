@@ -5,16 +5,22 @@
 % For instance
 % classname = {'koaramarch_1','koaramarch_2','koaramarch_3','pakuncho_1','pakuncho_2','pakuncho_3'};
 % For class
-classname = {'bottle', 'can', 'cup', 'koaramarch', 'ornament', 'pack', 'painomi', 'pakuncho' };
+% 8 class
+%classname = {'bottle', 'can', 'cup', 'koaramarch', 'ornament', 'pack', 'painomi', 'pakuncho' };
+% 9 class
+%classname = {'bottle', 'can', 'chair', 'cup', 'koaramarch', 'ornament', 'pack', 'painomi', 'pakuncho' };
+%11 class
+classname = {'bottle', 'can', 'chair', 'cup', 'display', 'koaramarch', 'notepc', 'ornament', 'pack', 'painomi', 'pakuncho' };
 
 rgbd_depth_gradkdes    = 0;% C++ Supported
 rgbd_depthlbpkdes      = 0;% Not yet, C++ Supported
-rgbd_pcloud_normalkdes = 1;% C++ Supported
+rgbd_pcloud_normalkdes = 0;% C++ Supported
 rgbd_pcloud_sizekdes   = 0;% Not yet
 rgbd_rgb_gradkdes      = 0;% C++ Supported
 rgbd_rgb_lbpkdes       = 0;% Not yet
 rgbd_rgb_nrgbkdes      = 0;% C++ Not Supported
 rgbd_rgb_rgbkdes       = 0;% C++ Supported
+rgbd_joint_category    = 1;% C++ Supported
 
 
 %
@@ -267,3 +273,35 @@ disp('Save Done!!');
 
 end
 
+% RGB-D Joint Category ( Combine KDES Features )
+if rgbd_joint_category
+
+disp('Convert rgbd_joint_category model');
+
+% About kdes
+
+% About emk
+
+% About svm
+combinekdes.svm.Parameters = model.Parameters;
+combinekdes.svm.nr_class = model.nr_class;
+combinekdes.svm.nr_feature = model.nr_feature;
+combinekdes.svm.bias = model.bias;
+combinekdes.svm.Label = model.Label;
+combinekdes.svm.w = model.w;
+combinekdes.svm.minvalue = minvalue;
+combinekdes.svm.maxvalue = maxvalue;
+
+% Result
+disp('---------------------------------');
+disp('Result -----combinekdes----------');
+disp('       -----combinekdes.svm------');
+disp(combinekdes.svm);
+disp('----------------------------------');
+
+% Save
+savefile = 'combinekdes.mat';
+save( savefile, 'combinekdes' );
+disp('Save Done!!');
+
+end

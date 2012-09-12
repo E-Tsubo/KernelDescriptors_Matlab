@@ -1031,8 +1031,10 @@ static void solve_l2r_l1l2_svc(
 			v += alpha[i]*(alpha[i]*diag_p - 2); 
 		else
 			v += alpha[i]*(alpha[i]*diag_n - 2);
-		if(alpha[i] > 0)
-			++nSV;
+		if(alpha[i] > 0){
+		  mexPrintf("Support Vectors\n");
+		  ++nSV;
+		}
 	}
 	info("Objective value = %lf\n",v/2);
 	info("nSV = %d\n",nSV);

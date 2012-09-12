@@ -1,3 +1,5 @@
+% Remaked by Hideshi Tsubota 2012/07/22 @DHRC
+%
 clear;
 
 % add paths
@@ -8,18 +10,33 @@ addpath('../emk');
 
 % combine all kernel descriptors
 rgbdfea_joint = [];
+
 load rgbdfea_rgb_gradkdes.mat;
 rgbdfea_joint = [rgbdfea_joint; rgbdfea];
-load rgbdfea_rgb_lbpkdes.mat;
-rgbdfea_joint = [rgbdfea_joint; rgbdfea];
-%load rgbdfea_depth_gradkdes.mat;
+
+%load rgbdfea_rgb_lbpkdes.mat;
 %rgbdfea_joint = [rgbdfea_joint; rgbdfea];
+
+%load rgbdfea_rgb_rgbkdes.mat;
+%rgbdfea_joint = [rgbdfea_joint; rgbdfea];
+
+load rgbdfea_depth_gradkdes.mat;
+rgbdfea_joint = [rgbdfea_joint; rgbdfea];
+
 %load rgbdfea_depth_lbpkdes.mat;
 %rgbdfea_joint = [rgbdfea_joint; rgbdfea];
+
+%%BUG
 %load rgbdfea_pcloud_spinkdes.mat;
 %rgbdfea_joint = [rgbdfea_joint; rgbdfea];
+%%End
+
+load rgbdfea_pcloud_normalkdes.mat;
+rgbdfea_joint = [rgbdfea_joint; rgbdfea];
+
 %load rgbdfea_pcloud_sizekdes.mat;
 %rgbdfea_joint = [rgbdfea_joint; rgbdfea];
+
 save -v7.3 rgbdfea_joint rgbdfea_joint rgbdclabel rgbdilabel rgbdvlabel;
 
 category = 1;
@@ -36,28 +53,28 @@ if category
            perm = randperm(length(rgbdilabel_unique));
            subindex = find(rgbdilabel(trainindex) == rgbdilabel_unique(perm(1)));
            testindex = trainindex(subindex);
-           trainindex(subindex) = [];
+           %trainindex(subindex) = [];//debug
            ttrainindex = [ttrainindex trainindex];
            ttestindex = [ttestindex testindex];
        end
        load rgbdfea_joint;
        trainfea = rgbdfea_joint(:,ttrainindex);
        clear rgbdfea_joint;
-       [trainfea, minvalue, maxvalue] = scaletrain(trainfea, 'power'); 
+       [trainfea, minvalue, maxvalue] = scaletrain(trainfea, 'linear'); 
        trainlabel = rgbdclabel(ttrainindex); % take category label
 
        % classify with liblinear
        lc = 10;
-       option = ['-s 1 -c ' num2str(lc)];
+       option = ['-s 0 -c ' num2str(lc)];
        model = train(trainlabel',trainfea',option);
        load rgbdfea_joint;
        testfea = rgbdfea_joint(:,ttestindex);
        clear rgbdfea_joint;
-       testfea = scaletest(testfea, 'power', minvalue, maxvalue);
+       testfea = scaletest(testfea, 'linear', minvalue, maxvalue);
        testlabel = rgbdclabel(ttestindex); % take category label
        [predictlabel, accuracy, decvalues] = predict(testlabel', testfea', model);
        acc_c(i,1) = mean(predictlabel == testlabel');
-       save('./results/joint_acc_c.mat', 'acc_c', 'predictlabel', 'testlabel');
+       save('./results/joint_acc_c.mat', 'acc_c', 'predictlabel', 'testlabel', 'decvalues');
 
        % print and save results
        disp(['Accuracy of Liblinear is ' num2str(mean(acc_c))]);

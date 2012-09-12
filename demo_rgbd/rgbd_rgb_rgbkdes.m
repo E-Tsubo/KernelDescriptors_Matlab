@@ -100,7 +100,7 @@ if category
            perm = randperm(length(rgbdilabel_unique));
            subindex = find(rgbdilabel(trainindex) == rgbdilabel_unique(perm(1)));
            testindex = trainindex(subindex);
-           %trainindex(subindex) = [];
+           trainindex(subindex) = [];
            ttrainindex = [ttrainindex trainindex];
            ttestindex = [ttestindex testindex];
        end
@@ -121,7 +121,7 @@ if category
        testlabel = rgbdclabel(ttestindex); % take category label
        [predictlabel, accuracy, decvalues] = predict(testlabel', testhmp', model);
        acc_c(i,1) = mean(predictlabel == testlabel');
-       save('./results/rgb_rgbkdes_acc_c.mat', 'acc_c', 'predictlabel', 'testlabel');
+       save('./results/rgb_rgbkdes_acc_c.mat', 'acc_c', 'predictlabel', 'testlabel', 'decvalues');
 
        % print and save results
        disp(['Accuracy of Liblinear is ' num2str(mean(acc_c))]);
@@ -133,15 +133,15 @@ if instance
 
    % generate training and test indexes
    indextrain = 1:length(rgbdilabel);
-   indextest = find(rgbdvlabel == 2);
-   indextrain(indextest) = [];
+   indextest = find(rgbdvlabel == 1);
+   %indextrain(indextest) = [];//debug
 
    % generate training and test samples
    load rgbdfea_rgb_rgbkdes;
    trainhmp = rgbdfea(:, indextrain);
    trainlabel = rgbdilabel(:, indextrain);
    clear rgbdfea;
-   [trainhmp, minvalue, maxvalue] = scaletrain(trainhmp, 'power');
+   [trainhmp, minvalue, maxvalue] = scaletrain(trainhmp, 'linear');
 
    disp('Performing liblinear ... ...');
    lc = 10;
@@ -152,7 +152,7 @@ if instance
    testhmp = rgbdfea(:, indextest);
    testlabel = rgbdilabel(:, indextest);
    clear rgbdfea;
-   testhmp = scaletest(testhmp, 'power', minvalue, maxvalue);
+   testhmp = scaletest(testhmp, 'linear', minvalue, maxvalue);
    [predictlabel, accuracy, decvalues] = predict(testlabel', testhmp', model);
    acc_i = mean(predictlabel == testlabel');
    save('./results/rgb_rgbkdes_acc_i.mat', 'acc_i', 'predictlabel', 'testlabel');

@@ -2,6 +2,7 @@
 % written by Liefeng Bo on 03/27/2012 in University of Washington
 
 clear;
+digits(10);
 
 % add paths
 addpath('../liblinear-1.5-dense-float/matlab');
@@ -97,35 +98,36 @@ if category
            perm = randperm(length(rgbdilabel_unique));
            subindex = find(rgbdilabel(trainindex) == rgbdilabel_unique(perm(1)));
            testindex = trainindex(subindex);
-           trainindex(subindex) = [];
+           %trainindex(subindex) = [];//debug
            ttrainindex = [ttrainindex trainindex];
            ttestindex = [ttestindex testindex];
        end
        load rgbdfea_pcloud_sizekdes;
        trainhmp = rgbdfea(:,ttrainindex);
        clear rgbdfea;
-       [trainhmp, minvalue, maxvalue] = scaletrain(trainhmp, 'power');
+       [trainhmp, minvalue, maxvalue] = scaletrain(trainhmp, 'linear');
        trainlabel = rgbdclabel(ttrainindex); % take category label
 
        % classify with liblinear
        lc = 10;
-       option = ['-s 1 -c ' num2str(lc)];
+        %//いじってある。オプションを
+       option = ['-s 0 -c ' num2str(lc)];
        model = train(trainlabel',trainhmp',option);
        load rgbdfea_pcloud_sizekdes;
        testhmp = rgbdfea(:,ttestindex);
        clear rgbdfea;
-       testhmp = scaletest(testhmp, 'power', minvalue, maxvalue);
+       testhmp = scaletest(testhmp, 'linear', minvalue, maxvalue);
        testlabel = rgbdclabel(ttestindex); % take category label
        [predictlabel, accuracy, decvalues] = predict(testlabel', testhmp', model);
        acc_c(i,1) = mean(predictlabel == testlabel');
-       save('./results/pcloud_sizekdes_acc_c.mat', 'acc_c', 'predictlabel', 'testlabel');
+       save('./results/pcloud_sizekdes_acc_c.mat', 'acc_c', 'predictlabel', 'testlabel', 'decvalues');
 
        % print and save results
        disp(['Accuracy of Liblinear is ' num2str(mean(acc_c))]);
    end
 end
 
-instance = 1;
+instance = 0;
 if instance
 
    % generate training and test indexes
