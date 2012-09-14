@@ -1,5 +1,11 @@
 disp('Compiling matlabCV.cpp');
+%% For Mac Platform
 mex -I/opt/local/include/opencv -I/opt/local/include -L/opt/local/lib -lopencv_core -lopencv_imgproc -lopencv_highgui -lopencv_ml -lopencv_video -lopencv_features2d -lopencv_calib3d -lopencv_objdetect -lopencv_contrib -lopencv_legacy -lopencv_flann matlabCV.cpp -o matlabCV
+%% For Windows Platform
+%mex matlabCV.cpp -I"C:\SDK\OpenCV2.3\build/include" -I"C:\SDK\OpenCV2.3\build/include/opencv" C:\SDK\OpenCV2.3\build\x64\vc9\lib\opencv_calib3d230.lib C:\SDK\OpenCV2.3\build\x64\vc9\lib\opencv_contrib230.lib C:\SDK\OpenCV2.3\build\x64\vc9\lib\opencv_core230.lib C:\SDK\OpenCV2.3\build\x64\vc9\lib\opencv_features2d230.lib C:\SDK\OpenCV2.3\build\x64\vc9\lib\opencv_flann230.lib C:\SDK\OpenCV2.3\build\x64\vc9\lib\opencv_haartraining_engine.lib C:\SDK\OpenCV2.3\build\x64\vc9\lib\opencv_highgui230.lib C:\SDK\OpenCV2.3\build\x64\vc9\lib\opencv_imgproc230.lib C:\SDK\OpenCV2.3\build\x64\vc9\lib\opencv_legacy230.lib C:\SDK\OpenCV2.3\build\x64\vc9\lib\opencv_ml230.lib C:\SDK\OpenCV2.3\build\x64\vc9\lib\opencv_objdetect230.lib C:\SDK\OpenCV2.3\build\x64\vc9\lib\opencv_video230.lib
 
 disp('Compiling opencvFunc.cpp');
+%% For Mac Platform
 mex -I/opt/local/include/opencv -I/opt/local/include -L/opt/local/lib -lopencv_core -lopencv_imgproc -lopencv_highgui -lopencv_ml -lopencv_video -lopencv_features2d -lopencv_calib3d -lopencv_objdetect -lopencv_contrib -lopencv_legacy -lopencv_flann opencvFunc.cpp -o opencvFunc
+%% For Windows Platform
+%mex opencvFunc.cpp CC=g++ -I"C:\SDK\OpenCV2.3\build/include" -I"C:\SDK\OpenCV2.3\build/include/opencv" C:\SDK\OpenCV2.3\build\x64\vc9\lib\opencv_calib3d230.lib C:\SDK\OpenCV2.3\build\x64\vc9\lib\opencv_contrib230.lib C:\SDK\OpenCV2.3\build\x64\vc9\lib\opencv_core230.lib C:\SDK\OpenCV2.3\build\x64\vc9\lib\opencv_features2d230.lib C:\SDK\OpenCV2.3\build\x64\vc9\lib\opencv_flann230.lib C:\SDK\OpenCV2.3\build\x64\vc9\lib\opencv_haartraining_engine.lib C:\SDK\OpenCV2.3\build\x64\vc9\lib\opencv_highgui230.lib C:\SDK\OpenCV2.3\build\x64\vc9\lib\opencv_imgproc230.lib C:\SDK\OpenCV2.3\build\x64\vc9\lib\opencv_legacy230.lib C:\SDK\OpenCV2.3\build\x64\vc9\lib\opencv_ml230.lib C:\SDK\OpenCV2.3\build\x64\vc9\lib\opencv_objdetect230.lib C:\SDK\OpenCV2.3\build\x64\vc9\lib\opencv_video230.lib

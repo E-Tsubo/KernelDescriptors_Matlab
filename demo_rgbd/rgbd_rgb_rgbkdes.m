@@ -7,10 +7,24 @@ clear;
 digits(10);
 
 % add paths
-addpath('../liblinear-1.5-dense-float/matlab');
+
+% Please choice only one path about SVM Library.
+SVM_TYPE = 0;
+if SVM_TYPE == 0
+    disp('Load liblinear-dense-float');
+    addpath('../liblinear-1.5-dense-float/matlab');
+elseif SVM_TYPE == 1
+    disp('Load liblinear-1.91 Original');
+    addpath('../liblinear-1.91-original/matlab');
+elseif SVM_TYPE == 2
+    disp('Load libsvm-3.12 Original');
+    addpath('../libsvm-3.12-original/matlab');
+end
+
 addpath('../helpfun');
 addpath('../kdes');
 addpath('../emk');
+addpath('../myfun');
 
 % compute the paths of images
 imdir = '../images/rgbdsubset/';
@@ -88,7 +102,7 @@ end
 
 category = 1;
 if category
-   trail = 5;
+   trail = 1;
    for i = 1:trail
        % generate training and test samples
        ttrainindex = [];
@@ -100,26 +114,54 @@ if category
            perm = randperm(length(rgbdilabel_unique));
            subindex = find(rgbdilabel(trainindex) == rgbdilabel_unique(perm(1)));
            testindex = trainindex(subindex);
-           trainindex(subindex) = [];
+           %trainindex(subindex) = [];
            ttrainindex = [ttrainindex trainindex];
            ttestindex = [ttestindex testindex];
        end
        load rgbdfea_rgb_rgbkdes;
        trainhmp = rgbdfea(:,ttrainindex);
        clear rgbdfea;
+       
+       if SVM_TYPE ~= 0
+           trainhmp = double( trainhmp );
+           trainhmp = sparse( trainhmp );%For libsvm and liblinear
+       end
+       
        [trainhmp, minvalue, maxvalue] = scaletrain(trainhmp, 'linear');
        trainlabel = rgbdclabel(ttrainindex); % take category label
 
        % classify with liblinear
-       lc = 10;
-       option = ['-s 1 -c ' num2str(lc)];
-       model = train(trainlabel',trainhmp',option);
+
+       if SVM_TYPE == 2
+           lc = 10;
+           option = ['-s 0 -t 0 -b 1 -c ' num2str(lc)];
+           model = svmtrain(trainlabel', trainhmp', option);
+       else
+           % Cross Validation 
+           cross_validation;
+           option = ['-s 1 -c ' num2str(bestc)];
+           model = train(trainlabel', trainhmp', option);
+               
+           %lc = 10;
+           %option = ['-s 1 -v 5 -c ' num2str(lc)];
+           %model = train(trainlabel',trainhmp',option);
+       end
        load rgbdfea_rgb_rgbkdes;
        testhmp = rgbdfea(:,ttestindex);
        clear rgbdfea;
+       
+       if SVM_TYPE ~= 0
+           testhmp = double( testhmp );
+           testhmp = sparse( testhmp );%For libsvm and liblinear
+       end
+       
        testhmp = scaletest(testhmp, 'linear', minvalue, maxvalue);
        testlabel = rgbdclabel(ttestindex); % take category label
-       [predictlabel, accuracy, decvalues] = predict(testlabel', testhmp', model);
+       if SVM_TYPE == 2
+           [predictlabel, accuracy, decvalues] = svmpredict(testlabel', testhmp', model);
+       else
+           [predictlabel, accuracy, decvalues] = predict(testlabel', testhmp', model);
+       end
        acc_c(i,1) = mean(predictlabel == testlabel');
        save('./results/rgb_rgbkdes_acc_c.mat', 'acc_c', 'predictlabel', 'testlabel', 'decvalues');
 
