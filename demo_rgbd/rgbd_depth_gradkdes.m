@@ -105,7 +105,7 @@ end
 
 category = 1;
 if category
-   trail = 5;
+   trail = 1;
    for i = 1:trail
        % generate training and test samples
        ttrainindex = [];
