@@ -21,7 +21,6 @@ elseif SVM_TYPE == 2
     addpath('../libsvm-3.12-original/matlab');
 end
 
-addpath('../liblinear-1.5-dense-float/matlab');
 addpath('../helpfun');
 addpath('../kdes');
 addpath('../emk');
