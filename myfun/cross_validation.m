@@ -3,6 +3,8 @@
 % 
 
 bestcv = 0;
+bestc=-1;
+bestg=-1;
 for log2c = -1:3
     %for log2g = -4:1
         %cmd = ['-v 5 -c ', num2str(2^log2c), ' -g ', num2str(2^log2g) ];

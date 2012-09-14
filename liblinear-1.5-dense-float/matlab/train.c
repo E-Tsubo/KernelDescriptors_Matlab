@@ -226,7 +226,8 @@ int read_problem_sparse(const mxArray *label_vec, const mxArray *instance_mat)
 	int max_index, label_vector_row_num;
 	double *labels;
 	float *samples;
-	//mxArray *instance_mat_col; // instance sparse matrix in column format
+	mxArray *instance_mat_col; // instance sparse matrix in column format
+	int num_samples;//For Windows this line and above line( instance_mat_col )
 
 	prob.x = NULL;
 	prob.y = NULL;
@@ -336,7 +337,8 @@ int read_problem_sparse(const mxArray *label_vec, const mxArray *instance_mat)
 	ir = mxGetIr(instance_mat_col);
 	jc = mxGetJc(instance_mat_col);
 
-	int num_samples = (int) mxGetNzmax(instance_mat_col);
+	//int num_samples = (int) mxGetNzmax(instance_mat_col);
+	num_samples = (int) mxGetNzmax(instance_mat_col);//For Windows
 
 	elements = num_samples + prob.l*2;
 	max_index = (int) mxGetM(instance_mat_col);

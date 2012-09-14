@@ -4,12 +4,12 @@
 % written by Liefeng Bo on 03/27/2012 in University of Washington
 
 clear;
-digits(10);
+%digits(10);
 
 % add paths
 
 % Please choice only one path about SVM Library.
-SVM_TYPE = 0;
+SVM_TYPE = 1;
 if SVM_TYPE == 0
     disp('Load liblinear-dense-float');
     addpath('../liblinear-1.5-dense-float/matlab');

@@ -1,0 +1,22 @@
+%2012/09/14 Written by Hideshi Tsubota @DHRC
+%
+
+How to build opencvFunc @ matlab platform
+At mac or Linux platform, it is very easy.
+Please install OpenCV with macports or apt-get.
+
+At Windows platform, a little difficult.
+My environment is follows
+--
+Windows 7 Pro 64bit
+Matlab 2009b
+Visual Studio 2008 Pro ( please install x64 compiler )
+OpenCV 2.3 ( I installed this at C:\SDK\OpenCV2.3 )
+--
+
+My make.m is created with above path.
+So, please check lib path.
+And, when call mex function program from matlab,
+it is necessary to load dll file.
+opencvFunc needs opencv_core**.dll and openc_imgproc**.dll.
+So, please copy dll file and opencvFunc to demo_rgbd folder .
