@@ -144,6 +144,7 @@ if category
                
            %lc = 10;
            %option = ['-s 1 -v 5 -c ' num2str(lc)];
+           %option = ['-s 1 -c ' num2str(lc) ];
            %model = train(trainlabel',trainhmp',option);
        end
        load rgbdfea_rgb_rgbkdes;

@@ -117,7 +117,7 @@ if category
            perm = randperm(length(rgbdilabel_unique));
            subindex = find(rgbdilabel(trainindex) == rgbdilabel_unique(perm(1)));
            testindex = trainindex(subindex);
-           %trainindex(subindex) = [];
+           trainindex(subindex) = [];
            ttrainindex = [ttrainindex trainindex];
            ttestindex = [ttestindex testindex];
        end
@@ -140,13 +140,13 @@ if category
            model = svmtrain(trainlabel', trainhmp', option);
        else
            % Cross Validation 
-           cross_validation;
-           option = ['-s 1 -c ' num2str(bestc)];
-           model = train(trainlabel', trainhmp', option);
+           %cross_validation;
+           %option = ['-s 1 -c ' num2str(bestc)];
+           %model = train(trainlabel', trainhmp', option);
                
-           %lc = 10;
-           %option = ['-s 1 -v 5 -c ' num2str(lc)];
-           %model = train(trainlabel',trainhmp',option);
+           lc = 10;
+           option = ['-s 1 -c ' num2str(lc)];
+           model = train(trainlabel',trainhmp',option);
        end
        load rgbdfea_depth_gradkdes;
        testhmp = rgbdfea(:,ttestindex);

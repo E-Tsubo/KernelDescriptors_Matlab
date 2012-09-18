@@ -6,6 +6,7 @@
 #include <locale.h>
 #include "linear.h"
 #include "tron.h"
+#include "mex.h"
 typedef signed char schar;
 template <class T> static inline void swap(T& x, T& y) { T t=x; x=y; y=t; }
 #ifndef min
@@ -2486,6 +2487,9 @@ double predict_values(const struct model *model_, const struct feature_node *x, 
 			for(i=0;i<nr_w;i++)
 				dec_values[i] += w[(idx-1)*nr_w+i]*lx->value;
 	}
+
+	for( int i = 0; i < nr_class; i++ )//debug
+		mexPrintf( "label %d is %d\n", i, model_->label[i] );
 
 	if(nr_class==2)
 	{
