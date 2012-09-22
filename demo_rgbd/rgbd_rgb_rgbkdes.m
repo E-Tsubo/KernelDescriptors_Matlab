@@ -76,7 +76,7 @@ if ~length(rgbdkdespath)
    rgbdkdespath = get_kdes_path(data_params.savedir);
 end
 
-featag = 1;
+featag = 0;
 if featag
    % learn visual words using K-means
    % initialize the parameters of basis vectors
@@ -97,6 +97,7 @@ if featag
    rgbdfea = single(rgbdfea);
    save -v7.3 rgbdfea_rgb_rgbkdes rgbdfea rgbdclabel rgbdilabel rgbdvlabel;
 else
+   disp('Loading bag of words data insted of calc');
    load rgbdfea_rgb_rgbkdes;
 end
 
@@ -138,14 +139,18 @@ if category
            model = svmtrain(trainlabel', trainhmp', option);
        else
            % Cross Validation 
-           cross_validation;
-           option = ['-s 1 -c ' num2str(bestc)];
-           model = train(trainlabel', trainhmp', option);
+           %cross_validation;
+           %option = ['-s 1 -c ' num2str(bestc)];
+           %model = train(trainlabel', trainhmp', option);
                
-           %lc = 10;
-           %option = ['-s 1 -v 5 -c ' num2str(lc)];
-           %option = ['-s 1 -c ' num2str(lc) ];
-           %model = train(trainlabel',trainhmp',option);
+           lc = 10;
+           k = (1+log( length(trainhmp(1,:)) )/log(2))*4;
+           k = floor(k);
+           disp( ['Cross Validation`s Param k is ' num2str(k)] );
+           option = ['-s 1 -v ' num2str(k) ' -c ' num2str(lc)];
+           cv = train(trainlabel',trainhmp',option);
+           option = ['-s 1 -c ' num2str(lc)];
+           model = train(trainlabel',trainhmp',option);
        end
        load rgbdfea_rgb_rgbkdes;
        testhmp = rgbdfea(:,ttestindex);

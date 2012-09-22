@@ -46,7 +46,7 @@ if 1
     end
     
     for i = 1:model.nr_class
-        cm(1, i) = c(1, i) / L;
+        cm(1, i) = c(1, i) / L * nm(1, i);
     end
             
 end

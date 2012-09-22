@@ -79,7 +79,8 @@ if ~length(rgbdkdespath)
    rgbdkdespath = get_kdes_path(data_params.savedir);
 end
 
-featag = 1;
+% When I evaluate, featag should be 0.
+featag = 0;
 if featag
    % learn visual words using K-means
    % initialize the parameters of basis vectors
@@ -100,6 +101,7 @@ if featag
    rgbdfea = single(rgbdfea);
    save -v7.3 rgbdfea_depth_gradkdes rgbdfea rgbdclabel rgbdilabel rgbdvlabel;
 else
+   disp('Loading bag of words data insted of calc');
    load rgbdfea_depth_gradkdes;
 end
 
@@ -117,7 +119,7 @@ if category
            perm = randperm(length(rgbdilabel_unique));
            subindex = find(rgbdilabel(trainindex) == rgbdilabel_unique(perm(1)));
            testindex = trainindex(subindex);
-           trainindex(subindex) = [];
+           %trainindex(subindex) = [];
            ttrainindex = [ttrainindex trainindex];
            ttestindex = [ttestindex testindex];
        end
@@ -145,9 +147,15 @@ if category
            %model = train(trainlabel', trainhmp', option);
                
            lc = 10;
+           k = (1+log( length(trainhmp(1,:)) )/log(2))*4;
+           k = floor(k);
+           disp( ['Cross Validation`s Param k is ' num2str(k)] );
+           option = ['-s 1 -v ' num2str(k) ' -c ' num2str(lc)];
+           cv = train(trainlabel',trainhmp',option);
            option = ['-s 1 -c ' num2str(lc)];
            model = train(trainlabel',trainhmp',option);
        end
+       
        load rgbdfea_depth_gradkdes;
        testhmp = rgbdfea(:,ttestindex);
        clear rgbdfea;
