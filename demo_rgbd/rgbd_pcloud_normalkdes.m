@@ -7,7 +7,7 @@ clear;
 
 % add paths
 % Please choice only one path about SVM Library.
-SVM_TYPE = 1;
+SVM_TYPE = 2;
 if SVM_TYPE == 0
     disp('Load liblinear-dense-float');
     addpath('../liblinear-1.5-dense-float/matlab');
@@ -31,7 +31,7 @@ impath = [];
 rgbdclabel = [];
 rgbdilabel = [];
 rgbdvlabel = [];
-subsample = 20;
+subsample = 1;
 disp(['subsample is ' num2str(subsample)]);
 label_num = 0;
 for i = 1:length(imsubdir)
@@ -94,7 +94,7 @@ if featag
    fea_params.feapath = rgbdkdespath;
    [rgbdfea, G] = cksvd_emk_batch(fea_params, basis_params, emk_params);
    rgbdfea = single(rgbdfea);
-   save -v7.3 rgbdfea_pcloud_normalkdes rgbdfea rgbdclabel rgbdilabel rgbdvlabel;
+   save -v7.3 rgbdfea_pcloud_normalkdes rgbdfea rgbdclabel rgbdilabel rgbdvlabel rgbdwords;
 else
    disp('Loading bag of words data insted of calc');
    load rgbdfea_pcloud_normalkdes;
@@ -114,7 +114,7 @@ if category
            perm = randperm(length(rgbdilabel_unique));
            subindex = find(rgbdilabel(trainindex) == rgbdilabel_unique(perm(1)));
            testindex = trainindex(subindex);
-           trainindex(subindex) = [];%debug
+           %trainindex(subindex) = [];%debug
            ttrainindex = [ttrainindex trainindex];
            ttestindex = [ttestindex testindex];
        end

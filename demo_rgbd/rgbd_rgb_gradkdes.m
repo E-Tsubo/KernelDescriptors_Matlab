@@ -9,7 +9,7 @@ clear;
 % add paths
 
 % Please choice only one path about SVM Library.
-SVM_TYPE = 1;
+SVM_TYPE = 2;
 if SVM_TYPE == 0
     disp('Load liblinear-dense-float');
     addpath('../liblinear-1.5-dense-float/matlab');
@@ -33,7 +33,7 @@ impath = [];
 rgbdclabel = [];
 rgbdilabel = [];
 rgbdvlabel = [];
-subsample = 20;
+subsample = 1;
 disp(['subsample is ' num2str(subsample)]);
 label_num = 0;
 for i = 1:length(imsubdir)
@@ -77,7 +77,7 @@ if ~length(rgbdkdespath)
    rgbdkdespath = get_kdes_path(data_params.savedir);
 end
 
-featag = 0;
+featag = 1;
 if featag
    % learn visual words using K-means
    % initialize the parameters of basis vectors
@@ -96,7 +96,7 @@ if featag
    fea_params.feapath = rgbdkdespath;
    [rgbdfea, G] = cksvd_emk_batch(fea_params, basis_params, emk_params);
    rgbdfea = single(rgbdfea);
-   save -v7.3 rgbdfea_rgb_gradkdes rgbdfea rgbdclabel rgbdilabel rgbdvlabel;
+   save -v7.3 rgbdfea_rgb_gradkdes rgbdfea rgbdclabel rgbdilabel rgbdvlabel rgbdwords;
 else
    disp('Loading bag of words data insted of calc');
    load rgbdfea_rgb_gradkdes;
@@ -116,10 +116,10 @@ if category
            perm = randperm(length(rgbdilabel_unique));
            subindex = find(rgbdilabel(trainindex) == rgbdilabel_unique(perm(1)));
            testindex = trainindex(subindex);
-           trainindex(subindex) = [];
+           %trainindex(subindex) = [];
            ttrainindex = [ttrainindex trainindex];
            ttestindex = [ttestindex testindex];
-           %ttestindex = [ttestindex ttrainindex];
+           ttestindex = [ttestindex ttrainindex];
        end
        load rgbdfea_rgb_gradkdes;
        trainhmp = rgbdfea(:,ttrainindex);
@@ -144,7 +144,7 @@ if category
            %option = ['-s 1 -c ' num2str(bestc)];
            %model = train(trainlabel', trainhmp', option);
                
-           lc = 3;
+           lc = 10;
            %{
            k = (1+log( length(trainhmp(1,:)) )/log(2))*4;
            k = floor(k);
