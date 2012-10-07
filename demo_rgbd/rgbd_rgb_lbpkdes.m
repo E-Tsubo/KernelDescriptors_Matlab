@@ -4,10 +4,23 @@
 clear;
 
 % add paths
-addpath('../liblinear-1.5-dense-float/matlab');
+% Please choice only one path about SVM Library.
+SVM_TYPE = 1;
+if SVM_TYPE == 0
+    disp('Load liblinear-dense-float');
+    addpath('../liblinear-1.5-dense-float/matlab');
+elseif SVM_TYPE == 1
+    disp('Load liblinear-1.91 Original');
+    addpath('../liblinear-1.91-original/matlab');
+elseif SVM_TYPE == 2
+    disp('Load libsvm-3.12 Original');
+    addpath('../libsvm-3.12-original/matlab');
+end
+
 addpath('../helpfun');
 addpath('../kdes');
 addpath('../emk');
+addpath('../myfun');
 
 % compute the paths of images
 imdir = '../images/rgbdsubset/';
@@ -16,7 +29,8 @@ impath = [];
 rgbdclabel = [];
 rgbdilabel = [];
 rgbdvlabel = [];
-subsample = 1;
+subsample = 20;
+disp(['subsample is ' num2str(subsample)]);
 label_num = 0;
 for i = 1:length(imsubdir)
     [rgbdilabel_tmp, impath_tmp] = get_im_label([imdir imsubdir(i).name '/'], '_crop.png');
@@ -59,7 +73,7 @@ if ~length(rgbdkdespath)
    rgbdkdespath = get_kdes_path(data_params.savedir);
 end
 
-featag = 1;
+featag = 0;
 if featag
    % learn visual words using K-means
    % initialize the parameters of basis vectors
@@ -80,12 +94,13 @@ if featag
    rgbdfea = single(rgbdfea);
    save -v7.3 rgbdfea_rgb_lbpkdes rgbdfea rgbdclabel rgbdilabel rgbdvlabel;
 else
+   disp('Loading bag of words data insted of calc');
    load rgbdfea_rgb_lbpkdes;
 end
 
 category = 1;
 if category
-   trail = 5;
+   trail = 1;
    for i = 1:trail
        % generate training and test samples
        ttrainindex = [];
@@ -104,19 +119,52 @@ if category
        load rgbdfea_rgb_lbpkdes;
        trainhmp = rgbdfea(:,ttrainindex);
        clear rgbdfea;
-       [trainhmp, minvalue, maxvalue] = scaletrain(trainhmp, 'power');
+       
+       if SVM_TYPE ~= 0
+          trainhmp = double( trainhmp );
+          trainhmp = sparse( trainhmp );%For libsvm and liblinear
+       end
+       
+       [trainhmp, minvalue, maxvalue] = scaletrain(trainhmp, 'liner');
        trainlabel = rgbdclabel(ttrainindex); % take category label
 
-       % classify with liblinear
-       lc = 10;
-       option = ['-s 1 -c ' num2str(lc)];
-       model = train(trainlabel',trainhmp',option);
+        % classify with liblinear
+       if SVM_TYPE == 2
+           lc = 10;
+           option = ['-s 0 -t 0 -b 1 -c ' num2str(lc)];
+           model = svmtrain(trainlabel', trainhmp', option);
+       else
+           % Cross Validation 
+           %cross_validation;
+           %option = ['-s 1 -c ' num2str(bestc)];
+           %model = train(trainlabel', trainhmp', option);
+               
+           lc = 3;
+           k = (1+log( length(trainhmp(1,:)) )/log(2))*4;
+           k = floor(k);
+           %disp( ['Cross Validation`s Param k is ' num2str(k)] );
+           %option = ['-s 1 -v ' num2str(k) ' -c ' num2str(lc)];
+           %cv = train(trainlabel',trainhmp',option);
+           option = ['-s 1 -c ' num2str(lc)];
+           model = train(trainlabel',trainhmp',option);
+       end
+       
        load rgbdfea_rgb_lbpkdes;
        testhmp = rgbdfea(:,ttestindex);
        clear rgbdfea;
-       testhmp = scaletest(testhmp, 'power', minvalue, maxvalue);
+       
+       if SVM_TYPE ~= 0
+          testhmp = double( testhmp );
+          testhmp = sparse( testhmp );%For libsvm and liblinear
+       end
+       
+       testhmp = scaletest(testhmp, 'linear', minvalue, maxvalue);
        testlabel = rgbdclabel(ttestindex); % take category label
-       [predictlabel, accuracy, decvalues] = predict(testlabel', testhmp', model);
+       if SVM_TYPE == 2
+           [predictlabel, accuracy, decvalues] = svmpredict(testlabel', testhmp', model);
+       else
+           [predictlabel, accuracy, decvalues] = predict(testlabel', testhmp', model);
+       end
        acc_c(i,1) = mean(predictlabel == testlabel');
        save('./results/rgb_lbpkdes_acc_c.mat', 'acc_c', 'predictlabel', 'testlabel');
 
@@ -125,7 +173,7 @@ if category
    end
 end
 
-instance = 1;
+instance = 0;
 if instance
 
    % generate training and test indexes

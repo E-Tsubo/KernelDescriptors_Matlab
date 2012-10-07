@@ -6,7 +6,6 @@
 clear;
 
 % add paths
-
 % Please choice only one path about SVM Library.
 SVM_TYPE = 1;
 if SVM_TYPE == 0
@@ -32,7 +31,8 @@ impath = [];
 rgbdclabel = [];
 rgbdilabel = [];
 rgbdvlabel = [];
-subsample = 1;
+subsample = 20;
+disp(['subsample is ' num2str(subsample)]);
 label_num = 0;
 for i = 1:length(imsubdir)
     [rgbdilabel_tmp, impath_tmp] = get_im_label([imdir imsubdir(i).name '/'], '_depthcrop.png');
@@ -75,7 +75,7 @@ if ~length(rgbdkdespath)
    rgbdkdespath = get_kdes_path(data_params.savedir);
 end
 
-featag = 0;
+featag = 1;
 if featag
    % learn visual words using K-means
    % initialize the parameters of basis vectors
@@ -114,7 +114,7 @@ if category
            perm = randperm(length(rgbdilabel_unique));
            subindex = find(rgbdilabel(trainindex) == rgbdilabel_unique(perm(1)));
            testindex = trainindex(subindex);
-           %trainindex(subindex) = [];%debug
+           trainindex(subindex) = [];%debug
            ttrainindex = [ttrainindex trainindex];
            ttestindex = [ttestindex testindex];
        end
@@ -144,9 +144,9 @@ if category
            lc = 10;
            k = (1+log( length(trainhmp(1,:)) )/log(2))*4;
            k = floor(k);
-           disp( ['Cross Validation`s Param k is ' num2str(k)] );
-           option = ['-s 1 -v ' num2str(k) ' -c ' num2str(lc)];
-           cv = train(trainlabel',trainhmp',option);
+           %disp( ['Cross Validation`s Param k is ' num2str(k)] );
+           %option = ['-s 1 -v ' num2str(k) ' -c ' num2str(lc)];
+           %cv = train(trainlabel',trainhmp',option);
            option = ['-s 1 -c ' num2str(lc)];
            model = train(trainlabel',trainhmp',option);
        end
