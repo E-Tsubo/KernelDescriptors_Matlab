@@ -5,7 +5,7 @@ clear;
 % add paths
 
 % Please choice only one path about SVM Library.
-SVM_TYPE = 1;
+SVM_TYPE = 2;
 if SVM_TYPE == 0
     disp('Load liblinear-dense-float');
     addpath('../liblinear-1.5-dense-float/matlab');
@@ -31,8 +31,8 @@ rgbdfea_joint = [];
 %load rgbdfea_rgb_lbpkdes.mat;
 %rgbdfea_joint = [rgbdfea_joint; rgbdfea];
 
-%load rgbdfea_rgb_rgbkdes.mat;
-%rgbdfea_joint = [rgbdfea_joint; rgbdfea];
+load rgbdfea_rgb_rgbkdes.mat;
+rgbdfea_joint = [rgbdfea_joint; rgbdfea];
 
 load rgbdfea_depth_gradkdes.mat;
 rgbdfea_joint = [rgbdfea_joint; rgbdfea];
@@ -45,8 +45,8 @@ rgbdfea_joint = [rgbdfea_joint; rgbdfea];
 %rgbdfea_joint = [rgbdfea_joint; rgbdfea];
 %%End
 
-load rgbdfea_pcloud_normalkdes.mat;
-rgbdfea_joint = [rgbdfea_joint; rgbdfea];
+%load rgbdfea_pcloud_normalkdes.mat;
+%rgbdfea_joint = [rgbdfea_joint; rgbdfea];
 
 %load rgbdfea_pcloud_sizekdes.mat;
 %rgbdfea_joint = [rgbdfea_joint; rgbdfea];
@@ -67,7 +67,7 @@ if category
            perm = randperm(length(rgbdilabel_unique));
            subindex = find(rgbdilabel(trainindex) == rgbdilabel_unique(perm(1)));
            testindex = trainindex(subindex);
-           trainindex(subindex) = [];%debug
+           %trainindex(subindex) = [];%debug
            ttrainindex = [ttrainindex trainindex];
            ttestindex = [ttestindex testindex];
        end

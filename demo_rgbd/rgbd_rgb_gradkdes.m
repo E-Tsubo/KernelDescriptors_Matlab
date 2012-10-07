@@ -119,7 +119,7 @@ if category
            %trainindex(subindex) = [];
            ttrainindex = [ttrainindex trainindex];
            ttestindex = [ttestindex testindex];
-           ttestindex = [ttestindex ttrainindex];
+           %ttestindex = [ttestindex ttrainindex];
        end
        load rgbdfea_rgb_gradkdes;
        trainhmp = rgbdfea(:,ttrainindex);
