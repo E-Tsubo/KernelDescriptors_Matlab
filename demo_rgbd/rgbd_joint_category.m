@@ -34,8 +34,8 @@ rgbdfea_joint = [];
 load rgbdfea_rgb_rgbkdes.mat;
 rgbdfea_joint = [rgbdfea_joint; rgbdfea];
 
-load rgbdfea_depth_gradkdes.mat;
-rgbdfea_joint = [rgbdfea_joint; rgbdfea];
+%load rgbdfea_depth_gradkdes.mat;
+%rgbdfea_joint = [rgbdfea_joint; rgbdfea];
 
 %load rgbdfea_depth_lbpkdes.mat;
 %rgbdfea_joint = [rgbdfea_joint; rgbdfea];
@@ -45,8 +45,8 @@ rgbdfea_joint = [rgbdfea_joint; rgbdfea];
 %rgbdfea_joint = [rgbdfea_joint; rgbdfea];
 %%End
 
-%load rgbdfea_pcloud_normalkdes.mat;
-%rgbdfea_joint = [rgbdfea_joint; rgbdfea];
+load rgbdfea_pcloud_normalkdes.mat;
+rgbdfea_joint = [rgbdfea_joint; rgbdfea];
 
 %load rgbdfea_pcloud_sizekdes.mat;
 %rgbdfea_joint = [rgbdfea_joint; rgbdfea];
@@ -85,7 +85,7 @@ if category
 
        % classify with liblinear
        if SVM_TYPE == 2
-           lc = 10;
+           lc = 0.3;
            option = ['-s 0 -t 0 -b 1 -c ' num2str(lc)];
            model = svmtrain(trainlabel', trainfea', option);
        else

@@ -28,6 +28,8 @@ addpath('../myfun');
 
 % compute the paths of images
 imdir = '../images/rgbdsubset/';
+%imdir = '../images/subdivide_bottom/';
+disp( imdir );
 imsubdir = dir_bo(imdir);
 impath = [];
 rgbdclabel = [];
@@ -118,8 +120,8 @@ if category
            testindex = trainindex(subindex);
            %trainindex(subindex) = [];
            ttrainindex = [ttrainindex trainindex];
-           ttestindex = [ttestindex testindex];
-           %ttestindex = [ttestindex ttrainindex];
+           %ttestindex = [ttestindex testindex];
+           ttestindex = [ttestindex trainindex];
        end
        load rgbdfea_rgb_gradkdes;
        trainhmp = rgbdfea(:,ttrainindex);
@@ -135,7 +137,7 @@ if category
 
        % classify with liblinear
        if SVM_TYPE == 2
-           lc = 10;
+           lc = 0.3;
            option = ['-s 0 -t 0 -b 1 -c ' num2str(lc)];
            model = svmtrain(trainlabel', trainhmp', option);
        else

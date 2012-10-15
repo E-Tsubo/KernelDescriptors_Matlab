@@ -52,14 +52,18 @@ depdata_params.maxsize = 300; % maximum size of image
 depdata_params.savedir = [ '.' ];
 
 % Image Subdivision
-subsize = 32;
 I = imread( rgbdata_params.datapath );
 II =imread( depdata_params.datapath );
 im_h = size(I,1);
 im_w = size(I,2);
 
-num_div_x = floor( im_w / subsize );
-num_div_y = floor( im_h / subsize );
+% Image Subdivision
+%subsize = 32;
+w_subsize = im_w/4;
+h_subsize = im_h/4;
+
+num_div_x = floor( im_w / w_subsize );
+num_div_y = floor( im_h / h_subsize );
 
 if im_w - (num_div_x * subsize) > 16
     num_div_x = num_div_x + 1;
@@ -91,7 +95,7 @@ for h = 1:num_div_y
         imwrite( dep_div, depstr );
             
         rgbfea = calc_kdes( img_div, rgbwords, rgbkdes_params, rgbdata_params );
-        depfea = calc_kdes( dep_div, depwords, depkdes_params, depdata_params );
+        depfea = calc_kdes( dep_div, depwords, depkdes_params, depdata_params, width_s, height_s );
             
         [ decvalues, predictlabel ] = predictcombine( rgbfea, depfea, model, maxvalue, minvalue, SVM_TYPE );
         for i = 1:model.nr_class
@@ -105,7 +109,7 @@ for h = 1:num_div_y
     end
 end
 
-function [ rgbdfea ] = calc_kdes( I, words, kdes_params, data_params, flag )
+function [ rgbdfea ] = calc_kdes( I, words, kdes_params, data_params, width_s, height_s )
 % KDES
 disp('Extracting Kernel Descriptors ...')
 switch kdes_params.kdes.type
@@ -156,8 +160,10 @@ switch kdes_params.kdes.type
             %I = imread(data_params.datapath{i});
             I = double(I);
             %topleft = fliplr(load([data_params.datapath{1} '.loc.txt']));
-            topleft(1) = 173;
-            topleft(2) = 144;
+            topleft = load([data_params.datapath(1:end-13) 'loc.txt']);%ç°ÇæÇØ
+            topleft(1) = topleft(1) + 1; topleft(2) = topleft(2) + 1;
+            topleft(1) = topleft(1) + width_s -1; topleft(2) = topleft(2) + height_s -1;
+
             pcloud = depthtocloud(I, topleft);
             % normalize depth values to meter
             pcloud = pcloud./1000;

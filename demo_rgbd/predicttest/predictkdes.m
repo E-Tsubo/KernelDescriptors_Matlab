@@ -1,7 +1,7 @@
 %function predictkdes( impath )
-%impath = '../images/rgbdsubset/bottle/bottle_1/bottle_1_1_10_crop.png'
+impath = '../images/rgbdsubset/bottle/bottle_1/bottle_1_1_10_crop.png'
 %impath = '~/Desktop/divimg_bottle1/img_1_1_1.png';
-impath = '~/Desktop/divimg_can1div/img_45_1_1.png';
+%impath = '~/Desktop/divimg_can1div/img_45_1_1.png';
 
 
 SVM_TYPE = 2;

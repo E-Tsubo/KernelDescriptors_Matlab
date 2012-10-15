@@ -1,15 +1,20 @@
-%function [dec_values, predictlabels] = predictkdes_Multi( impath, model, rgbdwords, maxvalue, minvalue )
 function [ dec_values, predictlabels ] = predictkdes_Multi( varargin );
 impath = varargin{1};
+% Normal
+%{
 model = varargin{2};
 rgbdwords = varargin{3};
 maxvalue = varargin{4};
 minvalue = varargin{5};
-%deppath = varargin{6};
+%}
 
-%impath = '../images/rgbdsubset/bottle/bottle_1/bottle_1_1_10_crop.png'
-%impath = '~/Desktop/divimg_bottle1/img_1_1_1.png';
-%impath = '~/Desktop/divimg_can1div/img_45_1_1.png';
+% Use archiver Data
+archiver = varargin{2};
+load( archiver );
+model = archive.model;
+rgbdwords = archive.rgbdwords;
+maxvalue = archive.maxvalue;
+minvalue = archive.minvalue;
 
 SVM_TYPE = 2;
 if SVM_TYPE == 0
@@ -32,14 +37,14 @@ addpath('../myfun');
 % initialize the parameters of kdes
 kdes_params.grid = 8;   % kdes is extracted every 8 pixels
 kdes_params.patchsize = 16;  % patch size
-load('rgbkdes_params');
-kdes_params.kdes = rgbkdes_params;
+%load('rgbkdes_params');
+%kdes_params.kdes = rgbkdes_params;
 %load('gradkdes_params');
 %kdes_params.kdes = gradkdes_params;
 %load('gradkdes_dep_params.mat');
 %kdes_params.kdes = gradkdes_dep_params;
-%load('normalkdes_params');
-%kdes_params.kdes = normalkdes_params;
+load('normalkdes_params');
+kdes_params.kdes = normalkdes_params;
 
 % initialize the parameters of data
 data_params.datapath = impath;
@@ -48,30 +53,32 @@ data_params.minsize = 45;  % minimum size of image
 data_params.maxsize = 300; % maximum size of image
 data_params.savedir = [ '.' ];
 
-% Image Subdivision
-subsize = 80;
 I = imread( data_params.datapath );
 im_h = size(I,1);
 im_w = size(I,2);
 
-num_div_x = floor( im_w / subsize );
-num_div_y = floor( im_h / subsize );
+% Image Subdivision
+w_subsize = im_w/4;
+h_subsize = im_h/4;
 
-if im_w - (num_div_x * subsize) > 16
+num_div_x = floor( im_w / w_subsize );
+num_div_y = floor( im_h / h_subsize );
+
+if im_w - (num_div_x * w_subsize) > 16
     num_div_x = num_div_x + 1;
 end
-if im_h - (num_div_y * subsize) > 16
+if im_h - (num_div_y * h_subsize) > 16
     num_div_y = num_div_y + 1;
 end
 
 for h = 1:num_div_y
     for w = 1:num_div_x
         
-        width_s = (w-1) * subsize + 1;
-        height_s = (h-1) * subsize + 1;
+        width_s = (w-1) * w_subsize + 1;
+        height_s = (h-1) * h_subsize + 1;
         
-        width_e = width_s + subsize - 1;
-        height_e = height_s + subsize - 1;
+        width_e = width_s + w_subsize - 1;
+        height_e = height_s + h_subsize - 1;
         if width_e > im_w
             width_e = im_w;
         end
@@ -87,7 +94,7 @@ for h = 1:num_div_y
         img_div = I( height_s:height_e, width_s:width_e, : );
         str = ['img_div_' num2str(h) '_' num2str(w) '.png'];
         imwrite( img_div, str );
-        [ decvalues, predictlabel ] = do_one_kdes( img_div, model, rgbdwords, kdes_params, data_params, maxvalue, minvalue, SVM_TYPE );
+        [ decvalues, predictlabel ] = do_one_kdes( img_div, model, rgbdwords, kdes_params, data_params, maxvalue, minvalue, SVM_TYPE, width_s, height_s );
         for i = 1:model.nr_class
             dec_values(h,w,i) = decvalues(i);
             predictlabels(h,w) = predictlabel;
@@ -99,7 +106,7 @@ for h = 1:num_div_y
     end
 end
 
-function [ decvalues, predictlabel ] = do_one_kdes( I, model, rgbdwords, kdes_params, data_params, maxvalue, minvalue, SVM_TYPE )
+function [ decvalues, predictlabel ] = do_one_kdes( I, model, rgbdwords, kdes_params, data_params, maxvalue, minvalue, SVM_TYPE, width_s, height_s )
 % KDES
 disp('Extracting Kernel Descriptors ...')
 switch kdes_params.kdes.type
@@ -149,9 +156,11 @@ switch kdes_params.kdes.type
             % read a depth map
             %I = imread(data_params.datapath{i});
             I = double(I);
-            %topleft = fliplr(load([data_params.datapath{1} '.loc.txt']));
-            topleft(1) = 173;
-            topleft(2) = 144;
+            %topleft = fliplr(load([data_params.datapath(1:end-13) 'loc.txt']));
+            topleft = load([data_params.datapath(1:end-13) 'loc.txt']);%ç°ÇæÇØ
+            topleft(1) = topleft(1) + 1; topleft(2) = topleft(2) + 1;
+            topleft(1) = topleft(1) + width_s -1; topleft(2) = topleft(2) + height_s -1;
+                        
             pcloud = depthtocloud(I, topleft);
             % normalize depth values to meter
             pcloud = pcloud./1000;
