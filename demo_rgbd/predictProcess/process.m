@@ -30,6 +30,7 @@ switch mode
             model{i-2} = varargin{i};
             kdes_num = kdes_num + 1;
         end
+        kdes_num = kdes_num - 1;
         
     case 'comdep'
         impath{1} = varargin{2};
@@ -37,6 +38,7 @@ switch mode
             model{i-2} = varargin{i};
             kdes_num = kdes_num + 1;
         end
+        kdes_num = kdes_num - 1;
         
     case 'com'
         impath{1} = varargin{2};
@@ -45,6 +47,7 @@ switch mode
             model{i-3} = varargin{i};
             kdes_num = kdes_num + 1;
         end
+        kdes_num = kdes_num - 1;
 end
 
 SVM_TYPE = 2;
@@ -137,7 +140,7 @@ if kdes_num == 1
     tmp_fea = tmp;
 else
     %Last kdes is combine model.
-    for i = 1:kdes_num-1
+    for i = 1:kdes_num
         tmp{i} = extractFeature( g, kdesSet{i}, model{i} );
     end
     tmp_fea = tmp;
@@ -160,7 +163,7 @@ function [ tmp_fea ] = extractFeatureAllCombine( type, g, kdesSet, kdes_num, mod
 switch type
     case 'rgb'
         tmp = [];
-        for i = 1:kdes_num-1
+        for i = 1:kdes_num
     
             if strcmp(kdesSet{i}.type, 'gradkdes') | strcmp(kdesSet{i}.type, 'lbpkdes') | strcmp(kdesSet{i}.type, 'rgbkdes') | strcmp(kdesSet{i}.type, 'nrgbkdes')
                 tmp{i} = extractFeature( g, kdesSet{i}, model{i} );
@@ -169,7 +172,7 @@ switch type
         tmp_fea = tmp;
     case 'dep'
         tmp = [];
-        for i = 1:kdes_num-1
+        for i = 1:kdes_num
             
             if strcmp(kdesSet{i}.type, 'normalkdes') | strcmp(kdesSet{i}.type, 'sizekdes') | strcmp(kdesSet{i}.type, 'lbpkdes_dep') | strcmp(kdesSet{i}.type, 'gradkdes_dep')
                 tmp{i} = extractFeature( g, kdesSet{i}, model{i} );
@@ -267,7 +270,11 @@ fea = cksvd_emk(fea_params, basis_params, model.emk);
 
 
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 function [ features ] = feaconjunction( grid, num_grid, feaSet );
+%
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 for i = 1:num_grid
     %Combine RGB Image and Depth Image.
     if length(grid) == 2
@@ -278,7 +285,7 @@ for i = 1:num_grid
            fea = [ fea; gridFea{1}{r} ];
         end
         for d = 1:length(gridFea{2})
-            fea = [ fea; gridFea{2}{d} ]
+            fea = [ fea; gridFea{2}{d} ];
         end
     else
         fea = [];

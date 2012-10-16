@@ -7,7 +7,7 @@
 % classname = {'koaramarch_1','koaramarch_2','koaramarch_3','pakuncho_1','pakuncho_2','pakuncho_3'};
 %%%%%%%%%% For class
 % 8 class
-classname = {'bottle', 'can', 'cup', 'koaramarch', 'ornament', 'painomi', 'pakuncho' };
+classname = {'bottle', 'can', 'cup', 'koaramarch', 'ornament', 'pack', 'pakuncho' };
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
@@ -18,10 +18,10 @@ rgbd_depth_gradkdes    = 0;% C++ Supported
 rgbd_depthlbpkdes      = 0;% Not yet, C++ Supported
 rgbd_pcloud_normalkdes = 0;% C++ Supported
 rgbd_pcloud_sizekdes   = 0;% Not yet
-rgbd_rgb_gradkdes      = 0;% C++ Supported
+rgbd_rgb_gradkdes      = 1;% C++ Supported
 rgbd_rgb_lbpkdes       = 0;% Not yet
 rgbd_rgb_nrgbkdes      = 0;% C++ Not Supported
-rgbd_rgb_rgbkdes       = 1;% C++ Supported
+rgbd_rgb_rgbkdes       = 0;% C++ Supported
 rgbd_joint_category    = 0;% C++ Supported
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
