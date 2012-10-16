@@ -1,5 +1,5 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-function [ decvalues, predictlabels ] = process( varargin );
+function [ decvalues, predictlabels, features ] = process( varargin );
 %
 % 2012/10/14 Written by Hideshi Tsubota @HOME
 %
@@ -12,6 +12,11 @@ mode = varargin{1};
 
 kdes_num = 0;
 
+%Global Variant%
+global locData;
+global deppath;
+%%%%%%%%%%%%%%%%
+
 switch mode
     
     case 'rgb'
@@ -21,6 +26,7 @@ switch mode
         
     case 'dep'
         impath{1} = varargin{2};
+        deppath = impath{1};
         model{1} = varargin{3};
         kdes_num = 1;
         
@@ -34,6 +40,7 @@ switch mode
         
     case 'comdep'
         impath{1} = varargin{2};
+        deppath = impath{1};
         for i = 3:nargin
             model{i-2} = varargin{i};
             kdes_num = kdes_num + 1;
@@ -43,6 +50,7 @@ switch mode
     case 'com'
         impath{1} = varargin{2};
         impath{2} = varargin{3};
+        deppath = impath{2};
         for i = 4:nargin
             model{i-3} = varargin{i};
             kdes_num = kdes_num + 1;
@@ -111,12 +119,12 @@ function [ feaSet ] = calc( grid, num_grid, kdesSet, kdes_num, model )
 for i = 1:num_grid
     %Combine RGB Image and Depth Image.
     if length(grid) == 2
-        tmp_fea = extractFeatureAllCombine( 'rgb', grid{1,1}{1,i}, kdesSet, kdes_num, model );
+        tmp_fea = extractFeatureAllCombine( 'rgb', grid{1,1}{1,i}, kdesSet, kdes_num, model, num_grid );
         fea{1} = tmp_fea;
-        tmp_fea = extractFeatureAllCombine( 'dep', grid{1,2}{1,i}, kdesSet, kdes_num, model );
+        tmp_fea = extractFeatureAllCombine( 'dep', grid{1,2}{1,i}, kdesSet, kdes_num, model, num_grid );
         fea{2} = tmp_fea;
     else
-        tmp_fea = extractFeatureAll( grid{1,1}{1,i}, kdesSet, kdes_num, model );
+        tmp_fea = extractFeatureAll( grid{1,1}{1,i}, kdesSet, kdes_num, model, num_grid );
         fea{1} = tmp_fea;
     end
     feaSet{i} = fea;
@@ -125,7 +133,7 @@ end
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-function [ tmp_fea ] = extractFeatureAll( g, kdesSet, kdes_num, model )
+function [ tmp_fea ] = extractFeatureAll( g, kdesSet, kdes_num, model, num_grid )
 % from one image, extract all features
 %
 % @g -> input image
@@ -136,12 +144,12 @@ function [ tmp_fea ] = extractFeatureAll( g, kdesSet, kdes_num, model )
 % @tmp_fea -> extracted feature
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 if kdes_num == 1 
-    tmp{1} = extractFeature( g, kdesSet{1}, model{1} );
+    tmp{1} = extractFeature( g, kdesSet{1}, model{1}, num_grid );
     tmp_fea = tmp;
 else
     %Last kdes is combine model.
     for i = 1:kdes_num
-        tmp{i} = extractFeature( g, kdesSet{i}, model{i} );
+        tmp{i} = extractFeature( g, kdesSet{i}, model{i}, num_grid );
     end
     tmp_fea = tmp;
 end
@@ -166,7 +174,7 @@ switch type
         for i = 1:kdes_num
     
             if strcmp(kdesSet{i}.type, 'gradkdes') | strcmp(kdesSet{i}.type, 'lbpkdes') | strcmp(kdesSet{i}.type, 'rgbkdes') | strcmp(kdesSet{i}.type, 'nrgbkdes')
-                tmp{i} = extractFeature( g, kdesSet{i}, model{i} );
+                tmp{i} = extractFeature( g, kdesSet{i}, model{i}, num_grid );
             end        
         end
         tmp_fea = tmp;
@@ -175,7 +183,7 @@ switch type
         for i = 1:kdes_num
             
             if strcmp(kdesSet{i}.type, 'normalkdes') | strcmp(kdesSet{i}.type, 'sizekdes') | strcmp(kdesSet{i}.type, 'lbpkdes_dep') | strcmp(kdesSet{i}.type, 'gradkdes_dep')
-                tmp{i} = extractFeature( g, kdesSet{i}, model{i} );
+                tmp{i} = extractFeature( g, kdesSet{i}, model{i}, num_grid );
             end
         end
         tmp_fea = tmp;
@@ -184,11 +192,14 @@ end
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-function [ fea ] = extractFeature( g, kdes, model )
+function [ fea ] = extractFeature( g, kdes, model, num_grid )
 % from one image, extract one feature
 %
 % Same Params...
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+global locData;
+global deppath;
+
 kdes_params.kdes = kdes;
 
 switch kdes_params.kdes.type
@@ -238,9 +249,13 @@ switch kdes_params.kdes.type
             % read a depth map
             %I = imread(data_params.datapath{i});
             g = double(g);
-            %topleft = fliplr(load([data_params.datapath{1} '.loc.txt']));
-            %
-            %
+            
+            topleft = fliplr(load([deppath(1:end-13) 'loc.txt']));
+            topleft(1) = topleft(1) + 1;%Offset Grabber C++ Program
+            topleft(2) = topleft(2) + 1;
+            topleft(1) = topleft(1) + locData{num_grid}(2);
+            topleft(2) = topleft(2) + locData{num_grid}(1);
+            
             pcloud = depthtocloud(g, topleft);
             % normalize depth values to meter
             pcloud = pcloud./1000;
@@ -344,6 +359,9 @@ function [ grid, num_grid ] = subdivision( impath );
 %Image Subdivision
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+global locData;
+global deppath;
+
 for i = 1:length(impath)
     
     I = imread( impath{i} );
@@ -381,6 +399,9 @@ for i = 1:length(impath)
                 height_e = im_h;
             end
                 
+            %For pcloud features
+            tmp_loc(count,1) = height_s - 1 ; tmp_loc(count,2) = width_s - 1;
+           
             tmp_grid{count} = I( height_s:height_e, width_s:width_e, : );
             %If you want to save grid image, please use this code.
             %str = ['grid_' num2str(i) '_' num2str(h) '_' num2str(w) '.png'];
@@ -390,6 +411,7 @@ for i = 1:length(impath)
     end
     
     grid{i} = tmp_grid;
+    locData{i} = tmp_loc;
     num_grid = length( grid{i} );
 end
 
@@ -400,6 +422,9 @@ function [ grid, num_grid ] = slidingWindow( impath );
 %Sliding Windows Method
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+global locData;
+global deppath;
+
 for i = 1:length(impath)
     
     I = imread( impath{i} );
@@ -417,22 +442,25 @@ for i = 1:length(impath)
         im_w = size(I,2);
     end
     
-    subsize_x = 64;
-    subsize_y = 64;
-    step = 32;
+    subsize_x = im_w;
+    subsize_y = im_h;
+    step = 16;
     
     count = 1;
     for h = 1:step:im_h
         height_s = h;
-        height_e = height_s + subsize_y;
+        height_e = height_s + subsize_y - 1;
         
         if height_e > im_h, break, end;
                     
         for w =1:step:im_w
            width_s = w;
-           width_e = width_s + subsize_x;
+           width_e = width_s + subsize_x - 1;
            
            if width_e > im_w, break, end;
+           
+           %For pcloud features
+           tmp_loc(count,1) = height_s - 1 ; tmp_loc(count,2) = width_s - 1;
            
            tmp_grid{count} = I( height_s:height_e, width_s:width_e, : );
            %If you want to save grid image, please use this code.
@@ -443,5 +471,6 @@ for i = 1:length(impath)
     end
     
     grid{i} = tmp_grid;
+    locData{i} = tmp_loc;
     num_grid = length( grid{i} );
 end
