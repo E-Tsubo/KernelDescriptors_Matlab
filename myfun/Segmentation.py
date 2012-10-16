@@ -85,7 +85,7 @@ def crop( input, outputdir ):
     for line in loc:
         linelist = line[:].split(", ")
         #print linelist
-        string = str( int(linelist[0])-int(sub_x) ) + ", " + str( int(linelist[1])-int(sub_y) )
+        string =  str( int(linelist[1])-int(sub_y) ) + ", " + str( int(linelist[0])-int(sub_x) )
         wloc = open( out_loctxt, "w" )
         wloc.writelines( string )
         wloc.close()

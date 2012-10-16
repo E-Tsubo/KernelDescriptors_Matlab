@@ -138,7 +138,7 @@ if category
 
        % classify with liblinear
        if SVM_TYPE == 2
-           lc = 10;
+           lc = 0.3;
            option = ['-s 0 -t 0 -b 1 -c ' num2str(lc)];
            model = svmtrain(trainlabel', trainhmp', option);
        else
