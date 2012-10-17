@@ -28,7 +28,9 @@ addpath('../myfun');
 addpath('../CVonMatlabFunc');
 
 % compute the paths of images
-imdir = '../images/rgbdsubset/';
+%imdir = '../images/rgbdsubset/';
+imdir = '../images/rgbdsubset_subdivide/subdivide_right/';
+disp( imdir );
 imsubdir = dir_bo(imdir);
 impath = [];
 rgbdclabel = [];

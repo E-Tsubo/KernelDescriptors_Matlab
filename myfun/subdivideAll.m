@@ -21,7 +21,7 @@ function divimage( path, flag)
 
 %}
 
-savepath = 'subdivide_bottom';
+savepath = 'subdivide_right';
 mkdir( savepath );
 
 list = dir( path );
@@ -83,7 +83,7 @@ for i = 3:length(list)
                     
                     out_rgb = rgb( :, floor(width/2):width, : );
                     out_dep = dep( :, floor(width/2):width, : );
-                    loc(1,1) = loc(1,1) + floor(width/2);
+                    loc(1,2) = loc(1,2) + floor(width/2);
                     out_loc = loc;
                     
                     rgb_str = [ savepath '/' list(i).name '/' instance_list(j).name '/' rgb_list(k).name ];
@@ -120,7 +120,7 @@ for i = 3:length(list)
                     
                     out_rgb = rgb( floor(height/2):height, :, : );
                     out_dep = dep( floor(height/2):height, :, : );
-                    loc(1,2) = loc(1,2) + floor(height/2);
+                    loc(1,1) = loc(1,1) + floor(height/2);
                     out_loc = loc;
                     
                     rgb_str = [ savepath '/' list(i).name '/' instance_list(j).name '/' rgb_list(k).name ];
@@ -159,7 +159,7 @@ for i = 3:length(list)
                     
                     out_rgb = rgb( floor(height/2):height, 1:floor(width/2), : );
                     out_dep = dep( floor(height/2):height, 1:floor(width/2), : );
-                    loc(1,2) = loc(1,2) + floor(height/2);
+                    loc(1,1) = loc(1,1) + floor(height/2);
                     out_loc = loc;
                     
                     rgb_str = [ savepath '/' list(i).name '/' instance_list(j).name '/' rgb_list(k).name ];
@@ -179,7 +179,7 @@ for i = 3:length(list)
                     
                     out_rgb = rgb( 1:floor(height/2), floor(width/2):width, : );
                     out_dep = dep( 1:floor(height/2), floor(width/2):width, : );
-                    loc(1,1) = loc(1,1) + floor(width/2);
+                    loc(1,2) = loc(1,2) + floor(width/2);
                     out_loc = loc;
                     
                     rgb_str = [ savepath '/' list(i).name '/' instance_list(j).name '/' rgb_list(k).name ];
@@ -199,8 +199,8 @@ for i = 3:length(list)
                     
                     out_rgb = rgb( floor(height/2):height, floor(width/2):width, : );
                     out_dep = dep( floor(height/2):height, floor(width/2):width, : );
-                    loc(1,1) = loc(1,1) + floor(width/2);
-                    loc(1,2) = loc(1,2) + floor(height/2);
+                    loc(1,2) = loc(1,2) + floor(width/2);
+                    loc(1,1) = loc(1,1) + floor(height/2);
                     out_loc = loc;
                     
                     rgb_str = [ savepath '/' list(i).name '/' instance_list(j).name '/' rgb_list(k).name ];

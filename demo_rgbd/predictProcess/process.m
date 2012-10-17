@@ -1,21 +1,32 @@
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-function [ decvalues, predictlabels, features ] = process( varargin );
+%% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+function [ decvalues, predictlabels, features, name ] = process( varargin )
 %
 % 2012/10/14 Written by Hideshi Tsubota @HOME
 %
 % [] = process( mode, im, model );
 % [] = process( mode, rgbim, depim, rgbmodel, depmodel, combinemodel );
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+%% Global Variant%%
+global REALTIME_DEMO;
+global IMAGE_READ_FLAG;
+global locData;
+global deppath;
+%% %%%%%%%%%%%%%%%%
 mode = 'none';
 mode = varargin{1};
 
 kdes_num = 0;
 
-%Global Variant%
-global locData;
-global deppath;
-%%%%%%%%%%%%%%%%
+%% Param %%%%%%%%%%
+IMAGE_READ_FLAG = 0; %if this param is 1, use imread function.
+REALTIME_DEMO = 1;   %Please 1 if you use realtime recognition demo.
+if REALTIME_DEMO == 0
+    IMAGE_READ_FLAG = 1;
+else
+    IMAGE_READ_FLAG = 0;
+end
+%% %%%%%%%%%%%%%%%%
 
 switch mode
     
@@ -56,6 +67,7 @@ switch mode
             kdes_num = kdes_num + 1;
         end
         kdes_num = kdes_num - 1;
+        
 end
 
 SVM_TYPE = 2;
@@ -98,12 +110,12 @@ for i = 1:num_grid
     decvalues{i} = dec;
     predictlabels{i} = label;
 end
-
+name = model{1}.svm.classname;
 disp('All Process done!!');
 
 
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 function [ feaSet ] = calc( grid, num_grid, kdesSet, kdes_num, model )
 % This is batch function for all grid-size images
 % For all images, extract the features
@@ -115,7 +127,7 @@ function [ feaSet ] = calc( grid, num_grid, kdesSet, kdes_num, model )
 % @model -> this is trained model has emk_params, kdes_params and svm
 %
 % @feaSet -> extracted features structures
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 for i = 1:num_grid
     %Combine RGB Image and Depth Image.
     if length(grid) == 2
@@ -132,7 +144,7 @@ end
 
 
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 function [ tmp_fea ] = extractFeatureAll( g, kdesSet, kdes_num, model, num_grid )
 % from one image, extract all features
 %
@@ -142,7 +154,7 @@ function [ tmp_fea ] = extractFeatureAll( g, kdesSet, kdes_num, model, num_grid 
 % @model -> Same
 %
 % @tmp_fea -> extracted feature
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 if kdes_num == 1 
     tmp{1} = extractFeature( g, kdesSet{1}, model{1}, num_grid );
     tmp_fea = tmp;
@@ -156,8 +168,8 @@ end
 
 
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-function [ tmp_fea ] = extractFeatureAllCombine( type, g, kdesSet, kdes_num, model )
+%% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+function [ tmp_fea ] = extractFeatureAllCombine( type, g, kdesSet, kdes_num, model, num_grid )
 % from one image, extract rgb and dep features
 %
 % @type -> it means rgb feature or dep feature
@@ -167,7 +179,7 @@ function [ tmp_fea ] = extractFeatureAllCombine( type, g, kdesSet, kdes_num, mod
 % @model -> Same
 %
 % @tmp_fea -> extracted feature
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 switch type
     case 'rgb'
         tmp = [];
@@ -191,12 +203,12 @@ end
 
 
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 function [ fea ] = extractFeature( g, kdes, model, num_grid )
 % from one image, extract one feature
 %
 % Same Params...
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 global locData;
 global deppath;
 
@@ -285,11 +297,11 @@ fea = cksvd_emk(fea_params, basis_params, model.emk);
 
 
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 function [ features ] = feaconjunction( grid, num_grid, feaSet );
 %
 %
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 for i = 1:num_grid
     %Combine RGB Image and Depth Image.
     if length(grid) == 2
@@ -314,11 +326,11 @@ end
 
 
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 function [ decvalues, accuracy, predictlabel ] = predictSVM( fea, model, SVM_TYPE )
 %
 %
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 testhmp = fea; 
 if SVM_TYPE ~= 0
      testhmp = double( testhmp );
@@ -336,35 +348,46 @@ end
 
 
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 function showData( grid, index, decvalue, label )
 % 
 %
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+global REALTIME_DEMO;
+
 pause on;
-imshow( grid{1,1}{1,index} );
+if REALTIME_DEMO == 0
+    imshow( grid{1,1}{1,index} );
+end
 disp( [ 'Label is ' num2str(label) ] );
 
 fprintf( 'Probability->\n' );
 for i = 1:length(decvalue)
-   fprintf( '%d : %d  ', i, decvalue(i) ); 
+   fprintf( '%d->%3.1f  ', i, decvalue(i)*100 ); 
 end
-%disp( [ 'Probability : ' num2str(decvalue(1,index,:)) ] );
-pause;
+if REALTIME_DEMO == 0
+    disp( [ 'Probability : ' num2str(decvalue(1,index,:)) ] );
+    pause;
+end
 
 
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 function [ grid, num_grid ] = subdivision( impath );
 %Image Subdivision
 %
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+global IMAGE_READ_FLAG;
 global locData;
 global deppath;
 
 for i = 1:length(impath)
     
-    I = imread( impath{i} );
+    if IMAGE_READ_FLAG
+        I = imread( impath{i} );
+    else
+        I = impath{i};
+    end
     
     im_h = size(I,1);
     im_w = size(I,2);
@@ -417,17 +440,22 @@ end
 
 
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 function [ grid, num_grid ] = slidingWindow( impath );
 %Sliding Windows Method
 %
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+global IMAGE_READ_FLAG;
 global locData;
 global deppath;
 
 for i = 1:length(impath)
     
-    I = imread( impath{i} );
+    if IMAGE_READ_FLAG
+        I = imread( impath{i} );
+    else
+        I = impath{i};
+    end
     
     im_h = size(I,1);
     im_w = size(I,2);
@@ -441,7 +469,7 @@ for i = 1:length(impath)
         im_h = size(I,1);
         im_w = size(I,2);
     end
-    
+        
     subsize_x = im_w;
     subsize_y = im_h;
     step = 16;

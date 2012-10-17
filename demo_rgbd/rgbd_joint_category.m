@@ -25,8 +25,8 @@ addpath('../myfun');
 % combine all kernel descriptors
 rgbdfea_joint = [];
 
-%load rgbdfea_rgb_gradkdes.mat;
-%rgbdfea_joint = [rgbdfea_joint; rgbdfea];
+load rgbdfea_rgb_gradkdes.mat;
+rgbdfea_joint = [rgbdfea_joint; rgbdfea];
 
 %load rgbdfea_rgb_lbpkdes.mat;
 %rgbdfea_joint = [rgbdfea_joint; rgbdfea];
@@ -34,8 +34,8 @@ rgbdfea_joint = [];
 load rgbdfea_rgb_rgbkdes.mat;
 rgbdfea_joint = [rgbdfea_joint; rgbdfea];
 
-load rgbdfea_depth_gradkdes.mat;
-rgbdfea_joint = [rgbdfea_joint; rgbdfea];
+%load rgbdfea_depth_gradkdes.mat;
+%rgbdfea_joint = [rgbdfea_joint; rgbdfea];
 
 %load rgbdfea_depth_lbpkdes.mat;
 %rgbdfea_joint = [rgbdfea_joint; rgbdfea];

@@ -27,8 +27,8 @@ addpath('../emk');
 addpath('../myfun');
 
 % compute the paths of images
-imdir = '../images/rgbdsubset/';
-%imdir = '../images/subdivide_bottom/';
+%imdir = '../images/rgbdsubset/';
+imdir = '../images/rgbdsubset_subdivide/subdivide_right/';
 disp( imdir );
 imsubdir = dir_bo(imdir);
 impath = [];
