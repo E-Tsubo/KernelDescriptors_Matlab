@@ -1,15 +1,19 @@
-% sample_niImage
-% Get RGB and DEPTH image via Kinect
+%% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% 2012/10/17 Written by Hideshi T. @DHRC
+% Get RGB and DEPTH image via Kinect and Run KernelDescriptors Object
+% Recognition System.
+%
+%% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+%% Initialise
 %close all; clear all;
 
 %% Process Program
 addpath('../../KinectHandler_Matlab/MexOpenNI');
 addpath('../../KinectHandler_Matlab/MexFunc');
 
-%% Load Model Data
+%% Load Model Data and process.m
 addpath('predictProcess');
-
 %load('modelrgbkdes.mat')
 %load('modelgkdes.mat');
 %load('modelgkdes_dep.mat');
@@ -39,7 +43,8 @@ figure, h3 = imagesc(zeros(height,width,3,'uint8')); hold on;
 %% LOOP
 loopcnt = 1;
 while 1
-    
+%for l = 1:1
+
     tic
     %align Depth onto RGB
     option.adjust_view_point = true;

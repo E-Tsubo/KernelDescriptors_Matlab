@@ -470,7 +470,9 @@ for i = 1:length(impath)
         im_w = size(I,2);
     end
         
-    subsize_x = im_w;
+    %subsize_x = 50;
+    %subsize_y = 100;
+    subsize_x = im_w;;
     subsize_y = im_h;
     step = 16;
     
