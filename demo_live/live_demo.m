@@ -13,7 +13,7 @@ addpath('../../KinectHandler_Matlab/MexOpenNI');
 addpath('../../KinectHandler_Matlab/MexFunc');
 
 %% Load Model Data and process.m
-addpath('predictProcess');
+addpath('../demo_rgbd/predictProcess');
 %load('modelrgbkdes.mat')
 %load('modelgkdes.mat');
 %load('modelgkdes_dep.mat');
