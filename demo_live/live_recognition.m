@@ -16,6 +16,8 @@ addpath('../demo_rgbd/predictProcess');
 %load('modelgkdes_dep.mat');
 %load('modelspinkdes.mat');
 %load('combinekdes.mat');
+USE_MULTI_PARTMODEL = 0;
+SVM_PARTMODEL_NUM = 2;
 
 %% Recognition Limit in order to prevent from increasing calc cost
 recognition_limit = 2;
@@ -61,7 +63,7 @@ while 1
     X=XYZ(:,:,1); Y=XYZ(:,:,2); Z=XYZ(:,:,3);
    
     % Downsampling 
-    subsample = 4;
+    subsample = 3;
     X=downsample(X,subsample); X=downsample(X',subsample); X=X';
     Y=downsample(Y,subsample); Y=downsample(Y',subsample); Y=Y';
     Z=downsample(Z,subsample); Z=downsample(Z',subsample); Z=Z';
@@ -91,7 +93,21 @@ while 1
             
             %process.m
             crop_rgb = rgb_calc( y:ny, x:nx, : ); crop_depth = depth( y:ny, x:nx, : );
-            [dec, label, fea, name]=process( 'rgb', crop_rgb, modelrgbkdes );
+            [dec, label, fea, name]=process( 'rgb', crop_rgb, modelgkdes );
+            
+            %for multi-part-based model( only predict function )
+            if USE_MULTI_PARTMODEL == 1
+                for j = 2:SVM_PARTMODEL_NUM
+                    [dec{j}, label{j}] = processPredictSVM( fea{1}, full_modelrgbkdes, 2);
+                end
+                
+                %combine decvalues
+                for j = 2:SVM_PARTMODEL_NUM
+                   dec{1} =  dec{1} + dec{j};
+                end
+                [tmp_value, tmp_idx] = max( dec{1} );
+                label{1} = tmp_idx;
+            end
             
             %show results
             labelstr = [ labelstr name(label{1}) ' ' num2str(dec{1}(label{1})) ' ' ];            

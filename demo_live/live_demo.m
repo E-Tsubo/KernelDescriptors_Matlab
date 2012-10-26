@@ -42,6 +42,7 @@ figure, h3 = imagesc(zeros(height,width,3,'uint8')); hold on;
         
 %% LOOP
 loopcnt = 1;
+SELF_CROP_FLAG = 0;
 while 1
 %for l = 1:1
 
@@ -60,25 +61,39 @@ while 1
     
     % Set crop region
     if CROP_FLAG
-        crop_rgb = rgb(center_h-crop_h/2:center_h+crop_h/2, center_w-crop_w/2:center_w+crop_w/2, :);
-        crop_depth = depth(center_h-crop_h/2:center_h+crop_h/2, center_w-crop_w/2:center_w+crop_w/2, :);
+        if SELF_CROP_FLAG == 0
+            crop_rgb = rgb(center_h-crop_h/2:center_h+crop_h/2, center_w-crop_w/2:center_w+crop_w/2, :);
+            crop_depth = depth(center_h-crop_h/2:center_h+crop_h/2, center_w-crop_w/2:center_w+crop_w/2, :);
+        end
         
        %% Please set your model data...
         %[dec,label,fea, name]=process( 'comrgb', crop_rgb, modelgkdes, modelrgbkdes, combinekdes );
         [dec,label,fea, name]=process( 'rgb', crop_rgb, modelgkdes );
         %[dec,label,fea, name]=process( 'dep', crop_depth, modelgkdes );
         
-        Xlabel( [ name(label{1}) '  ' num2str(dec{1}(label{1})) ] );                
-        rectangle( 'Position', [ center_w-crop_w/2, center_h-crop_h/2, crop_w, crop_h ] );
+        Xlabel( [ name(label{1}) '  ' num2str(dec{1}(label{1})) ] );
+        if SELF_CROP_FLAG == 0
+            rectangle( 'Position', [ center_w-crop_w/2, center_h-crop_h/2, crop_w, crop_h ] );
+        else
+            rectangle( 'Position', [ rect(1), rect(2), rect(3), rect(4) ] );
+        end
     end
     
     drawnow;
     disp(['itr=' sprintf('%d',loopcnt) , ' : FPS=' sprintf('%f',1/toc)]);
     loopcnt = loopcnt + 1;
     
-    if GetAsyncKeyState(char(27))
+    if GetAsyncKeyState(char(27))%esc
         break;
-    end
+    elseif GetAsyncKeyState(char(83))%s
+        [crop_rgb, rect] = imcrop(rgb);
+        crop_depth = depth( rect(2):rect(2)+rect(4), rect(1):rect(1)+rect(3), : );
+        SELF_CROP_FLAG = 1;
+        figure, h2 = imagesc(zeros(height,width,3,'uint8'));
+   elseif GetAsyncKeyState(char(68))%d
+       disp('Delete Crop Image'); 
+       SELF_CROP_FLAG = 0;
+   end
     
 end
 
