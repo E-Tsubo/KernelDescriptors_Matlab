@@ -19,6 +19,8 @@ addpath('../demo_rgbd/predictProcess');
 %load('modelgkdes_dep.mat');
 %load('modelspinkdes.mat');
 %load('combinekdes.mat');
+USE_MULTI_PARTMODEL = 0;
+SVM_PARTMODEL_NUM = 2;
 
 %% Create context with xml file
 context = mxNiCreateContext('../../KinectHandler_Matlab/Config/SamplesConfig.xml');
@@ -66,10 +68,24 @@ while 1
             crop_depth = depth(center_h-crop_h/2:center_h+crop_h/2, center_w-crop_w/2:center_w+crop_w/2, :);
         end
         
-       %% Please set your model data...
+        %Please set your model data...
         %[dec,label,fea, name]=process( 'comrgb', crop_rgb, modelgkdes, modelrgbkdes, combinekdes );
-        [dec,label,fea, name]=process( 'rgb', crop_rgb, modelgkdes );
+        [dec,label,fea, name]=process( 'rgb', crop_rgb, modelrgbkdes );
         %[dec,label,fea, name]=process( 'dep', crop_depth, modelgkdes );
+        
+        %for multi-part-based model( only predict function )
+        if USE_MULTI_PARTMODEL == 1
+            for j = 2:SVM_PARTMODEL_NUM
+                [dec{j}, label{j}] = processPredictSVM( fea{1}, top_modelrgbkdes, 2);
+            end
+                
+            %combine decvalues
+            for j = 2:SVM_PARTMODEL_NUM
+                dec{1} =  dec{1} + dec{j};
+            end
+            [tmp_value, tmp_idx] = max( dec{1} );
+            label{1} = tmp_idx;
+        end
         
         Xlabel( [ name(label{1}) '  ' num2str(dec{1}(label{1})) ] );
         if SELF_CROP_FLAG == 0

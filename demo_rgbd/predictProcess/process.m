@@ -459,6 +459,9 @@ for i = 1:length(impath)
     
     im_h = size(I,1);
     im_w = size(I,2);
+    
+    %Don't use at slidewindow.
+    
     if max(im_h, im_w) > 300,
         I = imresize(I, 300/max(im_h, im_w), 'bicubic');
         im_h = size(I,1);
@@ -469,12 +472,13 @@ for i = 1:length(impath)
         im_h = size(I,1);
         im_w = size(I,2);
     end
-        
+      
+    
     %subsize_x = 50;
-    %subsize_y = 100;
+    %subsize_y = im_h;
     subsize_x = im_w;;
     subsize_y = im_h;
-    step = 16;
+    step = 32;
     
     count = 1;
     for h = 1:step:im_h
@@ -494,8 +498,8 @@ for i = 1:length(impath)
            
            tmp_grid{count} = I( height_s:height_e, width_s:width_e, : );
            %If you want to save grid image, please use this code.
-           %str = ['grid_' num2str(i) '_' num2str(h) '_' num2str(w) '.png'];
-           %imwrite( tmp_grid{count}, str );
+           str = ['grid_' num2str(i) '_' num2str(h) '_' num2str(w) '.png'];
+           imwrite( tmp_grid{count}, str );
            count = count + 1;
         end
     end
