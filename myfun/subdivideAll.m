@@ -21,7 +21,7 @@ function divimage( path, flag)
 
 %}
 
-savepath = 'subdivide_right';
+savepath = 'subdivide_bottom';
 mkdir( savepath );
 
 list = dir( path );
