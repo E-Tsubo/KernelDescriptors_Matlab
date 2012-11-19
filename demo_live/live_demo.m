@@ -30,7 +30,7 @@ width = 640; height = 480;
 
 %% Initialise Crop Region
 CROP_FLAG = 1;
-crop_w = 50; crop_h = 100;
+crop_w = 200; crop_h = 150;
 center_w = 320; center_h = 240;
 
 %% Initialise Data Structure Field
@@ -70,7 +70,8 @@ while 1
         
         %Please set your model data...
         %[dec,label,fea, name]=process( 'comrgb', crop_rgb, modelgkdes, modelrgbkdes, combinekdes );
-        [dec,label,fea, name]=process( 'rgb', crop_rgb, modelrgbkdes );
+        %[dec,label,fea, name]=process( 'rgb', crop_rgb, modelgkdes );
+        [dec,label,fea, name]=processTMPEVA( 'rgb', crop_rgb, modelgkdes );
         %[dec,label,fea, name]=process( 'dep', crop_depth, modelgkdes );
         
         %for multi-part-based model( only predict function )
