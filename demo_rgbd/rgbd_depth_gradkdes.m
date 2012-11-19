@@ -9,7 +9,7 @@ clear;
 % add paths
 
 % Please choice only one path about SVM Library.
-SVM_TYPE = 2;
+SVM_TYPE = 1;
 if SVM_TYPE == 0
     disp('Load liblinear-dense-float');
     addpath('../liblinear-1.5-dense-float/matlab');
@@ -28,15 +28,15 @@ addpath('../myfun');
 addpath('../CVonMatlabFunc');
 
 % compute the paths of images
-%imdir = '../images/rgbdsubset/';
-imdir = '../images/rgbdsubset_subdivide/subdivide_right/';
+imdir = '../images/rgbdsubset/';
+%imdir = '../images/rgbdsubset_right/';
 disp( imdir );
 imsubdir = dir_bo(imdir);
 impath = [];
 rgbdclabel = [];
 rgbdilabel = [];
 rgbdvlabel = [];
-subsample = 1;
+subsample = 5;
 disp(['subsample is ' num2str(subsample)]);
 label_num = 0;
 for i = 1:length(imsubdir)
@@ -102,7 +102,7 @@ if featag
    fea_params.feapath = rgbdkdespath;
    [rgbdfea, G] = cksvd_emk_batch(fea_params, basis_params, emk_params);
    rgbdfea = single(rgbdfea);
-   save -v7.3 rgbdfea_depth_gradkdes rgbdfea rgbdclabel rgbdilabel rgbdvlabel rgbdwords;
+   save -v7.3 rgbdfea_depth_gradkdes rgbdfea rgbdclabel rgbdilabel rgbdvlabel rgbdwords G;
 else
    disp('Loading bag of words data insted of calc');
    load rgbdfea_depth_gradkdes;
@@ -149,7 +149,7 @@ if category
            %option = ['-s 1 -c ' num2str(bestc)];
            %model = train(trainlabel', trainhmp', option);
                
-           lc = 10;
+           lc = 0.3;
            %{
            k = (1+log( length(trainhmp(1,:)) )/log(2))*4;
            k = floor(k);
