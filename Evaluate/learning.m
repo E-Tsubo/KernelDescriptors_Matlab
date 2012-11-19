@@ -22,23 +22,24 @@ emk_params.pyramid = [1 2 3];
 emk_params.ktype = 'rbf';
 emk_params.kparam = 0.01;
 
+path = 'Model/Full/';
 if 0
-    path = 'rgbdfea_depth_gradkdes';
+    path = [path 'rgbdfea_depth_gradkdes'];
     load('gradkdes_dep_params');
     kdes_params.kdes = gradkdes_dep_params;
 end
 if 1
-    path = 'rgbdfea_pcloud_normalkdes';
+    path = [path 'rgbdfea_pcloud_normalkdes'];
     load('normalkdes_params');
     kdes_params.kdes = normalkdes_params;
 end
 if 0
-    path = 'rgbdfea_rgb_gradkdes';
+    path = [path 'rgbdfea_rgb_gradkdes'];
     load('gradkdes_params');
     kdes_params.kdes = gradkdes_params;
 end
 if 0
-    path = 'rgbfea_rgb_rgbkdes';
+    path = [path 'rgbfea_rgb_rgbkdes'];
     load('rgbkdes_params');
     kdes_params.kdes = rgbkdes_params;
 end
