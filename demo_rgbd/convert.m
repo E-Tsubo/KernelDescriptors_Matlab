@@ -10,17 +10,18 @@
 % 9 class
 %classname = {'bottle', 'can', 'chair', 'cup', 'koaramarch', 'ornament', 'pack', 'painomi', 'pakuncho' };
 %11 class
-classname = {'bottle', 'can', 'chair', 'cup', 'display', 'koaramarch', 'notepc', 'ornament', 'pack', 'painomi', 'pakuncho' };
+%classname = {'bottle', 'can', 'chair', 'cup', 'display', 'koaramarch', 'notepc', 'ornament', 'pack', 'painomi', 'pakuncho' };
+classname = {'camera', 'cereal_box', 'coffee_mug', 'soda_can', 'water_bottle'};
 
 rgbd_depth_gradkdes    = 0;% C++ Supported
 rgbd_depthlbpkdes      = 0;% Not yet, C++ Supported
 rgbd_pcloud_normalkdes = 0;% C++ Supported
 rgbd_pcloud_sizekdes   = 0;% Not yet
-rgbd_rgb_gradkdes      = 0;% C++ Supported
+rgbd_rgb_gradkdes      = 1;% C++ Supported
 rgbd_rgb_lbpkdes       = 0;% Not yet
 rgbd_rgb_nrgbkdes      = 0;% C++ Not Supported
 rgbd_rgb_rgbkdes       = 0;% C++ Supported
-rgbd_joint_category    = 1;% C++ Supported
+rgbd_joint_category    = 0;% C++ Supported
 
 
 %
@@ -40,6 +41,8 @@ modelgkdes.kdes.min_imsize = 45;
 modelgkdes.kdes.grid_space = kdes_params.grid;
 modelgkdes.kdes.patch_size = kdes_params.patchsize;
 modelgkdes.kdes.low_contrast = 0.8;% Really?
+load('gradkdes_dep_params');
+modelgkdes.kdes.kdes_params = kdes_params.kdes;
 
 % About emk
 modelgkdes.emk.words = rgbdwords;
@@ -58,6 +61,9 @@ modelgkdes.svm.w = model.w;
 modelgkdes.svm.minvalue = minvalue;
 modelgkdes.svm.maxvalue = maxvalue;
 modelgkdes.svm.classname = classname;% Please ready this array before running this program
+
+% For Matlab Program
+modelgkdes.matlab.model = model;
 
 % Result
 disp('------------------------------------');
@@ -89,6 +95,7 @@ modelspinkdes.kdes.grid_space = kdes_params.grid;
 modelspinkdes.kdes.patch_size = kdes_params.patchsize;
 %modelspinkdes.kdes.nromal_window = 5;  % Really?
 %modelspinkdes.kdes.normal_threshold = 0.01; % Really?
+modelspinkdes.kdes.kdes_params = kdes_params.kdes;
 
 % About emk
 modelspinkdes.emk.words = rgbdwords;
@@ -107,6 +114,9 @@ modelspinkdes.svm.w = model.w;
 modelspinkdes.svm.minvalue = minvalue;
 modelspinkdes.svm.maxvalue = maxvalue;
 modelspinkdes.svm.classname = classname;% Please ready this array before running this program
+
+% For Matlab Program
+modelspinkdes.matlab.model = model;
 
 % Result
 disp('------------------------------------');
@@ -138,6 +148,7 @@ modelgkdes.kdes.min_imsize = 45;
 modelgkdes.kdes.grid_space = kdes_params.grid;
 modelgkdes.kdes.patch_size = kdes_params.patchsize;
 modelgkdes.kdes.low_contrast = 0.8;% Really?
+modelgkdes.kdes.kdes_params = kdes_params.kdes;
 
 % About emk
 modelgkdes.emk.words = rgbdwords;
@@ -156,6 +167,9 @@ modelgkdes.svm.w = model.w;
 modelgkdes.svm.minvalue = minvalue;
 modelgkdes.svm.maxvalue = maxvalue;
 modelgkdes.svm.classname = classname;% Please ready this array before running this program
+
+% For Matlab Program
+modelgkdes.matlab.model = model;
 
 % Result
 disp('--------------------------------');
@@ -187,6 +201,7 @@ modelrgbkdes.kdes.min_imsize = 45;
 modelrgbkdes.kdes.grid_space = kdes_params.grid;
 modelrgbkdes.kdes.patch_size = kdes_params.patchsize;
 modelrgbkdes.kdes.low_contrast = 0;% Really?
+modelrgbkdes.kdes.kdes_params = kdes_params.kdes;
 
 % About emk
 modelrgbkdes.emk.words = rgbdwords;
@@ -205,6 +220,9 @@ modelrgbkdes.svm.w = model.w;
 modelrgbkdes.svm.minvalue = minvalue;
 modelrgbkdes.svm.maxvalue = maxvalue;
 modelrgbkdes.svm.classname = classname;% Please ready this array before running this program
+
+% For Matlab Program
+modelrgbkdes.matlab.model = model;
 
 % Result
 disp('--------------------------------');
@@ -236,6 +254,7 @@ modelrgbkdes.kdes.min_imsize = 45;
 modelrgbkdes.kdes.grid_space = kdes_params.grid;
 modelrgbkdes.kdes.patch_size = kdes_params.patchsize;
 modelrgbkdes.kdes.low_contrast = 0;% Really?
+modelrgbkdes.kdes.kdes_params = kdes_params.kdes;
 
 % About emk
 modelrgbkdes.emk.words = rgbdwords;
@@ -254,6 +273,9 @@ modelrgbkdes.svm.w = model.w;
 modelrgbkdes.svm.minvalue = minvalue;
 modelrgbkdes.svm.maxvalue = maxvalue;
 modelrgbkdes.svm.classname = classname;% Please ready this array before running this program
+
+% For Matlab Program
+modelrgbkdes.matlab.model = model;
 
 % Result
 disp('----------------------------------');
@@ -291,6 +313,9 @@ combinekdes.svm.Label = model.Label;
 combinekdes.svm.w = model.w;
 combinekdes.svm.minvalue = minvalue;
 combinekdes.svm.maxvalue = maxvalue;
+
+% For Matlab Program
+combinekdes.matlab.model = model;
 
 % Result
 disp('---------------------------------');
