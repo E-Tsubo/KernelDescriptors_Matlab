@@ -217,15 +217,18 @@ kdes_params.kdes = kdes;
 switch kdes_params.kdes.type
     case {'gradkdes', 'lbpkdes', 'rgbkdes', 'nrgbkdes'}
         % resize an image
+        
         if 1
             im_h = size(g,1);
             im_w = size(g,2);
+            %If you don't use this resize func, maybe decrease precision...
             if max(im_h, im_w) > model.kdes.max_imsize,
                 g = imresize(g, model.kdes.max_imsize/max(im_h, im_w), 'bicubic');
              end
              if min(im_h, im_w) < model.kdes.min_imsize,
                 g = imresize(g, model.kdes.min_imsize/min(im_h, im_w), 'bicubic');
              end
+            %
         end
               
         % extract dense kernel descriptors over images
@@ -461,7 +464,7 @@ for i = 1:length(impath)
     im_w = size(I,2);
     
     %Don't use at slidewindow.
-    
+    %{
     if max(im_h, im_w) > 300,
         I = imresize(I, 300/max(im_h, im_w), 'bicubic');
         im_h = size(I,1);
@@ -472,7 +475,7 @@ for i = 1:length(impath)
         im_h = size(I,1);
         im_w = size(I,2);
     end
-      
+    %}
     
     %subsize_x = 50;
     %subsize_y = im_h;
