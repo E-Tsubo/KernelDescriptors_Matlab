@@ -71,6 +71,7 @@ while 1
     %Plane Fitting and Clustering
     bbox = clustering(X, Y, Z); bbox=bbox(1:3,:);
     
+    num = -1;
     %Calc kdes features and predict
     if length(bbox) ~= 0
         
@@ -110,8 +111,8 @@ while 1
             end
             
             %show results
-            labelstr = [ labelstr name(label{1}) ' ' num2str(dec{1}(label{1})) ' ' ];            
-            rgb(y:ny,x:nx,:)=255;
+            labelstr = [ labelstr name(label{1}) ' ' num2str(dec{1}(label{1})) ' ' ];
+            h_rec(i) = rectangle( 'Position', [ x, y, nx-x, ny-y ], 'edgecolor', 'g' );
             if recognition_limit <= i
                 break;
             end
@@ -137,6 +138,14 @@ while 1
     set(h5,'YData',-tmp(:,:,2));
     set(h5,'ZData',-tmp(:,:,3));
     drawnow;
+    
+    %Release
+    for i=1:2:num
+        delete(h_rec(i));
+        if recognition_limit <= i
+            break;
+        end
+    end
     
     %show FPS and frame No.
     disp(['itr=' sprintf('%d',k) , ' : FPS=' sprintf('%f',1/toc)]);
