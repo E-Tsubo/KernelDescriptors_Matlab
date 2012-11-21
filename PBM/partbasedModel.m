@@ -26,7 +26,8 @@ for i = 1:USE_PART_MODEL
     label{i} = lab;
 end
 
-[ finaldec, finallab ] = combineModel( decvalue, label, combinemodel );
+[ finaldec, finallab ] = combineModel( decvalue, label, combinemodel, minvalue, maxvalue );
+disp( [ 'Detected Object is ' name{finallab} ] );
 
 %% To evaluate
 %access dec{part_num}{win_num}(label_num)

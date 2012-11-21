@@ -1,18 +1,18 @@
 % load train features
-path = '../Evaluate/Model/';
+%path = '../Evaluate/Model/';
 
-%% DEPTH-GRADIENT
-if 0
+%% 
+if DEP_GRAD
     name = 'rgbdfea_depth_gradkdes.mat'; 
 end
-if 0
+if DEP_SPIN
     name = 'rgbdfea_pcloud_normalkdes.mat';
 end
-if 1
+if RGB_GRAD
     name = 'rgbdfea_rgb_gradkdes.mat';
 end
-if 0
-    name = 'rgbfea_rgb_rgbkdes.mat';
+if RGB_RGB
+    name = 'rgbdfea_rgb_rgbkdes.mat';
 end
   
 fullpath = [ path 'Full/' name ];

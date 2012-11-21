@@ -1,5 +1,5 @@
 %% 2012/11/19 Written by Hideshi T. %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-function [ finaldec, finallabel ] = combineModel( dec, lab, model )
+function [ finaldec, finallabel ] = combineModel( dec, lab, model, minvalue, maxvalue )
 %% Combine Function using Part-Based SVM Model
 %% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -45,5 +45,6 @@ switch( method )
         end
         
         fea = sparse(fea);
-        [finallabel, finalaccuracy, finaldec] = predict(testlabel, fea, model);
+        fea = scaletest(fea', 'linear', minvalue, maxvalue);
+        [finallabel, finalaccuracy, finaldec] = predict(testlabel, fea', model);
 end

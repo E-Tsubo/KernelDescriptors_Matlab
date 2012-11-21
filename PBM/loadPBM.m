@@ -1,8 +1,13 @@
 %%Load Part-Based Model
-path = '../Evaluate/Model/';
+path = '../Evaluate/rgbdsubset_my2/';
+
+RGB_RGB  = 0;
+RGB_GRAD = 1;
+DEP_GRAD = 0;
+DEP_SPIN = 0;%not yet
 
 %% DEPTH-GRADIENT
-if 0
+if DEP_GRAD
     name = 'modelgkdes_dep.mat';
     fullpath = [ path 'Full/' name ];
     leftpath = [ path 'Left/' name ];
@@ -40,11 +45,11 @@ if 0
     bottom.svm = modelgkdes.svm;
     bottom.matlab = modelgkdes.matlab;
     
-    clear fullpath leftpath rightpath toppath bottompath path name modelgkdes;
+    clear fullpath leftpath rightpath toppath bottompath name modelgkdes;
 end
 
 %% DEPTH-SPINIMAGE
-if 0
+if DEP_SPIN
     name = 'modelspinkdes.mat';
     fullpath = [ path 'Full/' name ];
     leftpath = [ path 'Left/' name ];
@@ -82,11 +87,11 @@ if 0
     bottom.svm = modelspinkdes.svm;
     bottom.matlab = modelspinkdes.matlab;
     
-    clear fullpath leftpath rightpath toppath bottompath path name modelspinkdes;
+    clear fullpath leftpath rightpath toppath bottompath name modelspinkdes;
 end
 
-%% RGB=GRADIENT
-if 1
+%% RGB-GRADIENT
+if RGB_GRAD
    name = 'modelgkdes.mat';
     fullpath = [ path 'Full/' name ];
     leftpath = [ path 'Left/' name ];
@@ -124,11 +129,11 @@ if 1
     bottom.svm = modelgkdes.svm;
     bottom.matlab = modelgkdes.matlab;
     
-    clear fullpath leftpath rightpath toppath bottompath path name modelgkdes;
+    clear fullpath leftpath rightpath toppath bottompath name modelgkdes;
 end
 
 %% RGB-RGBCOLOR
-if 0
+if RGB_RGB
     name = 'modelrgbkdes.mat';
     fullpath = [ path 'Full/' name ];
     leftpath = [ path 'Left/' name ];
@@ -166,5 +171,5 @@ if 0
     bottom.svm = modelrgbkdes.svm;
     bottom.matlab = modelrgbkdes.matlab;
     
-    clear fullpath leftpath rightpath toppath bottompath path name modelrgbkdes;
+    clear fullpath leftpath rightpath toppath bottompath name modelrgbkdes;
 end;

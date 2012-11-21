@@ -23,7 +23,7 @@ addpath('../kdes');
 addpath('../emk');
 addpath('../myfun');
 
-if 1
+if 0
 for i = 1:USE_PART_MODEL
     disp( [ 'Part is ' num2str(i) ] );
     
@@ -85,11 +85,12 @@ for h = 1:USE_PART_MODEL %Part-Model Index
 end
 
 disp( ' Learning... ' );
-%[combinefea, minvalue, maxvalue] = scaletrain(combinefea', 'linear');
+
 combinefea = combinefea';
 combinefea = sparse( combinefea );
+[combinefea, minvalue, maxvalue] = scaletrain(combinefea, 'linear');
 
-lc = 0.3;
+lc = 30.0;
 option = ['-s 1 -c ' num2str(lc)];
 combinemodel = train(combinelabel', combinefea', option);
 
