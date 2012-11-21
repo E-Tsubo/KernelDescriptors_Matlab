@@ -70,7 +70,7 @@ switch mode
         
 end
 
-SVM_TYPE = 2;
+SVM_TYPE = 1;
 if SVM_TYPE == 0
     disp('Load liblinear-dense-float');
     addpath('../liblinear-1.5-dense-float/matlab');
