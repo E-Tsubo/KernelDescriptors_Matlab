@@ -1,5 +1,6 @@
 %%Load Part-Based Model
-path = '../Evaluate/rgbdsubset_my2/';
+%path = '../Evaluate/rgbdsubset_my2/';
+path = '../Evaluate/Model/';
 
 RGB_RGB  = 0;
 RGB_GRAD = 1;

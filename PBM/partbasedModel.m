@@ -9,12 +9,12 @@
 %Model Name:full, left, right, top, bottom.
 
 % FULL, LEFT, RIGHT, TOP, BOTTOM
-USE_PART_MODEL = 5;
-model{1} = full;
-model{2} = left;
-model{3} = right;
-model{4} = top;
-model{5} = bottom;
+USE_PART_MODEL = 4;
+%model{1} = full;
+model{1} = left;
+model{2} = right;
+model{3} = top;
+model{4} = bottom;
 
 %% Only one feature. All part Model is maked by same feature.
 for i = 1:USE_PART_MODEL

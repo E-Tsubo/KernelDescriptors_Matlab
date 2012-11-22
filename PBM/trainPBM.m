@@ -3,12 +3,12 @@
 
 %% please use loadPBM in order to prepare part-svm.
 % FULL, LEFT, RIGHT, TOP, BOTTOM
-USE_PART_MODEL = 5;
-partmodel{1} = full;
-partmodel{2} = left;
-partmodel{3} = right;
-partmodel{4} = top;
-partmodel{5} = bottom;
+USE_PART_MODEL = 4;
+%partmodel{1} = full;
+partmodel{1} = left;
+partmodel{2} = right;
+partmodel{3} = top;
+partmodel{4} = bottom;
 %clear full left right top bottom;
 
 %% load train features
@@ -16,6 +16,7 @@ loadTrainFea;
 
 %% Collecting Part Component Score (decision value)
 addpath('../liblinear-1.91-original/matlab');
+%addpath('../libsvm-3.12-original/matlab');
 %addpath('../liblinear-1.5-dense-float/matlab');
 
 addpath('../helpfun');
@@ -23,7 +24,7 @@ addpath('../kdes');
 addpath('../emk');
 addpath('../myfun');
 
-if 0
+if 1
 for i = 1:USE_PART_MODEL
     disp( [ 'Part is ' num2str(i) ] );
     
@@ -86,13 +87,21 @@ end
 
 disp( ' Learning... ' );
 
+
+%Liblinear
 combinefea = combinefea';
 combinefea = sparse( combinefea );
 [combinefea, minvalue, maxvalue] = scaletrain(combinefea, 'linear');
-
 lc = 30.0;
 option = ['-s 1 -c ' num2str(lc)];
 combinemodel = train(combinelabel', combinefea', option);
 
-
+%{
+%Libsvm
+combinefea = combinefea';
+[combinefea, minvalue, maxvalue] = scaletrain(combinefea, 'linear');
+lc = 30.0;
+option = ['-s 1 -c ' num2str(lc)];
+combinemodel = svmtrain(combinelabel', combinefea', option);
+%}
 
