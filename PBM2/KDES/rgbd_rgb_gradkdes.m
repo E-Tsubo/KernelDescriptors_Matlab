@@ -136,9 +136,9 @@ if category
            if 1
             bestcv = 0;
             bestc = 0;
-            for log2c = -1:3,
-                    cmd = ['-s 1 -v 5 -c ', num2str(2^log2c) ];
-                    cv = svmtrain(trainlabel', trainhmp', cmd);
+            for log2c = -1:2:3,
+                    cmd = ['-s 1 -v 2 -c ', num2str(2^log2c) ];
+                    cv = train(trainlabel', trainhmp', cmd);
                     if (cv >= bestcv),
                         bestcv = cv; bestc = 2^log2c;
                     end

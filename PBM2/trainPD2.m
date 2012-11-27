@@ -2,12 +2,12 @@
 %% 2012/11/21 Written by Hideshi T.
 
 % Params( Please edit follows... )
-rootimgdir = '../images/Model/';
-rootmodeldir = '../Evaluate/Model/';
+rootimgdir = '../images/rgbdsubset_my2/';
+rootmodeldir = '../Evaluate/rgbdsubset_my2/';
 mkdir( rootmodeldir );
-classname = {'camera', 'cereal_box', 'coffee_mug', 'soda_can', 'water_bottle'};
-%classname = {'bottle', 'can', 'cup', 'koaramarch', 'ornament', 'pack', 'pakuncho' };
-subsample = 20;
+%classname = {'camera', 'cereal_box', 'coffee_mug', 'soda_can', 'water_bottle'};
+classname = {'bottle', 'can', 'cup', 'koaramarch', 'ornament', 'pack', 'pakuncho' };
+subsample = 1;
 
 RGB_RGB  = 1;
 RGB_GRAD = 1;
