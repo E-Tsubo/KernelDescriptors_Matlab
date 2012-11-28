@@ -531,7 +531,7 @@ for i = 1:length(impath)
            tmp_grid{count} = I( height_s:height_e, width_s:width_e, : );
            %If you want to save grid image, please use this code.
            str = ['grid_' num2str(i) '_' num2str(h) '_' num2str(w) '.png'];
-           imwrite( tmp_grid{count}, str );
+           %imwrite( tmp_grid{count}, str );
            count = count + 1;
         end
     end
