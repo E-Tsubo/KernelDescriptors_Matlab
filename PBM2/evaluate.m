@@ -36,7 +36,7 @@ subsample = 5;
 disp(['subsample is ' num2str(subsample)]);
 label_num = 0;
 
-other = 1;
+other = 0;
 if other
 for i = 1:length(imsubdir)
     [rgbdilabel_tmp, impath_tmp] = get_im_label([imdir imsubdir(i).name '/'], '_crop.png');
@@ -65,10 +65,10 @@ for i = 1:length(imsubdir)
 end
 end
 
-same = 0;
+same = 1;
 if same
 for i = 1:length(imsubdir)
-    [rgbdilabel_tmp, impath_tmp] = get_im_label([imdir imsubdir(i).name '/'], '_depthcrop.png');
+    [rgbdilabel_tmp, impath_tmp] = get_im_label([imdir imsubdir(i).name '/'], '_crop.png');
     for j = 1:length(impath_tmp)
         ind = find(impath_tmp{j} == '_');
         rgbdvlabel_tmp(1,j) = str2num(impath_tmp{j}(ind(end-2)+1));
@@ -112,12 +112,12 @@ for i = 1:length(impath)
     disp( final_dec );
             
     store_name{i,1} = i; 
-    store_name{i,2} = rgbdclabel(1,i); 
+    store_name{i,2} = rgbdclabel(1,i)+1; 
     store_name{i,3} = impath{i};
     store_fd{i} = final_dec;
     store_fl(i) = final_label;
     
-    if final_label == rgbdclabel(1,i)
+    if final_label == (rgbdclabel(1,i)+1)
         cnt_correct = cnt_correct + 1;
         disp('###############Correct###############');
     else

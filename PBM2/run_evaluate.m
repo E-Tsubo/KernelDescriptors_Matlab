@@ -1,15 +1,12 @@
-rootname = 'evaluate_'; 
-extension = '.mat';
+for loop = 1:5
+    rootname = 'evaluate_'; 
+    extension = '.mat';
 
-dir{1} = '../images/Model/full/';
-dir{2} = '../images/Model/right/';
-dir{3} = '../images/Model/top/';
-dir{4} = '../images/Model/bottom/';
-%dir{5} = '../images/Model/full/';
-
-
-for loop = 1:length(dir)
-    
+    dir{1} = '../images/Model_Test/left/';
+    dir{2} = '../images/Model_Test/right/';
+    dir{3} = '../images/Model_Test/top/';
+    dir{4} = '../images/Model_Test/bottom/';
+    dir{5} = '../images/Model_Test/full/';
     imdir = dir{loop};
     load PBM.mat;
     
