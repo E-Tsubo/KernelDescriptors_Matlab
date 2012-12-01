@@ -290,8 +290,8 @@ void mexFunction( int nlhs, mxArray *plhs[],
 			return;
 		}
 
-		save_model("model.linear", model_);
-        mexPrintf("Save model.linear for C++ Code!!\n");
+		//save_model("model.linear", model_);
+        //mexPrintf("Save model.linear for C++ Code!!\n");
 
 		if(prob_estimate_flag)
 		{
