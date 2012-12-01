@@ -36,6 +36,9 @@ subsample = 5;
 disp(['subsample is ' num2str(subsample)]);
 label_num = 0;
 
+wait_h = waitbar( 0, 'Recognition Test...');
+set( wait_h, 'Name', 'Part-based Model Progress' );
+
 other = 0;
 if other
 for i = 1:length(imsubdir)
@@ -88,6 +91,7 @@ for i = 1:length(imsubdir)
 end
 end
 
+FLAG_PBM = 1;
 cnt_correct = 0;
 cnt_wrong = 0;
 for i = 1:length(impath)
@@ -96,10 +100,13 @@ for i = 1:length(impath)
     dep = imread([impath{i}(1:end-8) 'depthcrop.png']);
     loc = fliplr(load([impath{i}(1:end-8) 'loc.txt']));
     
+    
+    
     %% Part-based ModelProcess 
+    if FLAG_PBM == 1
     for j = 1:USE_PART_MODEL
     
-        [tmp_dec, tmp_label, tmp_features, tmp_name] = process_PartBasedModel2( PBM.partdetector, j, rgb, dep );
+        [tmp_dec, tmp_label, tmp_features, tmp_name] = process_PartBasedModel2( PBM.partdetector, j, rgb, dep, loc );
     
         part_decvalues{j} = tmp_dec;
         part_label{j} = tmp_label;
@@ -110,14 +117,20 @@ for i = 1:length(impath)
     disp( ' ' );
     disp( [ 'Detected Object is ' tmp_name{final_label} ] );
     disp( final_dec );
-            
+    
+    else        
+        [dec, lab, features, name] = process( 'rgb', rgb, modelgkdes );
+        final_dec = dec;
+        final_label = lab;
+    end
+    
     store_name{i,1} = i; 
-    store_name{i,2} = rgbdclabel(1,i)+1; 
+    store_name{i,2} = rgbdclabel(1,i); 
     store_name{i,3} = impath{i};
     store_fd{i} = final_dec;
     store_fl(i) = final_label;
     
-    if final_label == (rgbdclabel(1,i)+1)
+    if final_label == rgbdclabel(1,i)
         cnt_correct = cnt_correct + 1;
         disp('###############Correct###############');
     else
@@ -125,4 +138,7 @@ for i = 1:length(impath)
         disp('#############Not Correct#############');
     end
     %%    
+    waitbar( i/length(impath) );
 end
+
+close(wait_h);

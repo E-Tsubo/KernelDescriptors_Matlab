@@ -10,6 +10,7 @@ function [ decvalues, predictlabels, features, name ] = process( varargin )
 %% Global Variant%%
 global REALTIME_DEMO;
 global IMAGE_READ_FLAG;
+global locRoot;
 global locData;
 global deppath;
 %% %%%%%%%%%%%%%%%%
@@ -70,6 +71,7 @@ switch mode
     case 'dep'
         impath{1} = varargin{4};
         deppath = impath{1};
+        locRoot = varargin{5};
         model{1} = partmodel{1};
         kdes_num = 1;
         
@@ -83,6 +85,7 @@ switch mode
     case 'comdep'
         impath{1} = varargin{4};
         deppath = impath{1};
+        locRoot = varargin{5};
         for i = 1:num_model
             model{i} = partmodel{i};
         end
@@ -92,6 +95,7 @@ switch mode
         impath{1} = varargin{3};
         impath{2} = varargin{4};
         deppath = impath{2};
+        locRoot = varargin{5};
         for i = 1:num_model
             model{i} = partmodel{i};
         end
@@ -238,6 +242,7 @@ function [ fea ] = extractFeature( g, kdes, model, num_grid )
 %
 % Same Params...
 %% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+global locRoot;
 global locData;
 global deppath;
 
@@ -293,9 +298,12 @@ switch kdes_params.kdes.type
             %I = imread(data_params.datapath{i});
             g = double(g);
             
-            topleft = fliplr(load([deppath(1:end-13) 'loc.txt']));
-            topleft(1) = topleft(1) + 1;%Offset Grabber C++ Program
-            topleft(2) = topleft(2) + 1;
+            %topleft = fliplr(load([deppath(1:end-13) 'loc.txt']));
+            %Load from Matlab WorkSpace
+            topleft = locRoot;
+            
+            %topleft(1) = topleft(1) + 1;%Offset Grabber C++ Program
+            %topleft(2) = topleft(2) + 1;
             topleft(1) = topleft(1) + locData{num_grid}(2);
             topleft(2) = topleft(2) + locData{num_grid}(1);
             

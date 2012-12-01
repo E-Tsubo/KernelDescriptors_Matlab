@@ -1,6 +1,6 @@
 %% PBM
 
-USE_PART_MODEL = 4;
+USE_PART_MODEL = 5;
 
 for i = 1:USE_PART_MODEL
     PBM.partdetector.partmodel{i} = partmodel{i};
