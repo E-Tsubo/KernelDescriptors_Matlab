@@ -214,3 +214,40 @@ save( savefile, 'modelrgbkdes' );
 disp('Save Done!!');
 
 end
+
+
+% RGB-D Joint Category ( Combine KDES Features )
+if f_COM
+
+disp('Convert rgbd_joint_category model');
+
+% About kdes
+
+% About emk
+
+% About svm
+combinekdes.svm.Parameters = model.Parameters;
+combinekdes.svm.nr_class = model.nr_class;
+combinekdes.svm.nr_feature = model.nr_feature;
+combinekdes.svm.bias = model.bias;
+combinekdes.svm.Label = model.Label;
+combinekdes.svm.w = model.w;
+combinekdes.svm.minvalue = minvalue;
+combinekdes.svm.maxvalue = maxvalue;
+
+% For Matlab Program
+combinekdes.matlab.model = model;
+
+% Result
+disp('---------------------------------');
+disp('Result -----combinekdes----------');
+disp('       -----combinekdes.svm------');
+disp(combinekdes.svm);
+disp('----------------------------------');
+
+% Save
+savefile = 'combinekdes.mat';
+save( savefile, 'combinekdes' );
+disp('Save Done!!');
+
+end
