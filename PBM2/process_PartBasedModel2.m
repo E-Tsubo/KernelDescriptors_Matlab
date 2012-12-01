@@ -41,12 +41,12 @@ if num_model == 1
 else
     flag_rgb = 0;
     flag_dep = 0;
-    for i = 1:num_model
-        input{i} = varargin{1}.input{part_idx};
-        if input{i} == 'rgb'
+    for i = 1:(num_model-1)
+        input{i} = varargin{1}.input(part_idx,i);
+        if strcmp( input{i}, 'rgb' )
             flag_rgb = 1;
         else
-            flag_rgb = 'dep'
+            flag_dep = 1;
         end
     end
     

@@ -23,12 +23,13 @@ for i = 2:nargin
     %}
 end
 
+%{
 if nargin ~= 2 && nargin ~= 1
     kdes{nargin} = 'combinekdes';
     %partmodel{nargin+1} = loadModel( part, kdes{nargin} );
     partmodel{nargin}.part = part;
 end
-
+%}
 %kdesnum = length(kdes);
 
 %% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -76,7 +77,8 @@ switch type
         name = 'combinekdes.mat';
         tmp = loadFeature( part, name );
         load(tmp);
-        model.matlab = modelgkdes.matlab;
+        model.svm = combinekdes.svm;
+        model.matlab = combinekdes.matlab;
         model.inputdata = 'combine';
 end
 

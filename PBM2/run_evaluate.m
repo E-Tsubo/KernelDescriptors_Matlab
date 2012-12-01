@@ -10,12 +10,12 @@ for loop = 1:5
     imdir = dir{loop};
     
     %% Part-based Model
-    %load PBM.mat;
-    %evaluate;
+    load PBM.mat;
+    evaluate;
     
     %% Normal Detector
-    load '../Evaluate/Model/full/modelspinkdes.mat'
-    testOtherSamples;
+    %load '../Evaluate/Model/full/modelspinkdes.mat'
+    %testOtherSamples;
     
     filename = [rootname, num2str(loop), extension];
     eval(['save ', filename]);

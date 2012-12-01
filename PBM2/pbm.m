@@ -5,7 +5,13 @@ USE_PART_MODEL = 5;
 for i = 1:USE_PART_MODEL
     PBM.partdetector.partmodel{i} = partmodel{i};
     PBM.partdetector.featurenum(i) = length( partmodel{i} );
-    for j = 1:PBM.partdetector.featurenum(i)
+    if PBM.partdetector.featurenum(i) ~= 1
+        NUM = PBM.partdetector.featurenum(i) - 1;%Joint Combination Model
+    else
+        NUM = PBM.partdetector.featurenum(i);
+    end
+    
+    for j = 1:NUM
         PBM.partdetector.feature{i,j} = partmodel{i}{j}.kdes.kdes_params.type;
         PBM.partdetector.input{i,j} = partmodel{i}{j}.inputdata;
         %{

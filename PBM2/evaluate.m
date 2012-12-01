@@ -22,7 +22,7 @@ addpath('../myfun');
 %% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % FULL, LEFT, RIGHT, TOP, BOTTOM
-USE_PART_MODEL = 4;
+USE_PART_MODEL = 5;
 
 %imdir = '../images/Model/left/';
 disp( imdir );
