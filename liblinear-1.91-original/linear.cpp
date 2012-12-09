@@ -2379,7 +2379,8 @@ model* train(const problem *prob, const parameter *param)
 			  //Using OpenMP//
 			  model_->w=Malloc(double, w_size*nr_class);
 			  //double *w=Malloc(double, w_size);
-			  
+
+			  omp_set_num_threads( omp_get_max_procs() );
 			  mexPrintf("OpenMP : Enabled Max processors = %d\n", omp_get_num_procs());
 			  mexPrintf("OpenMP : Enabled Max threads = %d\n", omp_get_max_threads());
 #pragma omp parallel for private(i)
