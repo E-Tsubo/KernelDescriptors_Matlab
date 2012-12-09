@@ -4,9 +4,13 @@
 #include <string.h>
 #include <stdarg.h>
 #include <locale.h>
+#include <omp.h>
 #include "linear.h"
 #include "tron.h"
 #include "mex.h"
+
+#define _OPENMP 1
+
 typedef signed char schar;
 template <class T> static inline void swap(T& x, T& y) { T t=x; x=y; y=t; }
 #ifndef min
@@ -2370,27 +2374,67 @@ model* train(const problem *prob, const parameter *param)
 			}
 			else
 			{
-				model_->w=Malloc(double, w_size*nr_class);
-				double *w=Malloc(double, w_size);
-				for(i=0;i<nr_class;i++)
-				{
-					int si = start[i];
-					int ei = si+count[i];
 
-					k=0;
-					for(; k<si; k++)
-						sub_prob.y[k] = -1;
-					for(; k<ei; k++)
-						sub_prob.y[k] = +1;
-					for(; k<sub_prob.l; k++)
-						sub_prob.y[k] = -1;
-
-					train_one(&sub_prob, param, w, weighted_C[i], param->C);
-
-					for(int j=0;j<w_size;j++)
-						model_->w[j*nr_class+i] = w[j];
-				}
-				free(w);
+#if _OPENMP
+			  //Using OpenMP//
+			  model_->w=Malloc(double, w_size*nr_class);
+			  //double *w=Malloc(double, w_size);
+			  
+			  mexPrintf("OpenMP : Enabled Max processors = %d\n", omp_get_num_procs());
+			  mexPrintf("OpenMP : Enabled Max threads = %d\n", omp_get_max_threads());
+#pragma omp parallel for private(i)
+			  for(i=0;i<nr_class;i++)
+			    {
+			      mexPrintf("Class index:%d\n", i+1);
+			      problem sub_prob_omp;
+			      sub_prob_omp.l = l;
+			      sub_prob_omp.n = n;
+			      sub_prob_omp.x = x;
+			      sub_prob_omp.y = Malloc(double,l);
+			      
+			      int si = start[i];
+			      int ei = si+count[i];
+			      
+			      double *w = Malloc(double, w_size);
+			      
+			      int t=0;
+			      for(; t<si; t++)
+				sub_prob_omp.y[t] = -1;
+			      for(; t<ei; t++)
+				sub_prob_omp.y[t] = +1;
+			      for(; t<sub_prob_omp.l; t++)
+				sub_prob_omp.y[t] = -1;
+			      
+			      train_one(&sub_prob_omp, param, w, weighted_C[i], param->C);
+			      
+			      for(int j=0;j<w_size;j++)
+				model_->w[j*nr_class+i] = w[j];
+			      free(sub_prob_omp.y);
+			      free(w);
+			    }
+#else
+			  model_->w=Malloc(double, w_size*nr_class);
+			  double *w=Malloc(double, w_size);
+			  for(i=0;i<nr_class;i++)
+			    {
+			      int si = start[i];
+			      int ei = si+count[i];
+			      
+			      k=0;
+			      for(; k<si; k++)
+				sub_prob.y[k] = -1;
+			      for(; k<ei; k++)
+				sub_prob.y[k] = +1;
+			      for(; k<sub_prob.l; k++)
+				sub_prob.y[k] = -1;
+			      
+			      train_one(&sub_prob, param, w, weighted_C[i], param->C);
+			      
+			      for(int j=0;j<w_size;j++)
+				model_->w[j*nr_class+i] = w[j];
+			    }
+			  free(w);
+#endif
 			}
 
 		}
@@ -2487,9 +2531,6 @@ double predict_values(const struct model *model_, const struct feature_node *x, 
 			for(i=0;i<nr_w;i++)
 				dec_values[i] += w[(idx-1)*nr_w+i]*lx->value;
 	}
-
-	//for( int i = 0; i < nr_class; i++ )//debug
-	//	mexPrintf( "label %d is %d\n", i, model_->label[i] );
 
 	if(nr_class==2)
 	{
