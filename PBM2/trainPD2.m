@@ -2,17 +2,18 @@
 %% 2012/11/21 Written by Hideshi T.
 
 % Params( Please edit follows... )
-rootimgdir = '../images/Model/';
-rootmodeldir = '../Evaluate/Model/';
+rootimgdir = '../images/rgbdsubset/';
+rootmodeldir = '../Evaluate/rgbdsubset/';
 mkdir( rootmodeldir );
-classname = {'cereal_box', 'coffee_mug', 'soda_can', 'water_bottle'};
+%classname = {'cereal_box', 'coffee_mug', 'soda_can', 'water_bottle'};
 %classname = {'bottle', 'can', 'cup', 'koaramarch', 'ornament', 'pack', 'pakuncho' };
-subsample = 5;
+load classname.mat;
+subsample = 15;
 
 RGB_RGB  = 0;
 RGB_GRAD = 0;
 DEP_GRAD = 0;
-DEP_SPIN = 0;
+DEP_SPIN = 1;
 COMBINATION = 1; %Please cheack others flag's value.
 addpath('./KDES');
 
@@ -29,109 +30,6 @@ CALC_RIGHT = 1;
 CALC_TOP = 1;
 CALC_BOTTOM = 1;
 
-%% RGB-D COMBINATION FEATURE
-if COMBINATION
-    if CALC_FULL
-        imdir = [ rootmodeldir 'full/' ];
-        disp( imdir );
-                
-        rgbd_joint_category;
-        f_COM = 1;
-        convert;
-        f_COM = 0;
-    
-        mkdir( rootmodeldir );
-        dst = [ rootmodeldir 'full' ];
-        mkdir( dst );
-        movedir = [ rootmodeldir 'full/rgbdfea_joint.mat' ];
-        movefile( 'rgbdfea_joint.mat', movedir );
-        movedir = [ rootmodeldir 'full/combinekdes.mat' ];
-        movefile( 'combinekdes.mat', movedir );
-        %movedir = [ rootmodeldir 'Full/modelrgbkdes.linear' ];
-        %movefile( 'model.linear', movedir );
-    end
-    
-    if CALC_LEFT
-        imdir = [ rootmodeldir 'left/' ];
-        disp( imdir );
-        
-        rgbd_joint_category;
-        f_COM = 1;
-        convert;
-        f_COM = 0;
-    
-        mkdir( rootmodeldir );
-        dst = [ rootmodeldir 'left' ];
-        mkdir( dst );
-        movedir = [ rootmodeldir 'left/rgbdfea_joint.mat' ];
-        movefile( 'rgbdfea_joint.mat', movedir );
-        movedir = [ rootmodeldir 'left/combinekdes.mat' ];
-        movefile( 'combinekdes.mat', movedir );
-        %movedir = [ rootmodeldir 'Full/modelrgbkdes.linear' ];
-        %movefile( 'model.linear', movedir );
-    end
-    
-    if CALC_RIGHT
-        imdir = [ rootmodeldir 'right/' ];
-        disp( imdir );
-        
-        rgbd_joint_category;
-        f_COM = 1;
-        convert;
-        f_COM = 0;
-    
-        mkdir( rootmodeldir );
-        dst = [ rootmodeldir 'right' ];
-        mkdir( dst );
-        movedir = [ rootmodeldir 'right/rgbdfea_joint.mat' ];
-        movefile( 'rgbdfea_joint.mat', movedir );
-        movedir = [ rootmodeldir 'right/combinekdes.mat' ];
-        movefile( 'combinekdes.mat', movedir );
-        %movedir = [ rootmodeldir 'Full/modelrgbkdes.linear' ];
-        %movefile( 'model.linear', movedir );
-    end
-    
-    if CALC_TOP
-        imdir = [ rootmodeldir 'top/' ];
-        disp( imdir );
-        
-        rgbd_joint_category;
-        f_COM = 1;
-        convert;
-        f_COM = 0;
-    
-        mkdir( rootmodeldir );
-        dst = [ rootmodeldir 'top' ];
-        mkdir( dst );
-        movedir = [ rootmodeldir 'top/rgbdfea_joint.mat' ];
-        movefile( 'rgbdfea_joint.mat', movedir );
-        movedir = [ rootmodeldir 'top/combinekdes.mat' ];
-        movefile( 'combinekdes.mat', movedir );
-        %movedir = [ rootmodeldir 'Full/modelrgbkdes.linear' ];
-        %movefile( 'model.linear', movedir );
-    end
-    
-    if CALC_BOTTOM
-        imdir = [ rootmodeldir 'bottom/' ];
-        disp( imdir );
-        
-        rgbd_joint_category;
-        f_COM = 1;
-        convert;
-        f_COM = 0;
-    
-        mkdir( rootmodeldir );
-        dst = [ rootmodeldir 'bottom' ];
-        mkdir( dst );
-        movedir = [ rootmodeldir 'bottom/rgbdfea_joint.mat' ];
-        movefile( 'rgbdfea_joint.mat', movedir );
-        movedir = [ rootmodeldir 'bottom/combinekdes.mat' ];
-        movefile( 'combinekdes.mat', movedir );
-        %movedir = [ rootmodeldir 'Full/modelrgbkdes.linear' ];
-        %movefile( 'model.linear', movedir );
-    end
-    
-end
 
 %% CALC FEATURE
 if RGB_RGB
@@ -544,4 +442,108 @@ if DEP_SPIN
         %movedir = [ rootmodeldir 'Bottom/modelrgbkdes.linear' ];
         %movefile( 'model.linear', movedir );
     end
+end
+
+%% RGB-D COMBINATION FEATURE
+if COMBINATION
+    if CALC_FULL
+        imdir = [ rootmodeldir 'full/' ];
+        disp( imdir );
+                
+        rgbd_joint_category;
+        f_COM = 1;
+        convert;
+        f_COM = 0;
+    
+        mkdir( rootmodeldir );
+        dst = [ rootmodeldir 'full' ];
+        mkdir( dst );
+        movedir = [ rootmodeldir 'full/rgbdfea_joint.mat' ];
+        movefile( 'rgbdfea_joint.mat', movedir );
+        movedir = [ rootmodeldir 'full/combinekdes.mat' ];
+        movefile( 'combinekdes.mat', movedir );
+        %movedir = [ rootmodeldir 'Full/modelrgbkdes.linear' ];
+        %movefile( 'model.linear', movedir );
+    end
+    
+    if CALC_LEFT
+        imdir = [ rootmodeldir 'left/' ];
+        disp( imdir );
+        
+        rgbd_joint_category;
+        f_COM = 1;
+        convert;
+        f_COM = 0;
+    
+        mkdir( rootmodeldir );
+        dst = [ rootmodeldir 'left' ];
+        mkdir( dst );
+        movedir = [ rootmodeldir 'left/rgbdfea_joint.mat' ];
+        movefile( 'rgbdfea_joint.mat', movedir );
+        movedir = [ rootmodeldir 'left/combinekdes.mat' ];
+        movefile( 'combinekdes.mat', movedir );
+        %movedir = [ rootmodeldir 'Full/modelrgbkdes.linear' ];
+        %movefile( 'model.linear', movedir );
+    end
+    
+    if CALC_RIGHT
+        imdir = [ rootmodeldir 'right/' ];
+        disp( imdir );
+        
+        rgbd_joint_category;
+        f_COM = 1;
+        convert;
+        f_COM = 0;
+    
+        mkdir( rootmodeldir );
+        dst = [ rootmodeldir 'right' ];
+        mkdir( dst );
+        movedir = [ rootmodeldir 'right/rgbdfea_joint.mat' ];
+        movefile( 'rgbdfea_joint.mat', movedir );
+        movedir = [ rootmodeldir 'right/combinekdes.mat' ];
+        movefile( 'combinekdes.mat', movedir );
+        %movedir = [ rootmodeldir 'Full/modelrgbkdes.linear' ];
+        %movefile( 'model.linear', movedir );
+    end
+    
+    if CALC_TOP
+        imdir = [ rootmodeldir 'top/' ];
+        disp( imdir );
+        
+        rgbd_joint_category;
+        f_COM = 1;
+        convert;
+        f_COM = 0;
+    
+        mkdir( rootmodeldir );
+        dst = [ rootmodeldir 'top' ];
+        mkdir( dst );
+        movedir = [ rootmodeldir 'top/rgbdfea_joint.mat' ];
+        movefile( 'rgbdfea_joint.mat', movedir );
+        movedir = [ rootmodeldir 'top/combinekdes.mat' ];
+        movefile( 'combinekdes.mat', movedir );
+        %movedir = [ rootmodeldir 'Full/modelrgbkdes.linear' ];
+        %movefile( 'model.linear', movedir );
+    end
+    
+    if CALC_BOTTOM
+        imdir = [ rootmodeldir 'bottom/' ];
+        disp( imdir );
+        
+        rgbd_joint_category;
+        f_COM = 1;
+        convert;
+        f_COM = 0;
+    
+        mkdir( rootmodeldir );
+        dst = [ rootmodeldir 'bottom' ];
+        mkdir( dst );
+        movedir = [ rootmodeldir 'bottom/rgbdfea_joint.mat' ];
+        movefile( 'rgbdfea_joint.mat', movedir );
+        movedir = [ rootmodeldir 'bottom/combinekdes.mat' ];
+        movefile( 'combinekdes.mat', movedir );
+        %movedir = [ rootmodeldir 'Full/modelrgbkdes.linear' ];
+        %movefile( 'model.linear', movedir );
+    end
+    
 end
