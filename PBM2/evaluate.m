@@ -32,7 +32,7 @@ impath = [];
 rgbdclabel = [];
 rgbdilabel = [];
 rgbdvlabel = [];
-subsample = 5;
+subsample = 40;
 disp(['subsample is ' num2str(subsample)]);
 label_num = 0;
 
@@ -135,7 +135,7 @@ for i = 1:length(impath)
         disp('###############Correct###############');
     else
         cnt_wrong = cnt_wrong + 1;
-        disp('#############Not Correct#############');
+        disp('Not Correct');
     end
     %%    
     waitbar( i/length(impath) );

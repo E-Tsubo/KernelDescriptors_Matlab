@@ -1,12 +1,14 @@
 %Edit label num
-L = 4;
+L = 50;
 
 for i = 1:L
     SCORE.TP(i) = 0; %ê≥ÇµÇ≠positive ROC
     SCORE.FP(i) = 0; %åÎÇ¡Çƒpositive ROC
-    SCORE.TN(i) = 0; %ê≥ÇµÇ≠negative
+    SCORE.TN(i) = 0; %ê≥ÇµÇ≠negative <-MulticlassÇ≈ÇÕéwïWÇ…Ç»ÇÁÇ»Ç¢.
     SCORE.FN(i) = 0; %åÎÇ¡Çƒnegative
 end
+
+cmatrix = zeros( L, L );
 
 for iL = 1:L %Positive Label
     for i = 1:length(store_fl) %All Data
@@ -27,9 +29,17 @@ for iL = 1:L %Positive Label
                 SCORE.TN(iL) = SCORE.TN(iL) + 1;
             end
         end
-    
+        
+        if iL == 1
+            %confuze matrix
+            cmatrix( tmp_pred_label, tmp_true_label{1} ) = cmatrix( tmp_pred_label, tmp_true_label{1} ) + 1;
+        end
+        
     end
 end
+
+sum_t = sum( cmatrix, 1);
+sum_p = sum( cmatrix, 2);
 
 %debug
 %{
@@ -41,22 +51,24 @@ end
 
 %accuuracy
 color{1} = 'c'; color{2} = 'm'; color{3} = 'b'; color{4} = 'r';
-color{5} = 'g'; color{6} = 'y'; color{7} = 'w'; color{8} = 'k';
+color{5} = 'g'; color{6} = 'y'; color{7} = 'k'; 
 titlestr{1} = 'Class1'; titlestr{2} = 'Class2'; titlestr{3} = 'Class3';
 titlestr{4} = 'Class4';
 
 for iL = 1:L
-   accuracy = (SCORE.TP(iL)+SCORE.TN(iL))/length(store_fl);
+   %accuracy = (SCORE.TP(iL)+SCORE.TN(iL))/length(store_fl);
+   accuracy = cmatrix(iL, iL)/sum_t(iL);
    precision = SCORE.TP(iL)/(SCORE.TP(iL)+SCORE.FP(iL));
    recall = SCORE.TP(iL)/(SCORE.TP(iL)+SCORE.FN(iL));
    
-   scores = [];
+   scores = zeros(length(store_fl), 1);
    for i = 1:length(store_fl)
         scores(i,1) = store_fd{i}(iL);
         %scores(i,1) = store_fd{i}{1}(iL);
    end
-   [X,Y,T,AUC,OPTROCPT,SUBY,SUBYNAMES] = perfcurve(rgbdclabel', scores, iL);
-   roc_h{iL} = plot(X, Y, color{iL});
+   [X{iL},Y{iL},T,AUC,OPTROCPT,SUBY,SUBYNAMES] = perfcurve(rgbdclabel', scores, iL);
+   roc_h{iL} = plot(X{iL}, Y{iL}, color{mod(iL,7)+1});
+   %clear X Y T AUC OPTROCPT SUBY SUBYNAMES;
    xlabel('False Positive Rate');
    ylabel('True Positive Rate');
    title(['ROC Curve']);
@@ -73,4 +85,14 @@ for iL = 1:L
    disp(['Recall     ' num2str(recall) ]);
    
 end
-roc_h{1} = legend( titlestr{1}, titlestr{2}, titlestr{3}, titlestr{4} );
+%roc_h{1} = legend( titlestr{1}, titlestr{2}, titlestr{3}, titlestr{4} );
+
+
+% C-Matrix
+%{
+for iL = 1:L
+    for jL = 1:L
+        
+    end
+end
+%}

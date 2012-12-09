@@ -15,7 +15,7 @@ for i = 1:win_num
     end
 end
 
-method = 3;
+method = 2;
 switch( method )
     
     %% Simplest Method: Linear Sum Score

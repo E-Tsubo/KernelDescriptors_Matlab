@@ -9,7 +9,7 @@ function [ partmodel ] = loadPBM2( varargin )
 %% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 global path;
-path = '../Evaluate/Model/';
+path = '../Evaluate/rgbdsubset/';
 
 part = varargin{1};% full, left, right, down or top
 for i = 2:nargin

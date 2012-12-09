@@ -2,12 +2,14 @@ function [ combinePBM, maxvalue, minvalue, trainfea ] = trainPBM2( partmodel )
 %% Part-Based SVM (Combine SVM) Train Program
 %% 2012/11/26 Written by Hideshi T.
 global path;
-path = '../Evaluate/Model/';
+path = '../Evaluate/rgbdsubset/';
 
 USE_PART_MODEL = length( partmodel );
 %TRAIN_USE_PART_FEATURE = 4;
+trainfea = [];
 
 %% load train features...
+if 0
 for i = 1:USE_PART_MODEL
     num = length( partmodel{i} );
     
@@ -25,6 +27,7 @@ for i = 1:USE_PART_MODEL
         
     end
 end
+end
 
 %% Collecting Part Component Score (decision value)
 addpath('../liblinear-1.91-original/matlab');
@@ -37,7 +40,7 @@ addpath('../emk');
 addpath('../myfun');
 
 %% Training Support Vector Machine ( Combine Part Model )...
-if 1
+if 0
 for i = 1:USE_PART_MODEL % Part Model index
     disp( ' ' );
     disp( [ 'Part-Model No. is ' num2str(i) ] );
@@ -70,7 +73,7 @@ end
 % arrange training set from part-component score
 % decvalues{1,2}(1,2) 
 %decvalues{partmodel indx, parttrainfea idx}(trainidx,label)
-
+if 0
 combinelabel = [];
 combinefea   = [];
 
@@ -88,12 +91,18 @@ for h = 1:USE_PART_MODEL %Part-Model Index
     end
 end
 
+save combinefeature.mat combinefea combinelabel
+else
+    load combinefeature;
+end
 disp( ' Learning... ' );
-%{
+
+
 %Liblinear
 combinefea = combinefea';
 combinefea = sparse( combinefea );
 [combinefea, minvalue, maxvalue] = scaletrain(combinefea, 'linear');
+%{
 lc = 30.0;
 option = ['-s 1 -c ' num2str(lc)];
 combinePBM = train(combinelabel', combinefea', option);
@@ -101,17 +110,19 @@ combinePBM = train(combinelabel', combinefea', option);
 
 
 %Libsvm
-combinefea = combinefea';
-[combinefea, minvalue, maxvalue] = scaletrain(combinefea, 'linear');
+%combinefea = combinefea';
+%[combinefea, minvalue, maxvalue] = scaletrain(combinefea, 'linear');
 
 gridsearch = 1;
 if gridsearch
+    
+    %{
     bestcv = 0;
     bestc = 0;
     bestg = 0;
-    for log2c = -1:3,
-        for log2g = -4:1,
-            cmd = ['-s 0 -t 2 -v 5 -c ', num2str(2^log2c), ' -g ', num2str(2^log2g)];
+    for log2c = -1:2:3,
+        for log2g = -4:2:1,
+            cmd = ['-s 0 -t 2 -v 2 -c ', num2str(2^log2c), ' -g ', num2str(2^log2g)];
             cv = svmtrain(combinelabel', combinefea', cmd);
             if (cv >= bestcv),
                 bestcv = cv; bestc = 2^log2c; bestg = 2^log2g;
@@ -122,9 +133,25 @@ if gridsearch
     option = ['-b 1 -s 0 -t 2 -c ' num2str(bestc) ' -g ' num2str(bestg)];
     combinePBM = svmtrain(combinelabel', combinefea', option);
     fprintf('%g %g %g (best c=%g, g=%g, rate=%g)\n', log2c, log2g, cv, bestc, bestg, bestcv);
+    %}
+    
+     bestcv = 0;
+     bestc = 0;
+     for log2c = -5:2:15
+        cmd = ['-s 1 -v 5 -c ', num2str(2^log2c) ];
+        cv = train(combinelabel', combinefea', cmd);
+        if (cv >= bestcv),
+            bestcv = cv; bestc = 2^log2c;
+        end
+        fprintf('%g %g (best c=%g, rate=%g)\n', log2c, cv, bestc, bestcv);
+     end
+     option = ['-s 1 -c ' num2str(bestc) ];
+     combinePBM = train(combinelabel', combinefea', option);
+     fprintf('%g %g (best c=%g, rate=%g)\n', log2c, cv, bestc, bestcv);
+    
 else
-    lc = 30.0;
-    option = ['-s 1 -c ' num2str(lc)];
+    c = 2^3; g = 2^1;
+    option = ['-b 1 -s 0 -t 2 -c ' num2str(c) ' -g ' num2str(g)];
     combinePBM = svmtrain(combinelabel', combinefea', option);
 end
 %{ 
