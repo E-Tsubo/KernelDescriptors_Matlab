@@ -94,7 +94,9 @@ if featag
    fea_params.feapath = rgbdkdespath;
    [rgbdfea, G] = cksvd_emk_batch(fea_params, basis_params, emk_params);
    rgbdfea = single(rgbdfea);
-   save -v7.3 rgbdfea_depth_gradkdes rgbdfea rgbdclabel rgbdilabel rgbdvlabel rgbdwords G;
+   
+   [tmp, minvalue, maxvalue] = scaletrain(rgbdfea, 'linear');
+   save -v7.3 rgbdfea_rgb_rgbkdes rgbdfea rgbdclabel rgbdilabel rgbdvlabel rgbdwords G rgbdwords kdes_params emk_params minvalue maxvalue;
 else
    disp('Loading bag of words data insted of calc');
    load rgbdfea_depth_gradkdes;

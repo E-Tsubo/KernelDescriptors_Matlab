@@ -55,7 +55,8 @@ disp( ['loading...  ' tPath] );
 %load rgbdfea_pcloud_sizekdes.mat;
 %rgbdfea_joint = [rgbdfea_joint; rgbdfea];
 
-save -v7.3 rgbdfea_joint rgbdfea_joint rgbdclabel rgbdilabel rgbdvlabel;
+[tmp, minvalue, maxvalue] = scaletrain(rgbdfea, 'linear');
+save -v7.3 rgbdfea_rgb_rgbkdes rgbdfea rgbdclabel rgbdilabel rgbdvlabel rgbdwords G rgbdwords kdes_params emk_params minvalue maxvalue;
 
 category = 0;
 if category
