@@ -60,6 +60,8 @@ if RGB_RGB
 			mkdir( dst );
 			movedir = [ rootmodeldir 'full/rgbdfea_rgb_rgbkdes.mat' ];
 			movefile( 'rgbdfea_rgb_rgbkdes.mat', movedir );
+            movedir = [ rootmodeldir 'full/rgbdrgbkdes' ];
+			movefile( '../kdesfeatures/rgbdrgbkdes', movedir );
 		end
     end
     if CALC_LEFT
@@ -88,6 +90,8 @@ if RGB_RGB
 			mkdir( dst );
 			movedir = [ rootmodeldir 'left/rgbdfea_rgb_rgbkdes.mat' ];
 			movefile( 'rgbdfea_rgb_rgbkdes.mat', movedir );
+            movedir = [ rootmodeldir 'left/rgbdrgbkdes' ];
+			movefile( '../kdesfeatures/rgbdrgbkdes', movedir );
 		end
     end
     if CALC_RIGHT
@@ -116,6 +120,8 @@ if RGB_RGB
 			mkdir( dst );
 			movedir = [ rootmodeldir 'right/rgbdfea_rgb_rgbkdes.mat' ];
 			movefile( 'rgbdfea_rgb_rgbkdes.mat', movedir );
+            movedir = [ rootmodeldir 'right/rgbdrgbkdes' ];
+			movefile( '../kdesfeatures/rgbdrgbkdes', movedir );
 		end
     end
     if CALC_TOP
@@ -144,6 +150,8 @@ if RGB_RGB
 			mkdir( dst );
 			movedir = [ rootmodeldir 'top/rgbdfea_rgb_rgbkdes.mat' ];
 			movefile( 'rgbdfea_rgb_rgbkdes.mat', movedir );
+            movedir = [ rootmodeldir 'top/rgbdrgbkdes' ];
+			movefile( '../kdesfeatures/rgbdrgbkdes', movedir );
 		end
     end
     if CALC_BOTTOM
@@ -172,6 +180,8 @@ if RGB_RGB
 			mkdir( dst );
 			movedir = [ rootmodeldir 'bottom/rgbdfea_rgb_rgbkdes.mat' ];
 			movefile( 'rgbdfea_rgb_rgbkdes.mat', movedir );
+            movedir = [ rootmodeldir 'bottom/rgbdrgbkdes' ];
+			movefile( '../kdesfeatures/rgbdrgbkdes', movedir );
 		end
     end
 end
@@ -203,6 +213,8 @@ if RGB_GRAD
 			mkdir( dst );
 			movedir = [ rootmodeldir 'full/rgbdfea_rgb_gradkdes.mat' ];
 			movefile( 'rgbdfea_rgb_gradkdes.mat', movedir );
+            movedir = [ rootmodeldir 'full/rgbdgradkdes' ];
+			movefile( '../kdesfeatures/rgbdgradkdes', movedir );
 		end
     end
     if CALC_LEFT
@@ -231,6 +243,8 @@ if RGB_GRAD
 			mkdir( dst );
 			movedir = [ rootmodeldir 'left/rgbdfea_rgb_gradkdes.mat' ];
 			movefile( 'rgbdfea_rgb_gradkdes.mat', movedir );
+            movedir = [ rootmodeldir 'left/rgbdgradkdes' ];
+			movefile( '../kdesfeatures/rgbdgradkdes', movedir );
 		end
     end
     if CALC_RIGHT
@@ -259,6 +273,8 @@ if RGB_GRAD
 			mkdir( dst );
 			movedir = [ rootmodeldir 'right/rgbdfea_rgb_gradkdes.mat' ];
 			movefile( 'rgbdfea_rgb_gradkdes.mat', movedir );
+            movedir = [ rootmodeldir 'right/rgbdgradkdes' ];
+			movefile( '../kdesfeatures/rgbdgradkdes', movedir );
 		end
     end
     if CALC_TOP
@@ -287,6 +303,8 @@ if RGB_GRAD
 			mkdir( dst );
 			movedir = [ rootmodeldir 'top/rgbdfea_rgb_gradkdes.mat' ];
 			movefile( 'rgbdfea_rgb_gradkdes.mat', movedir );
+            movedir = [ rootmodeldir 'top/rgbdgradkdes' ];
+			movefile( '../kdesfeatures/rgbdgradkdes', movedir );
 		end
     end
     if CALC_BOTTOM
@@ -315,6 +333,8 @@ if RGB_GRAD
 			mkdir( dst );
 			movedir = [ rootmodeldir 'bottom/rgbdfea_rgb_gradkdes.mat' ];
 			movefile( 'rgbdfea_rgb_gradkdes.mat', movedir );
+            movedir = [ rootmodeldir 'bottom/rgbdgradkdes' ];
+			movefile( '../kdesfeatures/rgbdgradkdes', movedir );
 		end
     end
 end
@@ -346,6 +366,8 @@ if DEP_GRAD
 			mkdir( dst );
 			movedir = [ rootmodeldir 'full/rgbdfea_depth_gradkes.mat' ];
 			movefile( 'rgbdfea_depth_gradkdes.mat', movedir );
+            movedir = [ rootmodeldir 'full/rgbdgradkdes_dep' ];
+			movefile( '../kdesfeatures/rgbdgradkdes_dep', movedir );
 		end
     end
     if CALC_LEFT
@@ -374,6 +396,8 @@ if DEP_GRAD
 			mkdir( dst );
 			movedir = [ rootmodeldir 'left/rgbdfea_depth_gradkdes.mat' ];
 			movefile( 'rgbdfea_depth_gradkdes.mat', movedir );
+            movedir = [ rootmodeldir 'left/rgbdgradkdes_dep' ];
+			movefile( '../kdesfeatures/rgbdgradkdes_dep', movedir );
 		end
     end
     if CALC_RIGHT
@@ -402,6 +426,8 @@ if DEP_GRAD
 			mkdir( dst );
 			movedir = [ rootmodeldir 'right/rgbdfea_depth_gradkdes.mat' ];
 			movefile( 'rgbdfea_depth_gradkdes.mat', movedir );
+            movedir = [ rootmodeldir 'right/rgbdgradkdes_dep' ];
+			movefile( '../kdesfeatures/rgbdgradkdes_dep', movedir );
 		end
     end
     if CALC_TOP
@@ -430,6 +456,8 @@ if DEP_GRAD
 			mkdir( dst );
 			movedir = [ rootmodeldir 'top/rgbdfea_depth_gradkdes.mat' ];
 			movefile( 'rgbdfea_depth_gradkdes.mat', movedir );
+            movedir = [ rootmodeldir 'top/rgbdgradkdes_dep' ];
+			movefile( '../kdesfeatures/rgbdgradkdes_dep', movedir );
 		end
     end
     if CALC_BOTTOM
@@ -458,6 +486,8 @@ if DEP_GRAD
 			mkdir( dst );
 			movedir = [ rootmodeldir 'bottom/rgbdfea_depth_gradkdes.mat' ];
 			movefile( 'rgbdfea_depth_gradkdes.mat', movedir );
+            movedir = [ rootmodeldir 'bottom/rgbdgradkdes_dep' ];
+			movefile( '../kdesfeatures/rgbdgradkdes_dep', movedir );
 		end
     end
 end
@@ -489,6 +519,8 @@ if DEP_SPIN
 			mkdir( dst );
 			movedir = [ rootmodeldir 'full/rgbdfea_pcloud_normalkdes.mat' ];
 			movefile( 'rgbdfea_pcloud_normalkdes.mat', movedir );
+            movedir = [ rootmodeldir 'full/rgbdnormalkdes' ];
+			movefile( '../kdesfeatures/rgbdnormalkdes', movedir );
 		end
     end
     if CALC_LEFT
@@ -517,6 +549,8 @@ if DEP_SPIN
 			mkdir( dst );
 			movedir = [ rootmodeldir 'left/rgbdfea_pcloud_normalkdes.mat' ];
 			movefile( 'rgbdfea_pcloud_normalkdes.mat', movedir );
+            movedir = [ rootmodeldir 'left/rgbdnormalkdes' ];
+			movefile( '../kdesfeatures/rgbdnormalkdes', movedir );
 		end
     end
     if CALC_RIGHT
@@ -545,6 +579,8 @@ if DEP_SPIN
 			mkdir( dst );
 			movedir = [ rootmodeldir 'right/rgbdfea_pcloud_normalkdes.mat' ];
 			movefile( 'rgbdfea_pcloud_normalkdes.mat', movedir );
+            movedir = [ rootmodeldir 'right/rgbdnormalkdes' ];
+			movefile( '../kdesfeatures/rgbdnormalkdes', movedir );
 		end
     end
     if CALC_TOP
@@ -573,6 +609,8 @@ if DEP_SPIN
 			mkdir( dst );
 			movedir = [ rootmodeldir 'top/rgbdfea_pcloud_normalkdes.mat' ];
 			movefile( 'rgbdfea_pcloud_normalkdes.mat', movedir );
+            movedir = [ rootmodeldir 'top/rgbdnormalkdes' ];
+			movefile( '../kdesfeatures/rgbdnormalkdes', movedir );
 		end
     end
     if CALC_BOTTOM
@@ -601,6 +639,8 @@ if DEP_SPIN
 			mkdir( dst );
 			movedir = [ rootmodeldir 'bottom/rgbdfea_pcloud_normalkdes.mat' ];
 			movefile( 'rgbdfea_pcloud_normalkdes.mat', movedir );
+            movedir = [ rootmodeldir 'bottom/rgbdnormalkdes' ];
+			movefile( '../kdesfeatures/rgbdnormalkdes', movedir );
 		end
     end
 end
@@ -746,4 +786,5 @@ if COMBINATION
 			movefile( 'rgbdfea_joint.mat', movedir );
 		end
     end
+    
 end
