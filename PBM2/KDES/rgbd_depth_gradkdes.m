@@ -100,7 +100,7 @@ else
    load rgbdfea_depth_gradkdes;
 end
 
-category = 1;
+category = 0;
 if category
    trail = 1;
    for i = 1:trail
@@ -121,15 +121,15 @@ if category
        load rgbdfea_depth_gradkdes;
        trainhmp = rgbdfea(:,ttrainindex);
        clear rgbdfea;
+	   
+       [trainhmp, minvalue, maxvalue] = scaletrain(trainhmp, 'linear');
+       trainlabel = rgbdclabel(ttrainindex); % take category label
        
-       if SVM_TYPE ~= 0
+	   if SVM_TYPE ~= 0
            trainhmp = double( trainhmp );
            trainhmp = sparse( trainhmp );%For libsvm and liblinear
        end
        
-       [trainhmp, minvalue, maxvalue] = scaletrain(trainhmp, 'linear');
-       trainlabel = rgbdclabel(ttrainindex); % take category label
-
        % classify with liblinear
        if SVM_TYPE == 2
            lc = 0.3;

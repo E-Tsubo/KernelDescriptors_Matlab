@@ -93,10 +93,10 @@ if featag
    save -v7.3 rgbdfea_pcloud_normalkdes rgbdfea rgbdclabel rgbdilabel rgbdvlabel rgbdwords G;
 else
    disp('Loading bag of words data insted of calc');
-   load rgbdfea_pcloud_normalkdes;
+   load rgbdfea_pcloud_normalkdes; 
 end
 
-category = 1;
+category = 0;
 if category
    trail = 1;
    for i = 1:trail
@@ -118,15 +118,16 @@ if category
        trainhmp = rgbdfea(:,ttrainindex);
        clear rgbdfea;
        
+       [trainhmp, minvalue, maxvalue] = scaletrain(trainhmp, 'linear');
+       trainlabel = rgbdclabel(ttrainindex); % take category label
+       
        if SVM_TYPE ~= 0
            trainhmp = double( trainhmp );
            trainhmp = sparse( trainhmp );%For libsvm and liblinear
        end
        
-       [trainhmp, minvalue, maxvalue] = scaletrain(trainhmp, 'linear');
-       trainlabel = rgbdclabel(ttrainindex); % take category label
-
        % classify with liblinear
+       disp('Training...');
        if SVM_TYPE == 2
            lc = 0.3;
            option = ['-s 0 -t 0 -b 1 -c ' num2str(lc)];

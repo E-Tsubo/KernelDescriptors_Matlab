@@ -57,7 +57,7 @@ disp( ['loading...  ' tPath] );
 
 save -v7.3 rgbdfea_joint rgbdfea_joint rgbdclabel rgbdilabel rgbdvlabel;
 
-category = 1;
+category = 0;
 if category
    trail = 1;
    for i = 1:trail
@@ -78,15 +78,15 @@ if category
        load rgbdfea_joint;
        trainfea = rgbdfea_joint(:,ttrainindex);
        clear rgbdfea_joint;
+	   
+       [trainfea, minvalue, maxvalue] = scaletrain(trainfea, 'linear'); 
+       trainlabel = rgbdclabel(ttrainindex); % take category label
        
-       if SVM_TYPE ~= 0
+	   if SVM_TYPE ~= 0
            trainfea = double( trainfea );
            trainfea = sparse( trainfea );%For libsvm and liblinear
        end
        
-       [trainfea, minvalue, maxvalue] = scaletrain(trainfea, 'linear'); 
-       trainlabel = rgbdclabel(ttrainindex); % take category label
-
        % classify with liblinear
        if SVM_TYPE == 2
            lc = 0.3;
