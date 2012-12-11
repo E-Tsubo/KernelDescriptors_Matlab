@@ -1,4 +1,4 @@
-% load rgbdfea_pcloud_spinkdes
+% load rgbdfea_pcloud_spinkdes 
 
 rgbdclabel=rgbdclabel';
 [trainhmp, minvalue, maxvalue] = scaletrain(rgbdfea, 'linear');
