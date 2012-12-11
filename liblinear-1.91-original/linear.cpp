@@ -9,7 +9,7 @@
 #include "tron.h"
 #include "mex.h"
 
-#define _OPENMP 1
+#define _OPENMP 0
 
 typedef signed char schar;
 template <class T> static inline void swap(T& x, T& y) { T t=x; x=y; y=t; }
@@ -2380,7 +2380,7 @@ model* train(const problem *prob, const parameter *param)
 			  model_->w=Malloc(double, w_size*nr_class);
 			  //double *w=Malloc(double, w_size);
 
-			  omp_set_num_threads( omp_get_num_procs() );
+			  omp_set_num_threads( omp_get_num_procs()-1 );
 			  mexPrintf("OpenMP : Enabled Max processors = %d\n", omp_get_num_procs());
 			  mexPrintf("OpenMP : Enabled Max threads = %d\n", omp_get_max_threads());
 #pragma omp parallel for private(i)
