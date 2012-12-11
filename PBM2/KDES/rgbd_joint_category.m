@@ -56,7 +56,7 @@ disp( ['loading...  ' tPath] );
 %rgbdfea_joint = [rgbdfea_joint; rgbdfea];
 
 [tmp, minvalue, maxvalue] = scaletrain(rgbdfea, 'linear');
-save -v7.3 rgbdfea_rgb_rgbkdes rgbdfea rgbdclabel rgbdilabel rgbdvlabel rgbdwords G rgbdwords kdes_params emk_params minvalue maxvalue;
+save -v7.3 rgbdfea_joint rgbdfea rgbdclabel rgbdilabel rgbdvlabel rgbdwords G rgbdwords kdes_params emk_params minvalue maxvalue;
 
 category = 0;
 if category
