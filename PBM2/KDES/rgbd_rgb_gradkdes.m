@@ -92,7 +92,7 @@ if featag
    rgbdfea = single(rgbdfea);
    
    [tmp, minvalue, maxvalue] = scaletrain(rgbdfea, 'linear');
-   save -v7.3 rgbdfea_rgb_gradkde rgbdfea rgbdclabel rgbdilabel rgbdvlabel rgbdwords G rgbdwords kdes_params emk_params minvalue maxvalue;
+   save -v7.3 rgbdfea_rgb_gradkde rgbdfea rgbdclabel rgbdilabel rgbdvlabel rgbdwords G kdes_params emk_params minvalue maxvalue;
 else
    disp('Loading bag of words data insted of calc');
    load rgbdfea_rgb_gradkdes;
