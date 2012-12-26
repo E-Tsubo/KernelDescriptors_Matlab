@@ -1,5 +1,5 @@
 %Edit label num
-L = 50;
+L = 4;
 
 for i = 1:L
     SCORE.TP(i) = 0; %正しくpositive ROC
@@ -40,6 +40,12 @@ end
 
 sum_t = sum( cmatrix, 1);
 sum_p = sum( cmatrix, 2);
+for i = 1:L
+    for j = 1:L
+        rcmatrix(i,j) = cmatrix(i,j) / sum_t( 1,j );
+        pcmatrix(i,j) = cmatrix(i,j) / sum_p( j,1 );
+    end
+end
 
 %debug
 %{
@@ -52,8 +58,8 @@ end
 %accuuracy
 color{1} = 'c'; color{2} = 'm'; color{3} = 'b'; color{4} = 'r';
 color{5} = 'g'; color{6} = 'y'; color{7} = 'k'; 
-titlestr{1} = 'Class1'; titlestr{2} = 'Class2'; titlestr{3} = 'Class3';
-titlestr{4} = 'Class4';
+titlestr{1} = '提案手法 Class1'; titlestr{2} = '提案手法 Class2'; titlestr{3} = '提案手法 Class3';
+titlestr{4} = '提案手法 Class4';
 
 for iL = 1:L
    %accuracy = (SCORE.TP(iL)+SCORE.TN(iL))/length(store_fl);

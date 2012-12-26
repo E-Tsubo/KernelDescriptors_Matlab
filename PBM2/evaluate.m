@@ -3,7 +3,7 @@
 %% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-SVM_TYPE = 2;
+SVM_TYPE = 1;
 if SVM_TYPE == 0
     disp('Load liblinear-dense-float');
     addpath('../liblinear-1.5-dense-float/matlab');
@@ -100,7 +100,14 @@ for i = 1:length(impath)
     dep = imread([impath{i}(1:end-8) 'depthcrop.png']);
     loc = fliplr(load([impath{i}(1:end-8) 'loc.txt']));
     
-    
+    %Fr occlusion experiment
+    %rgb = rgb( :, 1:(size(rgb,2)-3*size(rgb,2)/4), :);
+    %dep = dep( :, 1:(size(dep,2)-3*size(dep,2)/4), :);
+    %loc(1) = loc(1) - 3*size(rgb,2)/4;
+    %rgb = rgb( 1:(size(rgb,1)/2), 1:(size(rgb,2)-size(rgb,2)/2), :);
+    %dep = dep( 1:(size(dep,1)/2), 1:(size(dep,2)-size(dep,2)/2), :);
+    %loc(1) = loc(1) - size(rgb,2);
+    %loc(2) = loc(2) - size(rgb,2);
     
     %% Part-based ModelProcess 
     if FLAG_PBM == 1

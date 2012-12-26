@@ -71,7 +71,7 @@ switch mode
         deppath = impath{2};
 		locRoot = varargin{4};
         for i = 5:nargin
-            model{i-3} = varargin{i};
+            model{i-4} = varargin{i};
             kdes_num = kdes_num + 1;
         end
         kdes_num = kdes_num - 1;

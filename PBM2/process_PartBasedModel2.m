@@ -119,6 +119,7 @@ addpath('../helpfun');
 addpath('../kdes');
 addpath('../emk');
 addpath('../myfun');
+addpath('../CVonMatlabFunc');
 
 for i = 1:kdes_num
    kdesSet{i} =  model{i}.kdes.kdes_params;

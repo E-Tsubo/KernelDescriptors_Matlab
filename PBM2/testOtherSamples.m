@@ -23,6 +23,7 @@ addpath('../helpfun');
 addpath('../kdes');
 addpath('../emk');
 addpath('../myfun');
+addpath('../CVonMatlabFunc');
 %% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 disp( imdir );
@@ -32,7 +33,7 @@ impath = [];
 rgbdclabel = [];
 rgbdilabel = [];
 rgbdvlabel = [];
-subsample = 5;
+subsample = 15;
 disp(['subsample is ' num2str(subsample)]);
 label_num = 0;
 
@@ -95,12 +96,18 @@ cnt_correct = 0;
 cnt_wrong = 0;
 for i = 1:length(impath)
     disp( ['Image No.' num2str(i) ' ClassLabel:' num2str(rgbdclabel(1,i)) ' ' impath{i}] );
-    rgb = imread( impath{i} );
+    rgb = imread([ impath{i}(1:end-13) 'crop.png' ]);
     dep = imread([impath{i}(1:end-13) 'depthcrop.png']);
     loc = fliplr(load([impath{i}(1:end-13) 'loc.txt']));
     
+    %For occlusion experiment
+    rgb = rgb( :, 1:(size(rgb,2)-1*size(rgb,2)/4), :);
+    dep = dep( :, 1:(size(dep,2)-1*size(dep,2)/4), :);
+    loc(1) = loc(1) - 1*size(rgb,2)/4;
+    
     %% Process 
-    [dec, lab, features, name] = process( 'dep', dep, loc, modelspinkdes );
+    [dec, lab, features, name] = process( 'com', rgb, dep, loc, modelgkdes, modelrgbkdes, modelgkdes_dep, modelspinkdes, combinekdes  );
+    %[dec, lab, features, name] = process( 'dep', dep, loc, modelspinkdes );
     
     store_name{i,1} = i;
     store_name{i,2} = rgbdclabel(1,i);
@@ -113,7 +120,7 @@ for i = 1:length(impath)
         disp('###############Correct###############');
     else
         cnt_wrong = cnt_wrong + 1;
-        disp('#############Not Correct#############');
+        disp('Not Correct');
     end
     %%    
     waitbar( i/length(impath) );
