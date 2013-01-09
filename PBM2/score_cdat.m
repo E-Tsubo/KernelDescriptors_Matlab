@@ -55,13 +55,18 @@ end
 color{1} = 'c'; color{2} = 'm'; color{3} = 'b'; color{4} = 'r';
 color{5} = 'g'; color{6} = 'y'; color{7} = 'k'; 
 titlestr{1} = 'Class1'; titlestr{2} = 'Class2'; titlestr{3} = 'Class3';
-titlestr{4} = 'Class4';
+titlestr{4} = 'Class4'; titlestr{5} = 'Class5';
 
-rgbdclabel = [];
+rgbdclabel = zeros( L, 1 );%rgbdclabel = [];
 for i = 1:length(data)
     rgbdclabel(i,1) = data(i,2);
 end
 
+%X =struct; Y = struct;
+%X = reshape(X, L, 1); Y = reshape(Y, L, 1);
+X = cell(1,L); Y = cell(1,L);
+%matlabpool open local 4;
+%parfor iL = 1:L
 for iL = 1:L
    %accuracy = (SCORE.TP(iL)+SCORE.TN(iL))/length(store_fl);
    accuracy = cmatrix(iL, iL)/sum_t(iL);
@@ -73,13 +78,17 @@ for iL = 1:L
         scores(i,1) = data(i,iL+3);
         %scores(i,1) = store_fd{i}{1}(iL);
    end
+   %tic;
    [X{iL},Y{iL},T,AUC,OPTROCPT,SUBY,SUBYNAMES] = perfcurve(rgbdclabel, scores, iL);
+   %toc;
+   
    roc_h{iL} = plot(X{iL}, Y{iL}, color{mod(iL,7)+1});
-   %clear X Y T AUC OPTROCPT SUBY SUBYNAMES;
    xlabel('False Positive Rate');
    ylabel('True Positive Rate');
    title(['ROC Curve']);
    hold on;
+   
+   clear T AUC OPTROCPT SUBY SUBYNAMES;
    
    SCORE.eval(iL,1) = accuracy;
    SCORE.eval(iL,2) = precision;
