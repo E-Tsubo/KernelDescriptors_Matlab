@@ -87,12 +87,11 @@ for iL = 1:L
    ylabel('True Positive Rate');
    title(['ROC Curve']);
    hold on;
-   
-   clear T AUC OPTROCPT SUBY SUBYNAMES;
-   
+      
    SCORE.eval(iL,1) = accuracy;
    SCORE.eval(iL,2) = precision;
    SCORE.eval(iL,3) = recall;
+   SCORE.eval(iL,4) = AUC;
    
    disp('  ');
    disp(['Class ' num2str(iL)]);
@@ -100,6 +99,7 @@ for iL = 1:L
    disp(['Precision  ' num2str(precision) ]);
    disp(['Recall     ' num2str(recall) ]);
    
+   clear T AUC OPTROCPT SUBY SUBYNAMES;
 end
 %roc_h{1} = legend( titlestr{1}, titlestr{2}, titlestr{3}, titlestr{4} );
 
