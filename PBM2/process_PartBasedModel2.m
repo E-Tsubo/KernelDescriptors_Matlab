@@ -144,7 +144,7 @@ for i = 1:num_grid
     decvalues{i} = dec;
     predictlabels{i} = label;
 end
-name = model{1}.svm.classname;
+name = model{end}.svm.classname;
 disp('All Process done!!');
 
 
@@ -372,12 +372,21 @@ function [ decvalues, accuracy, predictlabel ] = predictSVM( fea, model, SVM_TYP
 %
 %% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 testhmp = fea; 
+
+tmp_minvalue = []; tmp_maxvalue = [];
+if issparse( model.svm.minvalue ) == 1
+    tmp_minvalue = full( model.svm.minvalue );
+    tmp_maxvalue = full( model.svm.maxvalue );
+else
+    tmp_minvalue = model.svm.minvalue;
+    tmp_maxvalue = model.svm.maxvalue;
+end
+testhmp = scaletest( testhmp, 'linear', tmp_minvalue, tmp_maxvalue );
+
 if SVM_TYPE ~= 0
      testhmp = double( testhmp );
      testhmp = sparse( testhmp );
 end
-
-testhmp = scaletest( testhmp, 'linear', model.svm.minvalue, model.svm.maxvalue );
 testlabel = 1;%this is no meaning
 
 if SVM_TYPE == 2

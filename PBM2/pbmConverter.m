@@ -32,7 +32,7 @@ part{6} = 'pbm';
 mName{6} = 'pbm.model';
 mFea{6} = 'pbmFea.txt';
 
-
+%{
 featurenum = [ 5 5 5 5 5 ];
 feature{1,1}='gradkdes'; feature{1,2}='rgbkdes'; feature{1,3}='gradkdes_dep'; feature{1,4}='normalkdes';
 feature{2,1}='gradkdes'; feature{2,2}='rgbkdes'; feature{2,3}='gradkdes_dep'; feature{2,4}='normalkdes';
@@ -44,8 +44,8 @@ input{2,1}='rgb'; input{2,2}='rgb'; input{2,3}='dep'; input{2,4}='dep';
 input{3,1}='rgb'; input{3,2}='rgb'; input{3,3}='dep'; input{3,4}='dep';
 input{4,1}='rgb'; input{4,2}='rgb'; input{4,3}='dep'; input{4,4}='dep';
 input{5,1}='rgb'; input{5,2}='rgb'; input{5,3}='dep'; input{5,4}='dep';
+%}
 
-%{
 featurenum = [ 1 1 1 1 1 ];
 feature{1,1}='gradkdes_dep'; 
 feature{2,1}='gradkdes_dep'; 
@@ -57,7 +57,7 @@ input{2,1}='dep';
 input{3,1}='dep';
 input{4,1}='dep';
 input{5,1}='dep';
-%}
+
 %% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 for i = 1:USE_PART_MODEL
@@ -80,7 +80,7 @@ for i = 1:USE_PART_MODEL
         end
         if( strcmp( feature{i,1}, 'rgbkdes' ) )
             load('rgbkdes_params');
-            tpartmodel{1,1}.kdes.kdes_params = gradkdes_params;
+            tpartmodel{1,1}.kdes.kdes_params = rgbkdes_params;
             tpartmodel{1,1}.kdes.min_imsize = 45;
             tpartmodel{1,1}.kdes.max_imsize = 300;
             tpartmodel{1,1}.kdes.grid_space = 8;
@@ -163,7 +163,7 @@ for i = 1:USE_PART_MODEL
             end
             if( strcmp( feature{i,j}, 'rgbkdes' ) )
                 load('rgbkdes_params');
-                tpartmodel{j,1}.kdes.kdes_params = gradkdes_params;
+                tpartmodel{j,1}.kdes.kdes_params = rgbkdes_params;
                 tpartmodel{j,1}.kdes.min_imsize = 45;
                 tpartmodel{j,1}.kdes.max_imsize = 300;
                 tpartmodel{j,1}.kdes.grid_space = 8;
