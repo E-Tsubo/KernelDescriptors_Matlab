@@ -8,6 +8,7 @@
 #include "linear.h"
 #include "tron.h"
 #include "mex.h"
+
 #define _OPENMP 0
 
 typedef signed char schar;
@@ -2379,13 +2380,13 @@ model* train(const problem *prob, const parameter *param)
 			  model_->w=Malloc(double, w_size*nr_class);
 			  //double *w=Malloc(double, w_size);
 
-			  omp_set_num_threads( omp_get_num_procs() );
-			  printf("OpenMP : Enabled Max processors = %d\n", omp_get_num_procs());
-			  printf("OpenMP : Enabled Max threads = %d\n", omp_get_max_threads());
+			  omp_set_num_threads( omp_get_num_procs()-1 );
+			  mexPrintf("OpenMP : Enabled Max processors = %d\n", omp_get_num_procs());
+			  mexPrintf("OpenMP : Enabled Max threads = %d\n", omp_get_max_threads());
 #pragma omp parallel for private(i)
 			  for(i=0;i<nr_class;i++)
 			    {
-			      printf("Class index:%d\n", i+1);
+			      mexPrintf("Class index:%d\n", i+1);
 			      problem sub_prob_omp;
 			      sub_prob_omp.l = l;
 			      sub_prob_omp.n = n;
@@ -2513,8 +2514,6 @@ double predict_values(const struct model *model_, const struct feature_node *x, 
 	else
 		n=model_->nr_feature;
 	double *w=model_->w;
-	//double dis_w[model_->nr_class];//ADD
-	double *dis_w = Malloc(double, model_->nr_class);
 	int nr_class=model_->nr_class;
 	int i;
 	int nr_w;
@@ -2524,34 +2523,16 @@ double predict_values(const struct model *model_, const struct feature_node *x, 
 		nr_w = nr_class;
 
 	const feature_node *lx=x;
-	for(i=0;i<nr_w;i++){
+	for(i=0;i<nr_w;i++)
 		dec_values[i] = 0;
-		dis_w[i] = 0.0;//ADD
-	}
 	for(; (idx=lx->index)!=-1; lx++)
 	{
-	  // the dimension of testing data may exceed that of training
-	  if(idx<=n)
-	    for(i=0;i<nr_w;i++){
-	      dec_values[i] += w[(idx-1)*nr_w+i]*lx->value;
-	      dis_w[i] += w[(idx-1)*nr_w+i] * w[(idx-1)*nr_w+i];//ADD
-	    }
+		// the dimension of testing data may exceed that of training
+		if(idx<=n)
+			for(i=0;i<nr_w;i++)
+				dec_values[i] += w[(idx-1)*nr_w+i]*lx->value;
 	}
-	
-	//ADD
-	for(i=0;i<nr_w;i++){
-	  dis_w[i] = sqrt(dis_w[i]);
-	  //printf("%lf ", dis_w[i] );
-	}
-	for(i=0;i<nr_w;i++){
-	  //dec_values[i] /= dis_w[i];
-	  mexPrintf("%lf %lf %lf  ", dec_values[i], dis_w[i], dec_values[i]/dis_w[i] );
-	  //if( dec_values[i]>0)
-	  //printf("%lf \n", dec_values[i]);
-	}
-	//printf("\n");
-	free(dis_w);
-	
+
 	if(nr_class==2)
 	{
 		if(model_->param.solver_type == L2R_L2LOSS_SVR ||
