@@ -44,8 +44,9 @@ switch( method )
             testlabel( 1, 1 ) = -1;
         end
         
-        fea = sparse(fea);
+        
         fea = scaletest(fea', 'linear', minvalue, maxvalue);
+        fea = sparse(fea);
         [finallabel, finalaccuracy, finaldec] = predict(testlabel, fea', model);
         
     %% Combine SVM Score(libsvm)
